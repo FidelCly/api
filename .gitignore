@@ -1,3 +1,8 @@
-node_modules
-dist
-src/configs/environments/environment.dev.ts
+.idea/
+.vscode/
+node_modules/
+dist/
+tmp/
+temp/
+.env.development.local
+.env.local
