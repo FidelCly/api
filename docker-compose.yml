@@ -19,6 +19,10 @@ services:
       - 3000:3000
     environment:
       - .env
+    working_dir: /api
+    volumes:
+      - .:/api
+    command: "npm start"
 
 volumes: 
   db:

@@ -1,5 +1,5 @@
 FROM node:latest
-WORKDIR /
+WORKDIR /api
 COPY package.json .
 RUN npm install
 COPY . .

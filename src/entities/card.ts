@@ -29,12 +29,6 @@ export class Card extends BaseEntity {
   })
   startAt: Date;
 
-  @Column({
-    type: "timestamp",
-    precision: 3,
-  })
-  endAt: Date;
-
   @Column({ nullable: true })
   shopId!: number;
   @ManyToOne((_type) => Shop, (shop: Shop) => shop.cards)

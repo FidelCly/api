@@ -7,7 +7,9 @@
     "start": "ts-node src/app.ts",
     "build": "tsc -p .",
     "test": "ENV_FILE=.env.test jest --passWithNoTests",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/data-source.ts",
+    "db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/data-source.ts"
   },
   "repository": {
     "type": "git",

@@ -20,17 +20,19 @@ export class Shop extends BaseEntity {
   @Column({
     length: 9,
   })
-  siren: number;
+  siren: string;
 
   @Column({
     length: 14,
   })
-  siret: number;
+  siret: string;
 
   @Column()
   email: string;
 
-  @Column()
+  @Column({
+    length: 5,
+  })
   zipCode: string;
 
   @Column()
@@ -39,7 +41,7 @@ export class Shop extends BaseEntity {
   @Column({
     length: 10,
   })
-  phone: number;
+  phone: string;
 
   @Column()
   address: string;
