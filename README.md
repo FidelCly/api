@@ -1,18 +1,18 @@
 # api
 
-# Run locally
+## Run locally
 
 ```
 docker-compose up
 ```
 
-## Execute a command inside the container
+### Execute a command inside the container
 
 ```
 docker-compose run --rm web <your-command>
 ```
 
-## Available commands
+### Available commands
 
 - `npm start`
 - `npm run build`
