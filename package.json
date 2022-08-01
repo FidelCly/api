@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/FideCly/api#readme",
   "dependencies": {
+    "class-validator": "^0.13.2",
     "config": "^3.3.7",
     "dotenv": "^16.0.1",
     "express": "^4.17.2",

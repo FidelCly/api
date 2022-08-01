@@ -20,7 +20,9 @@ export class User extends BaseEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   isActive: boolean;
 
   @OneToMany((_type) => Card, (card: Card) => card.user)

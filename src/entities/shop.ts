@@ -46,7 +46,9 @@ export class Shop extends BaseEntity {
   @Column()
   address: string;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   isActive: boolean;
 
   @OneToMany((_type) => Card, (card: Card) => card.shop)
