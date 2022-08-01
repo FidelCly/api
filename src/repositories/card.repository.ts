@@ -26,3 +26,23 @@ export const getCard = async (id: number): Promise<Card | null> => {
   if (!card) return null;
   return card;
 };
+
+export const updateCard = async (
+  id: number,
+  payload: ICardPayload
+): Promise<Card | null> => {
+  const card = await cardRepository.findOneBy({ id: id });
+  if (!card) return null;
+
+  return cardRepository.save({
+    ...card,
+    ...payload,
+  });
+};
+
+export const deleteCard = async (id: number): Promise<Card | null> => {
+  const card = await cardRepository.findOneBy({ id: id });
+  if (!card) return null;
+  cardRepository.delete(id);
+  return card;
+};
