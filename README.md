@@ -19,5 +19,5 @@ docker-compose run --rm web <your-command>
 - `npm run test`
 - `npm run typeorm`
 - `npm run migrate <migration_destination>`
-  - `<migration_destination>` should be `./src/migrations/ <your_migration_name>` (see [Typeorm - Generating migrations](https://typeorm.io/migrations#generating-migrations))
+  - `<migration_destination>` should be `./src/migrations/<your_migration_name>` (see [Typeorm - Generating migrations](https://typeorm.io/migrations#generating-migrations))
 - `npm run db:push`
