@@ -30,17 +30,17 @@ Before pushing your changes, you should:
 
 - Lint and format your code:
 ```
-npm run format
-npm run lint -- --fix
+docker-compose run --rm web npm run format
+docker-compose run --rm web npm run lint -- --fix
 ```
 
 - Check that the tests still pass:
 ```
-npm run test
+docker-compose run --rm web npm run test
 ```
 
 - IF the entities have been updated, generate a migration and apply it:
 ```
-npm run migrate ./src/migrations/<your_migration>
-npm run db:push
+docker-compose run --rm web npm run migrate ./src/migrations/<your_migration>
+docker-compose run --rm web npm run db:push
 ```
