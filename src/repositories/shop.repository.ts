@@ -1,21 +1,18 @@
 import { AppDataSource } from "../data-source";
 import { Shop } from "../entities";
 
-export interface IShopPayload {
-  companyName: string;
-  siren: string;
-  siret: string;
-  email: string;
-  zipCode: string;
-  geoloc: number;
-  phone: string;
-  address: string;
+export class ShopRepository {
+  static findOneById = async (id: Number): Promise<Shop> => {
+    return await AppDataSource.getRepository(Shop).findOneByOrFail({
+      id: Number(id),
+    });
+  };
+
+  static create = async (shop: Shop) => {
+    await AppDataSource.getRepository(Shop).save(shop);
+  };
+
+  static delete = async (id: number) => {
+    await AppDataSource.getRepository(Shop).delete(id);
+  };
 }
-
-const shopRepository = AppDataSource.getRepository(Shop);
-
-export const getShop = async (id: number): Promise<Shop | null> => {
-  const shop = await shopRepository.findOneBy({ id: id });
-  if (!shop) return null;
-  return shop;
-};

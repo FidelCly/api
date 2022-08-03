@@ -1,30 +1,18 @@
-import express from "express";
-import CardController from "../controllers/card.controller";
+import { Router } from "express";
+import { CardController } from "../controllers/card.controller";
 
-const router = express.Router();
-const controller = new CardController();
+const CardRouter = Router();
 
-router.post("/", async (req, res) => {
-  const response = await controller.createCard(req.body);
-  return res.send(response);
-});
+// get one card
+CardRouter.get("/:id([0-9]+)", CardController.one);
 
-router.get("/:id", async (req, res) => {
-  const response = await controller.getCard(req.params.id);
-  if (!response) res.status(404).send({ message: "No card found" });
-  return res.send(response);
-});
+// create a card
+CardRouter.post("/", CardController.create);
 
-router.put("/:id", async (req, res) => {
-  const response = await controller.updateCard(req.params.id, req.body);
-  if (!response) res.status(404).send({ message: "No card found" });
-  return res.send(response);
-});
+// update a card
+CardRouter.put("/:id([0-9]+)", CardController.update);
 
-router.delete("/:id", async (req, res) => {
-  const response = await controller.deleteCard(req.params.id);
-  if (!response) res.status(404).send({ message: "No card found" });
-  return res.send(response);
-});
+// delete a card
+CardRouter.delete("/:id([0-9]+)", CardController.delete);
 
-export default router;
+export default CardRouter;

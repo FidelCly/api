@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { IsBoolean, IsEmail, IsNotEmpty } from "class-validator";
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,16 +11,19 @@ import {
 import { Card } from ".";
 
 @Entity({ name: "users" }) // table name in database
-export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   username: string;
 
+  @IsNotEmpty()
+  @IsEmail()
   @Column()
   email: string;
 
+  @IsBoolean()
   @Column({
     default: true,
   })

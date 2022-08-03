@@ -1,8 +1,12 @@
-import express from "express";
+import { Router } from "express";
 import CardRouter from "./card.router";
+import ShopRouter from "./shop.routes";
+import UserRouter from "./user.routes";
 
-const router = express.Router();
+const routes = Router();
 
-router.use("/wallet", CardRouter);
+routes.use("/wallet", CardRouter);
+routes.use("/users", UserRouter);
+routes.use("/shops", ShopRouter);
 
-export default router;
+export default routes;
