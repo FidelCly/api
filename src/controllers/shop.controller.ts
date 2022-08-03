@@ -5,8 +5,11 @@ import { IShopPayload } from "../payloads";
 import { ShopRepository } from "../repositories";
 
 export class ShopController {
+  /**
+   * Get one shop
+   */
   static one = async (req: Request, res: Response) => {
-    const id: number = Number(req.params.id);
+    const id = Number(req.params.id);
 
     try {
       const shop = await ShopRepository.findOneById(id);
@@ -16,6 +19,9 @@ export class ShopController {
     }
   };
 
+  /**
+   * Create a shop
+   */
   static create = async (req: Request, res: Response) => {
     const payload: IShopPayload = req.body;
 
@@ -31,7 +37,7 @@ export class ShopController {
     }
 
     try {
-      await ShopRepository.create(shop);
+      await ShopRepository.save(shop);
       res.status(201).send({ message: "Shop created" });
     } catch (error) {
       res.status(400).send({ message: error });

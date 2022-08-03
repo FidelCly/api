@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CardRouter from "./card.router";
+import CardRouter from "./card.routes";
 import ShopRouter from "./shop.routes";
 import UserRouter from "./user.routes";
 

@@ -9,13 +9,31 @@ import {
 } from "../repositories";
 
 export class CardController {
+  /**
+   * Get one card
+   */
+  static one = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      const card = await CardRepository.findOneById(id);
+      res.status(200).send(card);
+    } catch (error) {
+      res.status(404).send({ message: "Card not found" });
+    }
+  };
+
+  /**
+   * Create a card
+   * @remark
+   */
   static create = async (req: Request, res: Response) => {
     const payload: ICardCreatePayload = <ICardCreatePayload>req.body;
     payload.startAt = new Date(payload.startAt);
     payload.endAt = new Date(payload.endAt);
 
     try {
-      // todo: replace by current user check when authentication is implemented
+      /* todo: replace by current user check when authentication is implemented */
       await UserRepository.findOneById(payload.userId);
     } catch (error) {
       res.status(404).send({ message: "User not found" });
@@ -48,19 +66,11 @@ export class CardController {
     }
   };
 
-  static one = async (req: Request, res: Response) => {
-    const id: number = Number(req.params.id);
-
-    try {
-      const card = await CardRepository.findOneById(id);
-      res.status(200).send(card);
-    } catch (error) {
-      res.status(404).send({ message: "Card not found" });
-    }
-  };
-
+  /**
+   * Update a card
+   */
   static update = async (req: Request, res: Response) => {
-    const id: number = Number(req.params.id);
+    const id = Number(req.params.id);
 
     const payload: ICardUpdatePayload = <ICardUpdatePayload>req.body;
     payload.startAt = new Date(payload.startAt);
@@ -95,8 +105,11 @@ export class CardController {
     }
   };
 
+  /**
+   * Delete a card
+   */
   static delete = async (req: Request, res: Response) => {
-    const id: number = Number(req.params.id);
+    const id = Number(req.params.id);
 
     try {
       const card = await CardRepository.findOneById(id);

@@ -9,7 +9,7 @@ export class UserController {
    * Get one user
    */
   static one = async (req: Request, res: Response) => {
-    const id: number = Number(req.params.id);
+    const id = Number(req.params.id);
 
     try {
       const user = await UserRepository.findOneById(id);
@@ -45,7 +45,7 @@ export class UserController {
     }
 
     try {
-      await UserRepository.create(user);
+      await UserRepository.save(user);
       res.status(201).send({ message: "User created" });
     } catch (error) {
       res.status(400).send({ message: error });
