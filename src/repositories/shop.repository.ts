@@ -14,6 +14,17 @@ export class ShopRepository {
   };
 
   /**
+   * Find shop by email
+   * @param email - Email of the shop
+   * @returns A shop if found
+   */
+  static findOneByEmail = async (email: string): Promise<Shop | null> => {
+    return await AppDataSource.getRepository(Shop).findOneBy({
+      email,
+    });
+  };
+
+  /**
    * Save a shop on the db
    * @param shop - The shop to save
    */

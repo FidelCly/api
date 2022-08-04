@@ -14,8 +14,10 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 // configure logger
-app.use(morgan("[:date[iso]] Started :method :url for :remote-addr"));
-app.use(morgan("[:date[iso]] Completed :status in :response-time ms"));
+if (process.env.NODE_ENV !== "test") {
+  app.use(morgan("[:date[iso]] Started :method :url for :remote-addr"));
+  app.use(morgan("[:date[iso]] Completed :status in :response-time ms"));
+}
 
 // use router
 app.use("/", routes);

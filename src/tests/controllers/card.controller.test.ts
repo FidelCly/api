@@ -2,32 +2,35 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { userFixture } from "../seeds/user.seed";
+import { cardFixture } from "../seeds/card.seed";
 
-describe("Testing user controller", () => {
+describe("Testing card controller", () => {
   // Create instances
   const factory = new TestFactory();
 
-  const testUserModified = {
-    username: "testUsernameModified",
+  const testCardModified = {
+    url: "http://testModified.com",
+    isActive: false,
   };
 
-  const testUserModifiedEmpty = {
-    username: "",
+  const testCardModifiedEmpty = {
+    url: "",
   };
 
   beforeAll(async () => {
     await factory.init();
+    await factory.seedUser();
+    await factory.seedShop();
   });
 
   afterAll(async () => {
     await factory.close();
   });
 
-  describe("Create user", () => {
+  describe("Create card", () => {
     it("responds with status 400", async () => {
       const response = await request(app)
-        .post("/users")
+        .post("/wallet")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -37,9 +40,9 @@ describe("Testing user controller", () => {
 
     it("responds with status 201", async () => {
       const response = await request(app)
-        .post("/users")
-        .send(userFixture)
-        .set("Accept", "application/json");
+        .post("/wallet")
+        .set("Accept", "application/json")
+        .send(cardFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(201);
@@ -47,12 +50,12 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Update user", () => {
+  describe("Update card", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/users/10")
+        .put("/wallet/10")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(testCardModified);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
@@ -61,9 +64,9 @@ describe("Testing user controller", () => {
 
     it("responds with status 400", async () => {
       const response = await request(factory.app)
-        .put("/users/1")
+        .put("/wallet/1")
         .set("Accept", "application/json")
-        .send(testUserModifiedEmpty);
+        .send(testCardModifiedEmpty);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -72,9 +75,9 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(factory.app)
-        .put("/users/1")
+        .put("/wallet/1")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(testCardModified);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(200);
@@ -82,10 +85,10 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Get one user", () => {
+  describe("Get one card", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .get("/users/10")
+        .get("/wallet/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -95,7 +98,7 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .get("/users/1")
+        .get("/wallet/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -103,10 +106,10 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Delete user", () => {
+  describe("Delete card", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .delete("/users/10")
+        .delete("/wallet/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -116,7 +119,7 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .delete("/users/1")
+        .delete("/wallet/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);

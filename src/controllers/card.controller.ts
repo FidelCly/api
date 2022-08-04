@@ -25,30 +25,29 @@ export class CardController {
 
   /**
    * Create a card
-   * @remark
    */
   static create = async (req: Request, res: Response) => {
     const payload: ICardCreatePayload = <ICardCreatePayload>req.body;
-    payload.startAt = new Date(payload.startAt);
-    payload.endAt = new Date(payload.endAt);
 
     try {
       /* todo: replace by current user check when authentication is implemented */
-      await UserRepository.findOneById(payload.userId);
+      if (payload.userId) await UserRepository.findOneById(payload.userId);
     } catch (error) {
       res.status(404).send({ message: "User not found" });
       return;
     }
 
     try {
-      await ShopRepository.findOneById(payload.shopId);
+      if (payload.shopId) await ShopRepository.findOneById(payload.shopId);
     } catch (error) {
       res.status(404).send({ message: "Shop not found" });
       return;
     }
 
-    let card = new Card();
-    card = { ...card, ...payload };
+    const card = new Card();
+    Object.assign(card, payload);
+    card.startAt = new Date(payload.startAt);
+    card.endAt = new Date(payload.endAt);
     card.isActive = true;
 
     try {
@@ -71,10 +70,7 @@ export class CardController {
    */
   static update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-
     const payload: ICardUpdatePayload = <ICardUpdatePayload>req.body;
-    payload.startAt = new Date(payload.startAt);
-    payload.endAt = new Date(payload.endAt);
 
     let card: Card;
 
@@ -85,7 +81,9 @@ export class CardController {
       return;
     }
 
-    card = { ...card, ...payload };
+    Object.assign(card, payload);
+    if (payload.startAt) card.startAt = new Date(payload.startAt);
+    if (payload.endAt) card.endAt = new Date(payload.endAt);
 
     try {
       await validateOrReject(card);
@@ -112,8 +110,7 @@ export class CardController {
     const id = Number(req.params.id);
 
     try {
-      const card = await CardRepository.findOneById(id);
-      res.status(200).send(card);
+      await CardRepository.findOneById(id);
     } catch (error) {
       res.status(404).send({ message: "Card not found" });
       return;

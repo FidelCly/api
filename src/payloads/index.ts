@@ -1,7 +1,7 @@
 import { ICardCreatePayload, ICardUpdatePayload } from "./card.payload";
-import { IShopPayload } from "./shop.payload";
-import { IUserPayload } from "./user.payload";
+import { IShopCreatePayload, IShopUpdatePayload } from "./shop.payload";
+import { IUserCreatePayload, IUserUpdatePayload } from "./user.payload";
 
 export { ICardCreatePayload, ICardUpdatePayload };
-export { IShopPayload };
-export { IUserPayload };
+export { IShopCreatePayload, IShopUpdatePayload };
+export { IUserCreatePayload, IUserUpdatePayload };

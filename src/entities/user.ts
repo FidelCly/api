@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsBoolean, IsEmail, IsNotEmpty } from "class-validator";
+import { IsBoolean, IsDefined, IsEmail, IsNotEmpty } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -15,6 +15,8 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsNotEmpty()
+  @IsDefined()
   @Column()
   username: string;
 
@@ -23,6 +25,7 @@ export class User {
   @Column()
   email: string;
 
+  @IsNotEmpty()
   @IsBoolean()
   @Column({
     default: true,

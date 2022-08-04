@@ -2,18 +2,18 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { userFixture } from "../seeds/user.seed";
+import { shopFixture } from "../seeds/shop.seed";
 
-describe("Testing user controller", () => {
+describe("Testing shop controller", () => {
   // Create instances
   const factory = new TestFactory();
 
-  const testUserModified = {
-    username: "testUsernameModified",
+  const testshopModified = {
+    companyName: "testshopnameModified",
   };
 
-  const testUserModifiedEmpty = {
-    username: "",
+  const testshopModifiedEmpty = {
+    companyName: "",
   };
 
   beforeAll(async () => {
@@ -24,10 +24,10 @@ describe("Testing user controller", () => {
     await factory.close();
   });
 
-  describe("Create user", () => {
+  describe("Create shop", () => {
     it("responds with status 400", async () => {
       const response = await request(app)
-        .post("/users")
+        .post("/shops")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -37,8 +37,8 @@ describe("Testing user controller", () => {
 
     it("responds with status 201", async () => {
       const response = await request(app)
-        .post("/users")
-        .send(userFixture)
+        .post("/shops")
+        .send(shopFixture)
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -47,12 +47,12 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Update user", () => {
+  describe("Update shop", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/users/10")
+        .put("/shops/10")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(testshopModified);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
@@ -61,9 +61,9 @@ describe("Testing user controller", () => {
 
     it("responds with status 400", async () => {
       const response = await request(factory.app)
-        .put("/users/1")
+        .put("/shops/1")
         .set("Accept", "application/json")
-        .send(testUserModifiedEmpty);
+        .send(testshopModifiedEmpty);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -72,9 +72,9 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(factory.app)
-        .put("/users/1")
+        .put("/shops/1")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(testshopModified);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(200);
@@ -82,10 +82,10 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Get one user", () => {
+  describe("Get one shop", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .get("/users/10")
+        .get("/shops/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -95,7 +95,7 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .get("/users/1")
+        .get("/shops/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -103,10 +103,10 @@ describe("Testing user controller", () => {
     });
   });
 
-  describe("Delete user", () => {
+  describe("Delete shop", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .delete("/users/10")
+        .delete("/shops/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -116,7 +116,7 @@ describe("Testing user controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .delete("/users/1")
+        .delete("/shops/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);

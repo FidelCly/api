@@ -39,6 +39,7 @@ export class Card {
   })
   endAt: Date;
 
+  @IsNotEmpty()
   @IsBoolean()
   @Column({
     default: true,

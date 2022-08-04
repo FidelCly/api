@@ -1,7 +1,7 @@
 import { validateOrReject } from "class-validator";
 import { Request, Response } from "express";
 import { Shop } from "../entities";
-import { IShopPayload } from "../payloads";
+import { IShopCreatePayload, IShopUpdatePayload } from "../payloads";
 import { ShopRepository } from "../repositories";
 
 export class ShopController {
@@ -20,19 +20,30 @@ export class ShopController {
   };
 
   /**
-   * Create a shop
+   * Create shop
    */
   static create = async (req: Request, res: Response) => {
-    const payload: IShopPayload = req.body;
+    const payload: IShopCreatePayload = <IShopCreatePayload>req.body;
+
+    if (payload.email) {
+      const shopAlreadyExists = await ShopRepository.findOneByEmail(
+        payload.email
+      );
+
+      if (shopAlreadyExists) {
+        res.status(409).send({ message: "Email already in use" });
+        return;
+      }
+    }
 
     let shop = new Shop();
-    shop = { ...payload, ...shop };
+    shop = Object.assign(shop, payload);
     shop.isActive = true;
 
     try {
-      await validateOrReject(payload);
+      await validateOrReject(shop);
     } catch (errors) {
-      res.status(409).send({ message: "Validation failed", errors });
+      res.status(400).send({ message: "Validation failed", errors });
       return;
     }
 
@@ -42,5 +53,69 @@ export class ShopController {
     } catch (error) {
       res.status(400).send({ message: error });
     }
+  };
+
+  /**
+   * Update shop
+   */
+  static update = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const payload: IShopUpdatePayload = <IShopUpdatePayload>req.body;
+
+    let shop: Shop;
+
+    try {
+      shop = await ShopRepository.findOneById(id);
+    } catch (error) {
+      res.status(404).send({ message: "Shop not found" });
+      return;
+    }
+
+    if (payload.email) {
+      const shopAlreadyExists = await ShopRepository.findOneByEmail(
+        payload.email
+      );
+
+      if (shopAlreadyExists) {
+        res.status(409).send({ message: "Email already in use" });
+        return;
+      }
+    }
+
+    shop = Object.assign(shop, payload);
+
+    try {
+      await validateOrReject(shop);
+    } catch (errors) {
+      res.status(400).send({
+        message: "Validation failed",
+        errors,
+      });
+      return;
+    }
+
+    try {
+      await ShopRepository.save(shop);
+      res.status(200).send({ message: "Shop updated" });
+    } catch (error) {
+      res.status(400).send({ message: error });
+    }
+  };
+
+  /**
+   * Delete shop
+   */
+  static delete = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      await ShopRepository.findOneById(id);
+    } catch (error) {
+      res.status(404).send({ message: "Shop not found" });
+      return;
+    }
+
+    await ShopRepository.delete(id);
+    res.status(200).send({ message: "Shop deleted" });
   };
 }

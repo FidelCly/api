@@ -27,12 +27,14 @@ export class Shop {
   @Column()
   companyName: string;
 
+  @IsNotEmpty()
   @Length(9, 9)
   @Column({
     length: 9,
   })
   siren: string;
 
+  @IsNotEmpty()
   @Length(14, 14)
   @Column({
     length: 14,
@@ -44,6 +46,7 @@ export class Shop {
   @Column()
   email: string;
 
+  @IsNotEmpty()
   @IsPostalCode("FR")
   @Length(5, 5)
   @Column({
@@ -68,6 +71,7 @@ export class Shop {
   @Column()
   address: string;
 
+  @IsNotEmpty()
   @IsBoolean()
   @Column({
     default: true,
