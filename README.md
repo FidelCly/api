@@ -21,7 +21,7 @@ docker-compose run --rm web <your-command>
 - `npm run lint` (`npm run lint -- --fix` to lint automatically)
 - `npm run format`
 - `npm run migrate <migration_destination>`
-  - `<migration_destination>` should be `./src/migrations/ <your_migration_name>` (see [Typeorm - Generating migrations](https://typeorm.io/migrations#generating-migrations))
+  - `<migration_destination>` should be `./src/migrations/<your_migration_name>` (see [Typeorm - Generating migrations](https://typeorm.io/migrations#generating-migrations))
 - `npm run db:push`
 
 ### Introduce code changes
