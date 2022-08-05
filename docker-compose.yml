@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - db:/var/lib/mysql
+      - ./docker/psql:/var/lib/postgresql/data
 
   web:
     depends_on:
