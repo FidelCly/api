@@ -36,7 +36,7 @@ docker-compose run --rm web npm run lint -- --fix
 
 - Check that the tests still pass:
 ```
-docker-compose run --rm web npm run test
+docker-compose run --rm web npm test
 ```
 
 - IF the entities have been updated, generate a migration and apply it:
