@@ -5,12 +5,13 @@ import app from "./app";
 
 AppDataSource.initialize()
   .then(() => {
+    // set env
+    process.env.NODE_ENV = "development";
+
     // configure dotenv
     dotenv.config({ path: path.join(__dirname, "../.env") });
-
-    process.env.NODE_ENV === "test"
-      ? dotenv.config({ path: path.join(__dirname, "../.env.test") })
-      : dotenv.config({ path: path.join(__dirname, "../.env/development") });
+    dotenv.config({ path: path.join(__dirname, "../.env.test") });
+    dotenv.config({ path: path.join(__dirname, "../.env.dev") });
 
     // configure port number
     const port = process.env.NODE_DOCKER_PORT || 3000;

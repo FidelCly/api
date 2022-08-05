@@ -1,4 +1,4 @@
-import { AppDataSource } from "../data-source";
+import { getDataSource } from ".";
 import { Shop } from "../entities";
 
 export class ShopRepository {
@@ -8,9 +8,11 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneById = async (id: number): Promise<Shop> => {
-    return await AppDataSource.getRepository(Shop).findOneByOrFail({
-      id: Number(id),
-    });
+    return await getDataSource()
+      .getRepository(Shop)
+      .findOneByOrFail({
+        id: Number(id),
+      });
   };
 
   /**
@@ -19,7 +21,7 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneByEmail = async (email: string): Promise<Shop | null> => {
-    return await AppDataSource.getRepository(Shop).findOneBy({
+    return await getDataSource().getRepository(Shop).findOneBy({
       email,
     });
   };
@@ -29,7 +31,7 @@ export class ShopRepository {
    * @param shop - The shop to save
    */
   static save = async (shop: Shop) => {
-    await AppDataSource.getRepository(Shop).save(shop);
+    await getDataSource().getRepository(Shop).save(shop);
   };
 
   /**
@@ -37,6 +39,6 @@ export class ShopRepository {
    * @param id - The id of the shop to delete
    */
   static delete = async (id: number) => {
-    await AppDataSource.getRepository(Shop).delete(id);
+    await getDataSource().getRepository(Shop).delete(id);
   };
 }

@@ -1,4 +1,4 @@
-import { AppDataSource } from "../data-source";
+import { getDataSource } from ".";
 import { User } from "../entities";
 
 export class UserRepository {
@@ -8,7 +8,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneById = async (id: number): Promise<User> => {
-    return await AppDataSource.getRepository(User).findOneByOrFail({
+    return await getDataSource().getRepository(User).findOneByOrFail({
       id: Number(id),
     });
   };
@@ -19,7 +19,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByUsername = async (username: string): Promise<User | null> => {
-    return await AppDataSource.getRepository(User).findOneBy({
+    return await getDataSource().getRepository(User).findOneBy({
       username,
     });
   };
@@ -30,7 +30,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByEmail = async (email: string): Promise<User | null> => {
-    return await AppDataSource.getRepository(User).findOneBy({
+    return await getDataSource().getRepository(User).findOneBy({
       email,
     });
   };
@@ -40,7 +40,7 @@ export class UserRepository {
    * @param user - The user to save
    */
   static save = async (user: User) => {
-    await AppDataSource.getRepository(User).save(user);
+    await getDataSource().getRepository(User).save(user);
   };
 
   /**
@@ -48,6 +48,6 @@ export class UserRepository {
    * @param id - The id of the user to delete
    */
   static delete = async (id: number) => {
-    await AppDataSource.getRepository(User).delete(id);
+    await getDataSource().getRepository(User).delete(id);
   };
 }

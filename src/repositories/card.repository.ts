@@ -1,4 +1,4 @@
-import { AppDataSource } from "../data-source";
+import { getDataSource } from ".";
 import { Card } from "../entities";
 
 export class CardRepository {
@@ -8,9 +8,11 @@ export class CardRepository {
    * @returns A card if found
    */
   static findOneById = async (id: number): Promise<Card> => {
-    return await AppDataSource.getRepository(Card).findOneByOrFail({
-      id: Number(id),
-    });
+    return await getDataSource()
+      .getRepository(Card)
+      .findOneByOrFail({
+        id: Number(id),
+      });
   };
 
   /**
@@ -18,7 +20,7 @@ export class CardRepository {
    * @param card - The card to save
    */
   static save = async (card: Card) => {
-    await AppDataSource.getRepository(Card).save(card);
+    await getDataSource().getRepository(Card).save(card);
   };
 
   /**
@@ -26,6 +28,6 @@ export class CardRepository {
    * @param id - The id of the card to delete
    */
   static delete = async (id: number) => {
-    await AppDataSource.getRepository(Card).delete(id);
+    await getDataSource().getRepository(Card).delete(id);
   };
 }

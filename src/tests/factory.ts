@@ -4,7 +4,6 @@ import express from "express";
 import { DataSource } from "typeorm";
 import app from "../app";
 import path from "path";
-import { AppDataSource } from "../data-source";
 import { Card, Shop, User } from "../entities";
 import {
   CardRepository,
@@ -14,6 +13,7 @@ import {
 import { userFixture } from "./seeds/user.seed";
 import { shopFixture } from "./seeds/shop.seed";
 import { cardFixture } from "./seeds/card.seed";
+import { TestDataSource } from "../test-data-source";
 
 export class TestFactory {
   private _app: express.Application;
@@ -32,8 +32,9 @@ export class TestFactory {
    */
   public async init(): Promise<void> {
     process.env.NODE_ENV = "test";
+    config({ path: path.join(__dirname, "../.env") });
     config({ path: path.join(__dirname, "../.env.test") });
-    this._dataSource = await AppDataSource.initialize();
+    this._dataSource = await TestDataSource.initialize();
     this._app = app;
   }
 

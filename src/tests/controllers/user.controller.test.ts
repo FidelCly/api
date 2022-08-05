@@ -48,6 +48,8 @@ describe("Testing user controller", () => {
   });
 
   describe("Update user", () => {
+    beforeAll(async () => {});
+
     it("responds with status 404", async () => {
       const response = await request(factory.app)
         .put("/users/10")
