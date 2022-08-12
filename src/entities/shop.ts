@@ -78,7 +78,7 @@ export class Shop {
   })
   isActive: boolean;
 
-  @OneToMany((_type) => Card, (card: Card) => card.shop)
+  @OneToMany(() => Card, (card: Card) => card.shop)
   cards!: Array<Card>;
 
   @CreateDateColumn()

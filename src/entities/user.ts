@@ -32,7 +32,7 @@ export class User {
   })
   isActive: boolean;
 
-  @OneToMany((_type) => Card, (card: Card) => card.user)
+  @OneToMany(() => Card, (card: Card) => card.user)
   cards!: Array<Card>;
 
   @CreateDateColumn()

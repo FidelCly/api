@@ -50,7 +50,7 @@ export class Card {
   @Column({ nullable: true })
   shopId!: number;
 
-  @ManyToOne((_type) => Shop, (shop: Shop) => shop.cards)
+  @ManyToOne(() => Shop, (shop: Shop) => shop.cards)
   @JoinColumn()
   shop!: Shop;
 
@@ -58,7 +58,7 @@ export class Card {
   @Column({ nullable: true })
   userId!: number;
 
-  @ManyToOne((_type) => User, (user: User) => user.cards)
+  @ManyToOne(() => User, (user: User) => user.cards)
   @JoinColumn()
   user!: User;
 
