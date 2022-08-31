@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - ApiFidelCly
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to registry
+      uses: docker/login-action@v1
+      with:
+        registry: https://containersfidelcly.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_32d38d02974a4ac4aac74bf066670317 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_e3e47a66e3344e48bed117e4d8812840 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: containersfidelcly.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_32d38d02974a4ac4aac74bf066670317 }}/apifidelcly:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'ApiFidelCly'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_7bfc2964b1fc46acad16cb7d927a5f23 }}
+        images: 'containersfidelcly.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_32d38d02974a4ac4aac74bf066670317 }}/apifidelcly:${{ github.sha }}'
