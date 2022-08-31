@@ -23,8 +23,9 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://containersfidelcly.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_32d38d02974a4ac4aac74bf066670317 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_e3e47a66e3344e48bed117e4d8812840 }}
+        username: containersFidelCly
+       # password: ${{ secrets.AzureAppService_ContainerPassword_e3e47a66e3344e48bed117e4d8812840 }}
+        password: 87Oqjy6rq3sClVLA+LpLWUIRRnBQl7G2
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
