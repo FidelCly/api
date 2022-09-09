@@ -46,7 +46,7 @@ jobs:
           assignees: ${{github.actor}}
           labels: refactoring-needed, help needed
           body: Workflow failed for commit ${{github.sha}}
-    - run: npm test
+    - run: docker-compose run --rm web npm test
     - uses: nashmaniac/create-issue-action@v1.1
       if: ${{ failure() }} # only run when this job is failed.
       name: Create Issue Action

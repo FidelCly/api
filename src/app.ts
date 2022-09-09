@@ -1,25 +1,25 @@
 import express from "express";
 import * as bodyParser from "body-parser";
-import * as dotenv from "dotenv";
-import { AppDataSource } from "./data-source";
+import morgan from "morgan";
+import helmet from "helmet";
+import cors from "cors";
+import routes from "./routes";
 
-AppDataSource.initialize()
-  .then(async () => {
-    // configure dotenv
-    dotenv.config({ path: __dirname + "/.env" });
+// create express app
+const app = express();
 
-    // create express app
-    const app = express();
-    app.use(bodyParser.json());
+// call middlewares
+app.use(cors());
+app.use(helmet());
+app.use(bodyParser.json());
 
-    // configure port number
-    const port = process.env.NODE_DOCKER_PORT || 3000;
+// configure logger
+if (process.env.NODE_ENV !== "test") {
+  app.use(morgan("[:date[iso]] Started :method :url for :remote-addr"));
+  app.use(morgan("[:date[iso]] Completed :status in :response-time ms"));
+}
 
-    // start express server
-    app.listen(port);
+// use router
+app.use("/", routes);
 
-    console.log(
-      `Express server has started on port ${port}. Open http://localhost:${port}/users to see results`
-    );
-  })
-  .catch((error) => console.log(error));
+export default app;
