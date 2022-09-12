@@ -1,121 +1,101 @@
 import { validateOrReject } from "class-validator";
 import { Request, Response } from "express";
-import { Shop } from "../entities";
-import { IShopCreatePayload, IShopUpdatePayload } from "../payloads";
-import { ShopRepository } from "../repositories";
+import { Promotion } from "../entities";
+import { IPromotionCreatePayload, IPromotionUpdatePayload } from "../payloads";
+import { PromotionRepository } from "../repositories";
 
 export class PromotionController {
-  /**
-   * Get one promotion
-   */
-  static one = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+	/**
+	 * Get one promotion
+	 */
+	static one = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
 
-    try {
-      const shop = await ShopRepository.findOneById(id);
-      res.status(200).send(shop);
-    } catch (error) {
-      res.status(404).send({ message: "Shop not found" });
-    }
-  };
+		try {
+			const promotion = await PromotionRepository.findOneById(id);
+			res.status(200).send(promotion);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+		}
+	};
 
-  /**
-   * Create shop
-   */
-  static create = async (req: Request, res: Response) => {
-    const payload: IShopCreatePayload = <IShopCreatePayload>req.body;
+	/**
+	 * Create promotion
+	 */
+	static create = async (req: Request, res: Response) => {
+		const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
+		console.log("🚀 ~ PromotionController ~ create= ~ payload", payload);
 
-    if (payload.email) {
-      const shopAlreadyExists = await ShopRepository.findOneByEmail(
-        payload.email
-      );
+		let promotion = new Promotion();
+		console.log("🚀 ~ PromotionController ~ create= ~ promotion", promotion);
+		promotion = Object.assign(promotion, payload);
 
-      if (shopAlreadyExists) {
-        res.status(409).send({ message: "Email already in use" });
-        return;
-      }
-    }
+		try {
+			await validateOrReject(promotion);
+		} catch (errors) {
+			res.status(400).send({ message: "Validation failed", errors });
 
-    let shop = new Shop();
-    shop = Object.assign(shop, payload);
-    shop.isActive = true;
+			return;
+		}
 
-    try {
-      await validateOrReject(shop);
-    } catch (errors) {
-      res.status(400).send({ message: "Validation failed", errors });
-      return;
-    }
+		try {
+			await PromotionRepository.save(promotion);
+			res.status(201).send({ message: "Promotion created" });
+		} catch (error) {
+			res.status(400).send({ message: error });
+		}
+	};
 
-    try {
-      await ShopRepository.save(shop);
-      res.status(201).send({ message: "Shop created" });
-    } catch (error) {
-      res.status(400).send({ message: error });
-    }
-  };
+	/**
+	 * Update promotion
+	 */
+	static update = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
+		const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
 
-  /**
-   * Update shop
-   */
-  static update = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const payload: IShopUpdatePayload = <IShopUpdatePayload>req.body;
+		let promotion: Promotion;
 
-    let shop: Shop;
+		try {
+			promotion = await PromotionRepository.findOneById(id);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+			return;
+		}
 
-    try {
-      shop = await ShopRepository.findOneById(id);
-    } catch (error) {
-      res.status(404).send({ message: "Shop not found" });
-      return;
-    }
+		promotion = Object.assign(promotion, payload);
 
-    if (payload.email) {
-      const shopAlreadyExists = await ShopRepository.findOneByEmail(
-        payload.email
-      );
+		try {
+			await validateOrReject(promotion);
+		} catch (errors) {
+			res.status(400).send({
+				message: "Validation failed",
+				errors
+			});
+			return;
+		}
 
-      if (shopAlreadyExists) {
-        res.status(409).send({ message: "Email already in use" });
-        return;
-      }
-    }
+		try {
+			await PromotionRepository.save(promotion);
+			res.status(200).send({ message: "Promotion updated" });
+		} catch (error) {
+			res.status(400).send({ message: error });
+		}
+	};
 
-    shop = Object.assign(shop, payload);
-    
-    try {
-      await validateOrReject(shop);
-    } catch (errors) {
-      res.status(400).send({
-        message: "Validation failed",
-        errors,
-      });
-      return;
-    }
+	/**
+	 * Delete promotion
+	 */
+	static delete = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
 
-    try {
-      await ShopRepository.save(shop);
-      res.status(200).send({ message: "Shop updated" });
-    } catch (error) {
-      res.status(400).send({ message: error });
-    }
-  };
+		try {
+			await PromotionRepository.findOneById(id);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+			return;
+		}
 
-  /**
-   * Delete shop
-   */
-  static delete = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    try {
-      await ShopRepository.findOneById(id);
-    } catch (error) {
-      res.status(404).send({ message: "Shop not found" });
-      return;
-    }
-
-    await ShopRepository.delete(id);
-    res.status(200).send({ message: "Shop deleted" });
-  };
+		await PromotionRepository.delete(id);
+		res.status(200).send({ message: "Promotion deleted" });
+	};
 }
