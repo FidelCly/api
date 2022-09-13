@@ -1,6 +1,7 @@
 import { validateOrReject } from "class-validator";
 import { Request, Response } from "express";
 import { PromotionCounter } from "../entities/promotion-counter";
+import { IPromotionCounterCreatePayload, IPromotionCounterUpdatePayload } from "../payloads";
 import { PromotionCounterRepository, PromotionRepository } from "../repositories";
 import { TypePromotion } from "../shared/enums/type-promotion";
 
@@ -41,12 +42,9 @@ export class PromotionCounterController {
 	 * Create promotion counter
 	 */
 	static create = async (req: Request, res: Response) => {
-		// const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
-		const userId = parseInt(req.params.userId);
-		const shopId = parseInt(req.params.shopId);
-		const promotionId = parseInt(req.params.promotionId);
+		const payload: IPromotionCounterCreatePayload = <IPromotionCounterCreatePayload>req.body;
 
-		// console.log("🚀 ~ PromotionCounterController ~ create= ~ promotionCounter", promotionCounter);
+		if (Object.keys(payload).length === 0) res.status(400).send({ message: "Any data found in the request body" });
 		const promotionCounter = new PromotionCounter();
 
 		try {
@@ -54,9 +52,9 @@ export class PromotionCounterController {
 			// const user = await UserRepository.findOneById(userId);
 			// const shop = await ShopRepository.findOneById(shopId);
 
-			promotionCounter.shopId = shopId;
-			promotionCounter.userId = userId;
-			promotionCounter.promotionId = promotionId;
+			promotionCounter.shopId = Number(req.body.shopId);
+			promotionCounter.userId = Number(req.body.userId);
+			promotionCounter.promotionId = Number(req.body.promotionId);
 			promotionCounter.increment = 0;
 			promotionCounter.isActive = true;
 			promotionCounter.nbValidation = 0;
@@ -81,10 +79,14 @@ export class PromotionCounterController {
 	 * Update promotion counter
 	 */
 	static update = async (req: Request, res: Response) => {
+		const payload: IPromotionCounterUpdatePayload = <IPromotionCounterUpdatePayload>req.body;
+
+		if (Object.keys(payload).length === 0) res.status(400).send({ message: "Any data found in the request body" });
+
 		try {
-			const promotionId = Number(req.params.id);
-			const shopId = Number(req.params.shopId);
-			const userId = Number(req.params.userId);
+			const promotionId = Number(req.body.id);
+			const shopId = Number(req.body.shopId);
+			const userId = Number(req.body.userId);
 
 			const [promotion, promotionCounter] = await Promise.all([
 				PromotionRepository.findOneById(promotionId),

@@ -10,6 +10,9 @@ export interface IPromotionCounterCreatePayload {
 }
 
 export interface IPromotionCounterUpdatePayload {
+	shopId: number;
+	userId: number;
+	promotionId: number;
 	increment?: number;
 	isActive?: boolean;
 	nbValidation?: number;

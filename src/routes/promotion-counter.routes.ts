@@ -16,16 +16,10 @@ PromotionCounterRouter.get(
 );
 
 // create a shop
-PromotionCounterRouter.post(
-	"/client/:shopId([0-9]+)/:userId([0-9]+)/:promotionId([0-9]+)",
-	PromotionCounterController.create
-);
+PromotionCounterRouter.post("/client", PromotionCounterController.create);
 
 // update a shop
-PromotionCounterRouter.put(
-	"/client//:shopId([0-9]+)/:userId([0-9]+)/:promotionId([0-9]+)",
-	PromotionCounterController.update
-);
+PromotionCounterRouter.put("/client", PromotionCounterController.update);
 
 // delete a shop
 //  will be done in the future

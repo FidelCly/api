@@ -4,16 +4,18 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } fro
 
 @Entity({ name: "promotions-counter" }) // table name in database
 export class PromotionCounter {
+	@IsNotEmpty()
 	@PrimaryColumn()
 	shopId: number;
 
+	@IsNotEmpty()
 	@PrimaryColumn()
 	userId: number;
 
+	@IsNotEmpty()
 	@PrimaryColumn()
 	promotionId: number;
 
-	@IsNotEmpty()
 	@IsNumber()
 	@Column({ default: 0 })
 	increment: number;
@@ -22,7 +24,6 @@ export class PromotionCounter {
 	@Column({ default: true })
 	isActive: boolean;
 
-	@IsNotEmpty()
 	@IsNumber()
 	@Column({ default: 0 })
 	nbValidation: number;
