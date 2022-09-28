@@ -7,8 +7,14 @@ import { PromotionRepository } from "./promotion.repository";
 import { ShopRepository } from "./shop.repository";
 import { UserRepository } from "./user.repository";
 
-export { CardRepository, UserRepository, ShopRepository, PromotionRepository, PromotionCounterRepository };
+export {
+  CardRepository,
+  UserRepository,
+  ShopRepository,
+  PromotionRepository,
+  PromotionCounterRepository,
+};
 
 export const getDataSource = (): DataSource => {
-	return process.env.NODE_ENV === "test" ? TestDataSource : AppDataSource;
+  return process.env.NODE_ENV === "test" ? TestDataSource : AppDataSource;
 };

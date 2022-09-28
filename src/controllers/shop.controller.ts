@@ -83,7 +83,7 @@ export class ShopController {
     }
 
     shop = Object.assign(shop, payload);
-    
+
     try {
       await validateOrReject(shop);
     } catch (errors) {

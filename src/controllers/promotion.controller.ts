@@ -5,97 +5,97 @@ import { IPromotionCreatePayload, IPromotionUpdatePayload } from "../payloads";
 import { PromotionRepository } from "../repositories";
 
 export class PromotionController {
-	/**
-	 * Get one promotion
-	 */
-	static one = async (req: Request, res: Response) => {
-		const id = Number(req.params.id);
+  /**
+   * Get one promotion
+   */
+  static one = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
 
-		try {
-			const promotion = await PromotionRepository.findOneById(id);
-			res.status(200).send(promotion);
-		} catch (error) {
-			res.status(404).send({ message: "Promotion not found" });
-		}
-	};
+    try {
+      const promotion = await PromotionRepository.findOneById(id);
+      res.status(200).send(promotion);
+    } catch (error) {
+      res.status(404).send({ message: "Promotion not found" });
+    }
+  };
 
-	/**
-	 * Create promotion
-	 */
-	static create = async (req: Request, res: Response) => {
-		const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
-		console.log("🚀 ~ PromotionController ~ create= ~ payload", payload);
+  /**
+   * Create promotion
+   */
+  static create = async (req: Request, res: Response) => {
+    const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
+    console.log("🚀 ~ PromotionController ~ create= ~ payload", payload);
 
-		let promotion = new Promotion();
-		console.log("🚀 ~ PromotionController ~ create= ~ promotion", promotion);
-		promotion = Object.assign(promotion, payload);
+    let promotion = new Promotion();
+    console.log("🚀 ~ PromotionController ~ create= ~ promotion", promotion);
+    promotion = Object.assign(promotion, payload);
 
-		try {
-			await validateOrReject(promotion);
-		} catch (errors) {
-			res.status(400).send({ message: "Validation failed", errors });
+    try {
+      await validateOrReject(promotion);
+    } catch (errors) {
+      res.status(400).send({ message: "Validation failed", errors });
 
-			return;
-		}
+      return;
+    }
 
-		try {
-			await PromotionRepository.save(promotion);
-			res.status(201).send({ message: "Promotion created" });
-		} catch (error) {
-			res.status(400).send({ message: error });
-		}
-	};
+    try {
+      await PromotionRepository.save(promotion);
+      res.status(201).send({ message: "Promotion created" });
+    } catch (error) {
+      res.status(400).send({ message: error });
+    }
+  };
 
-	/**
-	 * Update promotion
-	 */
-	static update = async (req: Request, res: Response) => {
-		const id = Number(req.params.id);
-		const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
+  /**
+   * Update promotion
+   */
+  static update = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
 
-		let promotion: Promotion;
+    let promotion: Promotion;
 
-		try {
-			promotion = await PromotionRepository.findOneById(id);
-		} catch (error) {
-			res.status(404).send({ message: "Promotion not found" });
-			return;
-		}
+    try {
+      promotion = await PromotionRepository.findOneById(id);
+    } catch (error) {
+      res.status(404).send({ message: "Promotion not found" });
+      return;
+    }
 
-		promotion = Object.assign(promotion, payload);
+    promotion = Object.assign(promotion, payload);
 
-		try {
-			await validateOrReject(promotion);
-		} catch (errors) {
-			res.status(400).send({
-				message: "Validation failed",
-				errors
-			});
-			return;
-		}
+    try {
+      await validateOrReject(promotion);
+    } catch (errors) {
+      res.status(400).send({
+        message: "Validation failed",
+        errors,
+      });
+      return;
+    }
 
-		try {
-			await PromotionRepository.save(promotion);
-			res.status(200).send({ message: "Promotion updated" });
-		} catch (error) {
-			res.status(400).send({ message: error });
-		}
-	};
+    try {
+      await PromotionRepository.save(promotion);
+      res.status(200).send({ message: "Promotion updated" });
+    } catch (error) {
+      res.status(400).send({ message: error });
+    }
+  };
 
-	/**
-	 * Delete promotion
-	 */
-	static delete = async (req: Request, res: Response) => {
-		const id = Number(req.params.id);
+  /**
+   * Delete promotion
+   */
+  static delete = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
 
-		try {
-			await PromotionRepository.findOneById(id);
-		} catch (error) {
-			res.status(404).send({ message: "Promotion not found" });
-			return;
-		}
+    try {
+      await PromotionRepository.findOneById(id);
+    } catch (error) {
+      res.status(404).send({ message: "Promotion not found" });
+      return;
+    }
 
-		await PromotionRepository.delete(id);
-		res.status(200).send({ message: "Promotion deleted" });
-	};
+    await PromotionRepository.delete(id);
+    res.status(200).send({ message: "Promotion deleted" });
+  };
 }

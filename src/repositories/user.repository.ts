@@ -8,9 +8,11 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneById = async (id: number): Promise<User> => {
-    return await getDataSource().getRepository(User).findOneByOrFail({
-      id: Number(id),
-    });
+    return await getDataSource()
+      .getRepository(User)
+      .findOneByOrFail({
+        id: Number(id),
+      });
   };
 
   /**
