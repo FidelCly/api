@@ -103,6 +103,17 @@ describe("Testing shop controller", () => {
     });
   });
 
+  describe("Get all shops", () => {
+    it("responds with status 200", async () => {
+      const response = await request(app)
+        .get("/shops/")
+        .set("Accept", "application/json");
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(200);
+    });
+  });
+
   describe("Delete shop", () => {
     it("responds with status 404", async () => {
       const response = await request(app)

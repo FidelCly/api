@@ -79,6 +79,8 @@ export class TestFactory {
   public async seedCard(): Promise<void> {
     const card: Card = new Card();
     Object.assign(card, cardFixture);
+    card.startAt = new Date(cardFixture.startAt);
+    card.endAt = new Date(cardFixture.endAt);
     await CardRepository.save(card);
   }
 }
