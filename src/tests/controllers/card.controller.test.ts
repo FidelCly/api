@@ -30,7 +30,7 @@ describe("Testing card controller", () => {
   describe("Create card", () => {
     it("responds with status 400", async () => {
       const response = await request(app)
-        .post("/wallet")
+        .post("/cards")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -40,7 +40,7 @@ describe("Testing card controller", () => {
 
     it("responds with status 201", async () => {
       const response = await request(app)
-        .post("/wallet")
+        .post("/cards")
         .set("Accept", "application/json")
         .send(cardFixture);
 
@@ -53,7 +53,7 @@ describe("Testing card controller", () => {
   describe("Update card", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/wallet/10")
+        .put("/cards/10")
         .set("Accept", "application/json")
         .send(testCardModified);
 
@@ -64,7 +64,7 @@ describe("Testing card controller", () => {
 
     it("responds with status 400", async () => {
       const response = await request(factory.app)
-        .put("/wallet/1")
+        .put("/cards/1")
         .set("Accept", "application/json")
         .send(testCardModifiedEmpty);
 
@@ -75,7 +75,7 @@ describe("Testing card controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(factory.app)
-        .put("/wallet/1")
+        .put("/cards/1")
         .set("Accept", "application/json")
         .send(testCardModified);
 
@@ -88,7 +88,7 @@ describe("Testing card controller", () => {
   describe("Get one card", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .get("/wallet/10")
+        .get("/cards/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -98,7 +98,7 @@ describe("Testing card controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .get("/wallet/1")
+        .get("/cards/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -109,7 +109,7 @@ describe("Testing card controller", () => {
   describe("Delete card", () => {
     it("responds with status 404", async () => {
       const response = await request(app)
-        .delete("/wallet/10")
+        .delete("/cards/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -119,7 +119,7 @@ describe("Testing card controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(app)
-        .delete("/wallet/1")
+        .delete("/cards/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);

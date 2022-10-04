@@ -20,6 +20,14 @@ export class ShopController {
   };
 
   /**
+   * Get all shops
+   */
+  static all = async (req: Request, res: Response) => {
+    const shops = await ShopRepository.all();
+    res.status(200).send(shops);
+  };
+
+  /**
    * Create shop
    */
   static create = async (req: Request, res: Response) => {
@@ -83,7 +91,7 @@ export class ShopController {
     }
 
     shop = Object.assign(shop, payload);
-    
+
     try {
       await validateOrReject(shop);
     } catch (errors) {

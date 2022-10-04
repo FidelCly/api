@@ -6,6 +6,9 @@ const UserRouter = Router();
 // get one user
 UserRouter.get("/:id([0-9]+)", UserController.one);
 
+// get user's wallet
+UserRouter.get("/:id([0-9]+)/wallet/", UserController.wallet);
+
 // create a user
 UserRouter.post("/", UserController.create);
 

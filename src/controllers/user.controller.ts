@@ -114,7 +114,23 @@ export class UserController {
       return;
     }
 
+    await UserRepository.deleteUsersCards(id);
+
     await UserRepository.delete(id);
     res.status(200).send({ message: "User deleted" });
+  };
+
+  /**
+   * Get user's wallet
+   */
+  static wallet = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      const user = await UserRepository.getUsersCards(id);
+      res.status(200).send(user.cards);
+    } catch (error) {
+      res.status(404).send({ message: "User not found" });
+    }
   };
 }

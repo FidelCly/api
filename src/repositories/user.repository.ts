@@ -1,5 +1,5 @@
 import { getDataSource } from ".";
-import { User } from "../entities";
+import { Card, User } from "../entities";
 
 export class UserRepository {
   /**
@@ -8,9 +8,11 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneById = async (id: number): Promise<User> => {
-    return await getDataSource().getRepository(User).findOneByOrFail({
-      id: Number(id),
-    });
+    return await getDataSource()
+      .getRepository(User)
+      .findOneByOrFail({
+        id: Number(id),
+      });
   };
 
   /**
@@ -49,5 +51,31 @@ export class UserRepository {
    */
   static delete = async (id: number) => {
     await getDataSource().getRepository(User).delete(id);
+  };
+
+  /**
+   * Get a user's cards from the db
+   * @param id - The id of user
+   */
+  static getUsersCards = async (id: number): Promise<User> => {
+    return await getDataSource()
+      .getRepository(User)
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.cards", "card")
+      .where("user.id = :id", { id })
+      .getOneOrFail();
+  };
+
+  /**
+   * Delete a user's cards from the db
+   * @param id - The id of user
+   */
+  static deleteUsersCards = async (id: number) => {
+    await getDataSource()
+      .createQueryBuilder()
+      .delete()
+      .from(Card)
+      .where({ userId: id })
+      .execute();
   };
 }
