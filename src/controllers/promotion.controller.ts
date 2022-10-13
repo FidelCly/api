@@ -32,7 +32,6 @@ export class PromotionController {
       await validateOrReject(promotion);
     } catch (errors) {
       res.status(400).send({ message: "Validation failed", errors });
-
       return;
     }
 

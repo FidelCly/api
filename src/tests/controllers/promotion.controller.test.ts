@@ -37,7 +37,7 @@ describe("Testing promotion controller", () => {
   describe("Create promotion", () => {
     it("responds with status 400", async () => {
       const response = await request(app)
-        .post("/promotion")
+        .post("/promotions")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -47,7 +47,7 @@ describe("Testing promotion controller", () => {
 
     it("responds with status 201", async () => {
       const response = await request(app)
-        .post("/promotion")
+        .post("/promotions")
         .set("Accept", "application/json")
         .send(promotionFixture);
 
@@ -60,7 +60,7 @@ describe("Testing promotion controller", () => {
   describe("Update promotion", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/promotion/1")
+        .put("/promotions/1")
         .set("Accept", "application/json")
         .send(testPromotionModified);
 
@@ -71,7 +71,7 @@ describe("Testing promotion controller", () => {
 
     it("responds with status 400", async () => {
       const response = await request(factory.app)
-        .put("/promotion/1")
+        .put("/promotions/1")
         .set("Accept", "application/json")
         .send(testPromotionModifiedEmpty);
 
@@ -82,7 +82,7 @@ describe("Testing promotion controller", () => {
 
     it("responds with status 200", async () => {
       const response = await request(factory.app)
-        .put("/promotion/1")
+        .put("/promotions/1")
         .set("Accept", "application/json")
         .send(testPromotionModified);
 
@@ -95,7 +95,7 @@ describe("Testing promotion controller", () => {
   describe("Delete promotion", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .delete("/promotion/10")
+        .delete("/promotions/1")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);

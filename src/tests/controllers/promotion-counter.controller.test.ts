@@ -25,7 +25,7 @@ describe("Testing promotion counter controller", () => {
   describe("Create promotion counter", () => {
     it("responds with status 400", async () => {
       const response = await request(app)
-        .post("/promotion-counter")
+        .post("/promotions-counter/client")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
@@ -35,7 +35,7 @@ describe("Testing promotion counter controller", () => {
 
     it("responds with status 201", async () => {
       const response = await request(app)
-        .post("/promotion-counter")
+        .post("/promotions-counter/client")
         .set("Accept", "application/json")
         .send(promotionCounterFixture);
 
@@ -48,13 +48,24 @@ describe("Testing promotion counter controller", () => {
   describe("Update promotion counter", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/promotion-counter/10")
+        .put("/promotions-counter/client")
         .set("Accept", "application/json")
         .send(testPromotionCounterModified);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
       expect(response.body.message).toMatch(/not found/);
+    });
+
+    it("responds with status 200", async () => {
+      const response = await request(factory.app)
+        .put("/promotions-counter/client")
+        .set("Accept", "application/json")
+        .send(testPromotionCounterModified);
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.message).toMatch(/updated/);
     });
   });
 });
