@@ -27,6 +27,8 @@ export class PromotionController {
 
     const promotion = new Promotion();
     Object.assign(promotion, payload);
+    promotion.startAt = new Date(payload.startAt);
+    promotion.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
 
     try {
       await validateOrReject(promotion);
@@ -49,6 +51,11 @@ export class PromotionController {
   static update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
+
+    if (Object.keys(payload).length === 0) {
+      res.status(400).send({ message: "Validation failed" });
+      return;
+    }
 
     let promotion: Promotion;
 

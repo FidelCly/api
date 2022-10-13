@@ -60,7 +60,7 @@ describe("Testing promotion controller", () => {
   describe("Update promotion", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .put("/promotions/1")
+        .put("/promotions/10")
         .set("Accept", "application/json")
         .send(testPromotionModified);
 
@@ -72,8 +72,7 @@ describe("Testing promotion controller", () => {
     it("responds with status 400", async () => {
       const response = await request(factory.app)
         .put("/promotions/1")
-        .set("Accept", "application/json")
-        .send(testPromotionModifiedEmpty);
+        .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -95,12 +94,22 @@ describe("Testing promotion controller", () => {
   describe("Delete promotion", () => {
     it("responds with status 404", async () => {
       const response = await request(factory.app)
-        .delete("/promotions/1")
+        .delete("/promotions/10")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
       expect(response.body.message).toMatch(/not found/);
+    });
+
+    it("responds with status 200", async () => {
+      const response = await request(factory.app)
+        .delete("/promotions/1")
+        .set("Accept", "application/json");
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.message).toMatch(/deleted/);
     });
   });
 });

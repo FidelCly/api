@@ -101,7 +101,7 @@ export class PromotionCounterController {
     >req.body;
 
     if (Object.keys(payload).length === 0)
-      res.status(400).send({ message: "Any data found in the request body" });
+      res.status(400).send({ message: "Validation failed" });
 
     try {
       const promotionId = Number(req.body.id);
@@ -119,11 +119,9 @@ export class PromotionCounterController {
           .send({ message: `promotion with id '${promotionId}' not found` });
 
       if (!promotionCounter)
-        res
-          .status(400)
-          .send({
-            message: `promotionCounter with id '${promotionId}' not found`,
-          });
+        res.status(400).send({
+          message: `promotionCounter with id '${promotionId}' not found`,
+        });
 
       console.log(
         "🚀 ~ PromotionCounterController ~ update= ~ promotionCounter",
