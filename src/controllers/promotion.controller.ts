@@ -2,104 +2,126 @@ import { validateOrReject } from "class-validator";
 import { Request, Response } from "express";
 import { Promotion } from "../entities";
 import { IPromotionCreatePayload, IPromotionUpdatePayload } from "../payloads";
-import { PromotionRepository } from "../repositories";
+import { PromotionRepository, ShopRepository, UserRepository } from "../repositories";
 
 export class PromotionController {
-  /**
-   * Get one promotion
-   */
-  static one = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+	/**
+	 * Get one promotion
+	 */
+	static one = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
 
-    try {
-      const promotion = await PromotionRepository.findOneById(id);
-      res.status(200).send(promotion);
-    } catch (error) {
-      res.status(404).send({ message: "Promotion not found" });
-    }
-  };
+		try {
+			const promotion = await PromotionRepository.findOneById(id);
+			res.status(200).send(promotion);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+		}
+	};
 
-  /**
-   * Create promotion
-   */
-  static create = async (req: Request, res: Response) => {
-    const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
+	/**
+	 * Create promotion
+	 */
+	static create = async (req: Request, res: Response) => {
+		const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
 
-    const promotion = new Promotion();
-    Object.assign(promotion, payload);
-    promotion.startAt = new Date(payload.startAt);
-    promotion.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
+		try {
+			const [user, shop] = await Promise.all([
+				UserRepository.findOneById(payload.userId),
+				ShopRepository.findOneById(payload.shopId)
+			]);
 
-    try {
-      await validateOrReject(promotion);
-    } catch (errors) {
-      res.status(400).send({ message: "Validation failed", errors });
-      return;
-    }
+			if (!user || !shop) res.status(400).send({ message: ` Shop or user not found !` });
+		} catch (error) {
+			res.status(500).send({ message: ` Error while fetching Shop or user` });
+		}
 
-    try {
-      await PromotionRepository.save(promotion);
-      res.status(201).send({ message: "Promotion created" });
-    } catch (error) {
-      res.status(400).send({ message: error });
-    }
-  };
+		const promotion = new Promotion();
+		Object.assign(promotion, payload);
+		promotion.startAt = new Date(payload.startAt);
+		promotion.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
 
-  /**
-   * Update promotion
-   */
-  static update = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
+		try {
+			await validateOrReject(promotion);
+		} catch (errors) {
+			res.status(400).send({ message: "Validation failed", errors });
+			return;
+		}
 
-    if (Object.keys(payload).length === 0) {
-      res.status(400).send({ message: "Validation failed" });
-      return;
-    }
+		try {
+			await PromotionRepository.save(promotion);
+			res.status(201).send({ message: "Promotion created" });
+		} catch (error) {
+			res.status(400).send({ message: error });
+		}
+	};
 
-    let promotion: Promotion;
+	/**
+	 * Update promotion
+	 */
+	static update = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
+		const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
 
-    try {
-      promotion = await PromotionRepository.findOneById(id);
-    } catch (error) {
-      res.status(404).send({ message: "Promotion not found" });
-      return;
-    }
+		try {
+			const [user, shop] = await Promise.all([
+				UserRepository.findOneById(payload.userId),
+				ShopRepository.findOneById(payload.shopId)
+			]);
 
-    promotion = Object.assign(promotion, payload);
+			if (!user || !shop) res.status(400).send({ message: ` Shop or user not found !` });
+		} catch (error) {
+			res.status(500).send({ message: ` Error while fetching Shop or user` });
+		}
 
-    try {
-      await validateOrReject(promotion);
-    } catch (errors) {
-      res.status(400).send({
-        message: "Validation failed",
-        errors,
-      });
-      return;
-    }
+		if (Object.keys(payload).length === 0) {
+			res.status(400).send({ message: "Validation failed" });
+			return;
+		}
 
-    try {
-      await PromotionRepository.save(promotion);
-      res.status(200).send({ message: "Promotion updated" });
-    } catch (error) {
-      res.status(400).send({ message: error });
-    }
-  };
+		let promotion: Promotion;
 
-  /**
-   * Delete promotion
-   */
-  static delete = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+		try {
+			promotion = await PromotionRepository.findOneById(id);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+			return;
+		}
 
-    try {
-      await PromotionRepository.findOneById(id);
-    } catch (error) {
-      res.status(404).send({ message: "Promotion not found" });
-      return;
-    }
+		promotion = Object.assign(promotion, payload);
 
-    await PromotionRepository.delete(id);
-    res.status(200).send({ message: "Promotion deleted" });
-  };
+		try {
+			await validateOrReject(promotion);
+		} catch (errors) {
+			res.status(400).send({
+				message: "Validation failed",
+				errors
+			});
+			return;
+		}
+
+		try {
+			await PromotionRepository.save(promotion);
+			res.status(200).send({ message: "Promotion updated" });
+		} catch (error) {
+			res.status(400).send({ message: error });
+		}
+	};
+
+	/**
+	 * Delete promotion
+	 */
+	static delete = async (req: Request, res: Response) => {
+		const id = Number(req.params.id);
+
+		try {
+			await PromotionRepository.findOneById(id);
+		} catch (error) {
+			res.status(404).send({ message: "Promotion not found" });
+			return;
+		}
+
+		await PromotionRepository.delete(id);
+		res.status(200).send({ message: "Promotion deleted" });
+	};
 }

@@ -1,70 +1,76 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
 import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  Max,
-  Min,
-} from "class-validator";
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToMany,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn
 } from "typeorm";
+import { Shop } from "./shop";
+import { User } from "./user";
 
 @Entity({ name: "promotions" }) // table name in database
 export class Promotion {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Column()
-  shopId: number;
+	@IsNotEmpty()
+	@IsNumber()
+	@Column({ nullable: true })
+	shopId: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Column()
-  userId: number;
+	@OneToMany(() => Shop, (shop: Shop) => shop.id)
+	@JoinColumn()
+	shop!: Shop;
 
-  @IsNotEmpty()
-  @Column()
-  name: string;
+	@IsNotEmpty()
+	@IsNumber()
+	@Column({ nullable: false })
+	userId: number;
 
-  @Column()
-  description: string;
+	@ManyToMany(() => User, (user: User) => user.id)
+	@JoinColumn()
+	user!: User;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
-  @Max(2)
-  @Column({ default: 0 })
-  type: number;
+	@IsNotEmpty()
+	@Column()
+	name: string;
 
-  @IsNumber()
-  @IsOptional()
-  @Column({ default: 10 })
-  limitPassage: number;
+	@Column()
+	description: string;
 
-  @IsNumber()
-  @IsOptional()
-  @Column({ default: 10 })
-  limitAmout: number;
+	@IsNotEmpty()
+	@IsNumber()
+	@Min(0)
+	@Max(2)
+	@Column({ default: 0 })
+	type: number;
 
-  @IsBoolean()
-  @IsOptional()
-  @Column({ default: true })
-  isActive: boolean;
+	@IsNumber()
+	@IsOptional()
+	@Column({ default: 10 })
+	limitPassage: number;
 
-  @CreateDateColumn()
-  startAt!: Date;
+	@IsNumber()
+	@IsOptional()
+	@Column({ default: 10 })
+	limitAmout: number;
 
-  @UpdateDateColumn()
-  endAt!: Date;
+	@IsBoolean()
+	@IsOptional()
+	@Column({ default: true })
+	isActive: boolean;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+	@CreateDateColumn()
+	startAt!: Date;
+
+	@UpdateDateColumn()
+	endAt!: Date;
+
+	@UpdateDateColumn()
+	updatedAt!: Date;
 }

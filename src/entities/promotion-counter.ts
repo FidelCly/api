@@ -1,42 +1,64 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsBoolean, IsNotEmpty, IsNumber } from "class-validator";
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	Entity,
+	JoinColumn,
+	ManyToMany,
+	OneToMany,
+	OneToOne,
+	PrimaryColumn,
+	UpdateDateColumn
 } from "typeorm";
+import { Promotion } from "./promotion";
+import { Shop } from "./shop";
+import { User } from "./user";
 
 @Entity({ name: "promotions-counter" }) // table name in database
 export class PromotionCounter {
-  @IsNotEmpty()
-  @PrimaryColumn()
-  shopId: number;
+	@IsNotEmpty()
+	@IsNumber()
+	@Column({ nullable: true })
+	shopId: number;
 
-  @IsNotEmpty()
-  @PrimaryColumn()
-  userId: number;
+	@OneToMany(() => Shop, (shop: Shop) => shop.id)
+	@JoinColumn()
+	shop!: Shop;
 
-  @IsNotEmpty()
-  @PrimaryColumn()
-  promotionId: number;
+	@IsNotEmpty()
+	@IsNumber()
+	@Column({ nullable: false })
+	userId: number;
 
-  @IsNumber()
-  @Column({ default: 0 })
-  increment: number;
+	@ManyToMany(() => User, (user: User) => user.id)
+	@JoinColumn()
+	user!: User;
 
-  @IsBoolean()
-  @Column({ default: true })
-  isActive: boolean;
+	@IsNotEmpty()
+	@PrimaryColumn()
+	@Column({ nullable: false })
+	promotionId: number;
 
-  @IsNumber()
-  @Column({ default: 0 })
-  nbValidation: number;
+	@OneToOne(() => Promotion, (promotion: Promotion) => promotion.id)
+	@JoinColumn()
+	promotion!: Promotion;
 
-  @CreateDateColumn()
-  createAt!: Date;
+	@IsNumber()
+	@Column({ default: 0 })
+	increment: number;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+	@IsBoolean()
+	@Column({ default: true })
+	isActive: boolean;
+
+	@IsNumber()
+	@Column({ default: 0 })
+	nbValidation: number;
+
+	@CreateDateColumn()
+	createAt!: Date;
+
+	@UpdateDateColumn()
+	updatedAt!: Date;
 }
