@@ -15,4 +15,7 @@ ShopRouter.put("/:id([0-9]+)", ShopController.update);
 // delete a shop
 ShopRouter.delete("/:id([0-9]+)", ShopController.delete);
 
+// get all shops
+ShopRouter.get("/", ShopController.all);
+
 export default ShopRouter;

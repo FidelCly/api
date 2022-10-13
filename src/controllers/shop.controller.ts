@@ -118,4 +118,12 @@ export class ShopController {
     await ShopRepository.delete(id);
     res.status(200).send({ message: "Shop deleted" });
   };
+
+  /**
+   * Get all shops
+   */
+  static all = async (req: Request, res: Response) => {
+    const shops = await ShopRepository.findAll();
+    res.status(200).send(shops);
+  };
 }
