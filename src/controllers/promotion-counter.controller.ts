@@ -8,6 +8,7 @@ import {
 import {
   PromotionCounterRepository,
   PromotionRepository,
+  UserRepository,
 } from "../repositories";
 import { TypePromotion } from "../shared/enums/type-promotion";
 
@@ -65,9 +66,28 @@ export class PromotionCounterController {
     const promotionCounter = new PromotionCounter();
 
     try {
-      // const promotion  = await PromotionRepository.findOneById(promotionId);
-      // const user = await UserRepository.findOneById(userId);
-      // const shop = await ShopRepository.findOneById(shopId);
+      const promotionId = Number(req.body.id);
+      const shopId = Number(req.body.shopId);
+      const userId = Number(req.body.userId);
+
+      const [user, promotion, promotionCounter] = await Promise.all([
+        UserRepository.findOneById(userId),
+        PromotionRepository.findOneById(promotionId),
+        PromotionCounterRepository.findOneShop(shopId, userId, promotionId),
+      ]);
+
+      if (!promotion)
+        res
+          .status(400)
+          .send({ message: `promotion with id '${promotionId}' not found` });
+
+      if (!user)
+        res.status(400).send({ message: `user with id '${userId}' not found` });
+
+      if (!promotionCounter)
+        res.status(400).send({
+          message: `promotionCounter with id '${promotionId}' not found`,
+        });
 
       promotionCounter.shopId = Number(req.body.shopId);
       promotionCounter.userId = Number(req.body.userId);
@@ -108,7 +128,8 @@ export class PromotionCounterController {
       const shopId = Number(req.body.shopId);
       const userId = Number(req.body.userId);
 
-      const [promotion, promotionCounter] = await Promise.all([
+      const [user, promotion, promotionCounter] = await Promise.all([
+        UserRepository.findOneById(userId),
         PromotionRepository.findOneById(promotionId),
         PromotionCounterRepository.findOneShop(shopId, userId, promotionId),
       ]);
@@ -118,19 +139,13 @@ export class PromotionCounterController {
           .status(400)
           .send({ message: `promotion with id '${promotionId}' not found` });
 
+      if (!user)
+        res.status(400).send({ message: `user with id '${userId}' not found` });
+
       if (!promotionCounter)
         res.status(400).send({
           message: `promotionCounter with id '${promotionId}' not found`,
         });
-
-      console.log(
-        "🚀 ~ PromotionCounterController ~ update= ~ promotionCounter",
-        promotionCounter
-      );
-      console.log(
-        "🚀 ~ PromotionCounterController ~ update= ~ promotion",
-        promotion
-      );
 
       if (promotion.type === TypePromotion.AMOUNT) {
         if (promotionCounter.increment < promotion.limitAmout) {

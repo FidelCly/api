@@ -29,10 +29,13 @@ export class PromotionController {
   static create = async (req: Request, res: Response) => {
     const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
 
+    const shopId = Number(req.body.shopId);
+    const userId = Number(req.body.userId);
+
     try {
       const [user, shop] = await Promise.all([
-        UserRepository.findOneById(payload.userId),
-        ShopRepository.findOneById(payload.shopId),
+        UserRepository.findOneById(userId),
+        ShopRepository.findOneById(shopId),
       ]);
 
       if (!user || !shop)
@@ -68,10 +71,12 @@ export class PromotionController {
     const id = Number(req.params.id);
     const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
 
+    const shopId = Number(req.body.shopId);
+    const userId = Number(req.body.userId);
     try {
       const [user, shop] = await Promise.all([
-        UserRepository.findOneById(payload.userId),
-        ShopRepository.findOneById(payload.shopId),
+        UserRepository.findOneById(userId),
+        ShopRepository.findOneById(shopId),
       ]);
 
       if (!user || !shop)
