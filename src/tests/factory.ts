@@ -4,15 +4,19 @@ import express from "express";
 import { DataSource } from "typeorm";
 import app from "../app";
 import path from "path";
-import { Card, Shop, User } from "../entities";
+import { Card, Shop, User, Promotion, PromotionCounter } from "../entities";
 import {
   CardRepository,
   ShopRepository,
   UserRepository,
+  PromotionRepository,
+  PromotionCounterRepository,
 } from "../repositories";
 import { userFixture } from "./seeds/user.seed";
 import { shopFixture } from "./seeds/shop.seed";
 import { cardFixture } from "./seeds/card.seed";
+import { promotionFixture } from "./seeds/promotion.seed";
+import { promotionCounterFixture } from "./seeds/promotion-counter.seed";
 import { TestDataSource } from "../test-data-source";
 
 export class TestFactory {
@@ -53,6 +57,8 @@ export class TestFactory {
     this.seedUser();
     this.seedShop();
     this.seedCard();
+    this.seedPromotion();
+    this.seedPromotioncounter();
   }
 
   /**
@@ -80,5 +86,23 @@ export class TestFactory {
     const card: Card = new Card();
     Object.assign(card, cardFixture);
     await CardRepository.save(card);
+  }
+
+  /**
+   * Seed promotion
+   */
+  public async seedPromotion(): Promise<void> {
+    const promotion: Promotion = new Promotion();
+    Object.assign(promotion, promotionFixture);
+    await PromotionRepository.save(promotion);
+  }
+
+  /**
+   * Seed promotioncounter
+   */
+  public async seedPromotioncounter(): Promise<void> {
+    const promotioncounter: PromotionCounter = new PromotionCounter();
+    Object.assign(promotioncounter, promotionCounterFixture);
+    await PromotionCounterRepository.save(promotioncounter);
   }
 }

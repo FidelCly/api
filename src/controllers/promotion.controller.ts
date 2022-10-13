@@ -24,11 +24,9 @@ export class PromotionController {
    */
   static create = async (req: Request, res: Response) => {
     const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
-    console.log("🚀 ~ PromotionController ~ create= ~ payload", payload);
 
-    let promotion = new Promotion();
-    console.log("🚀 ~ PromotionController ~ create= ~ promotion", promotion);
-    promotion = Object.assign(promotion, payload);
+    const promotion = new Promotion();
+    Object.assign(promotion, payload);
 
     try {
       await validateOrReject(promotion);
