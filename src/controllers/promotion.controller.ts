@@ -46,8 +46,8 @@ export class PromotionController {
 
     const promotion = new Promotion();
     Object.assign(promotion, payload);
-    promotion.startAt = new Date(payload.startAt);
-    promotion.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
+    promotion.startAt = new Date(payload.startAt) ?? new Date();
+    promotion.endAt = new Date(payload.endAt);
 
     try {
       await validateOrReject(promotion);

@@ -5,7 +5,7 @@ export interface IPromotionCreatePayload {
   description?: string;
   type: number;
   startAt: string;
-  endAt?: string;
+  endAt: string;
   limitPassage?: number; // Number of passage in case of PASSAGE type
   limitAmout?: number; // Number of item in case of AMOUNT type
 }

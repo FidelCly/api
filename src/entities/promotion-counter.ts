@@ -10,6 +10,7 @@ import {
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Promotion } from "./promotion";
 import { Shop } from "./shop";
@@ -17,6 +18,10 @@ import { User } from "./user";
 
 @Entity({ name: "promotions-counter" }) // table name in database
 export class PromotionCounter {
+  @PrimaryGeneratedColumn()
+  @IsNumber()
+  Id: number;
+
   @IsNotEmpty()
   @IsNumber()
   @Column({ nullable: true })

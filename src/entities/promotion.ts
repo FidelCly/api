@@ -23,6 +23,7 @@ import { User } from "./user";
 @Entity({ name: "promotions" }) // table name in database
 export class Promotion {
   @PrimaryGeneratedColumn()
+  @IsNumber()
   id: number;
 
   @IsNotEmpty()
