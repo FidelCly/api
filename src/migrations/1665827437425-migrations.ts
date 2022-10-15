@@ -1,14 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class migrations1665781522030 implements MigrationInterface {
-    name = 'migrations1665781522030'
+export class migrations1665827437425 implements MigrationInterface {
+    name = 'migrations1665827437425'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD "Id" SERIAL NOT NULL`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" DROP CONSTRAINT "PK_dd6333372adc540b278a65b6f91"`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD CONSTRAINT "PK_49136421040620018165c174ae3" PRIMARY KEY ("shopId", "userId", "promotionId", "Id")`);
         await queryRunner.query(`ALTER TABLE "promotions" ALTER COLUMN "shopId" DROP NOT NULL`);
-        await queryRunner.query(`ALTER TABLE "promotions-counter" ALTER COLUMN "shopId" DROP NOT NULL`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" DROP CONSTRAINT "PK_49136421040620018165c174ae3"`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD CONSTRAINT "PK_de5c58da06d37c4a889d22bb423" PRIMARY KEY ("userId", "promotionId", "Id")`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" DROP CONSTRAINT "PK_de5c58da06d37c4a889d22bb423"`);
@@ -28,7 +27,6 @@ export class migrations1665781522030 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD CONSTRAINT "PK_de5c58da06d37c4a889d22bb423" PRIMARY KEY ("userId", "promotionId", "Id")`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" DROP CONSTRAINT "PK_de5c58da06d37c4a889d22bb423"`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD CONSTRAINT "PK_49136421040620018165c174ae3" PRIMARY KEY ("shopId", "userId", "promotionId", "Id")`);
-        await queryRunner.query(`ALTER TABLE "promotions-counter" ALTER COLUMN "shopId" SET NOT NULL`);
         await queryRunner.query(`ALTER TABLE "promotions" ALTER COLUMN "shopId" SET NOT NULL`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" DROP CONSTRAINT "PK_49136421040620018165c174ae3"`);
         await queryRunner.query(`ALTER TABLE "promotions-counter" ADD CONSTRAINT "PK_dd6333372adc540b278a65b6f91" PRIMARY KEY ("shopId", "userId", "promotionId")`);
