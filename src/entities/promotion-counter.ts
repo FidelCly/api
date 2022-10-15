@@ -24,7 +24,7 @@ export class PromotionCounter {
 
   @IsNotEmpty()
   @IsNumber()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   shopId: number;
 
   @OneToMany(() => Shop, (shop: Shop) => shop.id)
