@@ -38,15 +38,24 @@ export class PromotionController {
         ShopRepository.findOneById(shopId),
       ]);
 
-      if (!user || !shop)
-        res.status(400).send({ message: ` Shop or user not found !` });
+      if (!user) {
+        res.status(404).send({ message: "User not found" });
+        return;
+      } else if (!shop) {
+        res.status(404).send({ message: "Shop not found" });
+        return;
+      }
     } catch (error) {
       res.status(500).send({ message: ` Error while fetching Shop or user` });
     }
 
     const promotion = new Promotion();
     Object.assign(promotion, payload);
-    promotion.startAt = new Date(payload.startAt) ?? new Date();
+    if (!payload.startAt) {
+      promotion.startAt = new Date();
+    } else {
+      promotion.startAt = new Date(payload.startAt);
+    }
     promotion.endAt = new Date(payload.endAt);
 
     try {
@@ -79,8 +88,8 @@ export class PromotionController {
         ShopRepository.findOneById(shopId),
       ]);
 
-      if (!user || !shop)
-        res.status(400).send({ message: ` Shop or user not found !` });
+      if (!user) res.status(400).send({ message: `user not found !` });
+      else if (!shop) res.status(400).send({ message: `shop not found !` });
     } catch (error) {
       res.status(500).send({ message: ` Error while fetching Shop or user` });
     }

@@ -60,13 +60,13 @@ export class Promotion {
 
   @IsNumber()
   @IsOptional()
-  @Column({ default: 10 })
+  @Column()
   limitPassage: number;
 
   @IsNumber()
   @IsOptional()
-  @Column({ default: 10 })
-  limitAmout: number;
+  @Column()
+  limitAmount: number;
 
   @IsBoolean()
   @IsOptional()

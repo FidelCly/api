@@ -5,9 +5,9 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   OneToMany,
   OneToOne,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
@@ -36,7 +36,7 @@ export class PromotionCounter {
   @Column({ nullable: false })
   userId: number;
 
-  @ManyToMany(() => User, (user: User) => user.id)
+  @ManyToOne(() => User, (user: User) => user.id)
   @JoinColumn()
   user!: User;
 

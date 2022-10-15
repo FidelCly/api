@@ -5,8 +5,6 @@ export interface IPromotionCounterCreatePayload {
   increment?: number;
   isActive?: boolean;
   nbValidation?: number;
-  createAt: string;
-  updatedAt: string;
 }
 
 export interface IPromotionCounterUpdatePayload {
@@ -16,5 +14,4 @@ export interface IPromotionCounterUpdatePayload {
   increment?: number;
   isActive?: boolean;
   nbValidation?: number;
-  updatedAt?: string;
 }

@@ -46,8 +46,12 @@ export class CardController {
 
     const card = new Card();
     Object.assign(card, payload);
-    card.startAt = new Date(payload.startAt);
-    card.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
+    if (!payload.startAt) {
+      card.startAt = new Date();
+    } else {
+      card.startAt = new Date(payload.startAt);
+    }
+    card.endAt = new Date(payload.endAt);
     card.isActive = true;
 
     try {
@@ -118,28 +122,5 @@ export class CardController {
 
     await CardRepository.delete(id);
     res.status(200).send({ message: "Card deleted" });
-  };
-
-  /**
-   * Get all cards of a user
-   * @param Id - The id of the user
-   * @returns An array of cards
-   */
-  static allByUserId = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    console.log(id);
-    try {
-      await UserRepository.findOneById(id);
-    } catch (error) {
-      res.status(404).send({ message: "User not found" });
-      return;
-    }
-
-    try {
-      const cards = await CardRepository.findAllByUserId(id);
-      res.status(200).send(cards);
-    } catch (error) {
-      res.status(400).send({ message: error });
-    }
   };
 }

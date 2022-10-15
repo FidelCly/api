@@ -77,16 +77,13 @@ export class PromotionCounterController {
       ]);
 
       if (!promotion)
-        res
-          .status(400)
-          .send({ message: `promotion with id '${promotionId}' not found` });
+        res.status(400).send({ message: `promotion with not found` });
 
-      if (!user)
-        res.status(400).send({ message: `user with id '${userId}' not found` });
+      if (!user) res.status(400).send({ message: `user with not found` });
 
       if (!promotionCounter)
         res.status(400).send({
-          message: `promotionCounter with id '${promotionId}' not found`,
+          message: `promotionCounter not found`,
         });
 
       promotionCounter.shopId = Number(req.body.shopId);
@@ -134,23 +131,19 @@ export class PromotionCounterController {
         PromotionCounterRepository.findOneShop(shopId, userId, promotionId),
       ]);
 
-      if (!promotion)
-        res
-          .status(400)
-          .send({ message: `promotion with id '${promotionId}' not found` });
+      if (!promotion) res.status(400).send({ message: `promotion not found` });
 
-      if (!user)
-        res.status(400).send({ message: `user with id '${userId}' not found` });
+      if (!user) res.status(400).send({ message: `user  not found` });
 
       if (!promotionCounter)
         res.status(400).send({
-          message: `promotionCounter with id '${promotionId}' not found`,
+          message: `promotionCounter not found`,
         });
 
       if (promotion.type === TypePromotion.AMOUNT) {
-        if (promotionCounter.increment < promotion.limitAmout) {
+        if (promotionCounter.increment < promotion.limitAmount) {
           promotionCounter.increment += 1;
-          if (promotionCounter.increment === promotion.limitAmout) {
+          if (promotionCounter.increment === promotion.limitAmount) {
             promotionCounter.increment = 0;
             promotionCounter.nbValidation += 1;
             res.status(200).send({ message: "Promotion validated" });
@@ -159,10 +152,10 @@ export class PromotionCounterController {
         } else {
           res.status(400).send({ message: "Promotion not incremented" });
         }
-      } else if (promotion.type === TypePromotion.PASSAGE) {
+      } else if (promotion.type === TypePromotion.CHECKOUT) {
         if (promotionCounter.increment < promotion.limitPassage) {
           promotionCounter.increment += 1;
-          if (promotionCounter.increment === promotion.limitAmout) {
+          if (promotionCounter.increment === promotion.limitAmount) {
             promotionCounter.increment = 0;
             promotionCounter.nbValidation += 1;
             res.status(200).send({ message: "Promotion validated" });

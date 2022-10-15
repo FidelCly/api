@@ -30,19 +30,4 @@ export class CardRepository {
   static delete = async (id: number) => {
     await getDataSource().getRepository(Card).delete(id);
   };
-
-  /**
-   * Find all cards of a user
-   * @param userId - The id of the user
-   * @returns An array of cards
-   */
-  static findAllByUserId = async (userId: number): Promise<Card[]> => {
-    return await getDataSource()
-      .getRepository(Card)
-      .find({
-        where: {
-          userId: Number(userId),
-        },
-      });
-  };
 }
