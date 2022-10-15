@@ -119,4 +119,27 @@ export class CardController {
     await CardRepository.delete(id);
     res.status(200).send({ message: "Card deleted" });
   };
+
+  /**
+   * Get all cards of a user
+   * @param userId - The id of the user
+   * @returns An array of cards
+   */
+  static allByUserId = async (req: Request, res: Response) => {
+    const userId = Number(req.params.userId);
+
+    try {
+      await UserRepository.findOneById(userId);
+    } catch (error) {
+      res.status(404).send({ message: "User not found" });
+      return;
+    }
+
+    try {
+      const cards = await CardRepository.findAllByUserId(userId);
+      res.status(200).send(cards);
+    } catch (error) {
+      res.status(400).send({ message: error });
+    }
+  };
 }
