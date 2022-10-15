@@ -122,21 +122,21 @@ export class CardController {
 
   /**
    * Get all cards of a user
-   * @param userId - The id of the user
+   * @param Id - The id of the user
    * @returns An array of cards
    */
   static allByUserId = async (req: Request, res: Response) => {
-    const userId = Number(req.params.userId);
-
+    const id = Number(req.params.id);
+    console.log(id);
     try {
-      await UserRepository.findOneById(userId);
+      await UserRepository.findOneById(id);
     } catch (error) {
       res.status(404).send({ message: "User not found" });
       return;
     }
 
     try {
-      const cards = await CardRepository.findAllByUserId(userId);
+      const cards = await CardRepository.findAllByUserId(id);
       res.status(200).send(cards);
     } catch (error) {
       res.status(400).send({ message: error });
