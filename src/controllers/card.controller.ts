@@ -46,8 +46,12 @@ export class CardController {
 
     const card = new Card();
     Object.assign(card, payload);
-    card.startAt = new Date(payload.startAt);
-    card.endAt = payload.endAt ? new Date(payload.endAt) : new Date();
+    if (!payload.startAt) {
+      card.startAt = new Date();
+    } else {
+      card.startAt = new Date(payload.startAt);
+    }
+    card.endAt = new Date(payload.endAt);
     card.isActive = true;
 
     try {

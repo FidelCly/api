@@ -5,11 +5,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   OneToMany,
   OneToOne,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Promotion } from "./promotion";
 import { Shop } from "./shop";
@@ -17,9 +18,13 @@ import { User } from "./user";
 
 @Entity({ name: "promotions-counter" }) // table name in database
 export class PromotionCounter {
+  @PrimaryGeneratedColumn()
+  @IsNumber()
+  Id: number;
+
   @IsNotEmpty()
   @IsNumber()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   shopId: number;
 
   @OneToMany(() => Shop, (shop: Shop) => shop.id)
@@ -31,7 +36,7 @@ export class PromotionCounter {
   @Column({ nullable: false })
   userId: number;
 
-  @ManyToMany(() => User, (user: User) => user.id)
+  @ManyToOne(() => User, (user: User) => user.id)
   @JoinColumn()
   user!: User;
 

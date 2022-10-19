@@ -41,12 +41,4 @@ export class ShopRepository {
   static delete = async (id: number) => {
     await getDataSource().getRepository(Shop).delete(id);
   };
-
-  /**
-   * Find all shops
-   * @returns A list of shops
-   */
-  static findAll = async (): Promise<Shop[]> => {
-    return await getDataSource().getRepository(Shop).find();
-  };
 }

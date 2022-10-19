@@ -3,7 +3,7 @@ export interface ICardCreatePayload {
   shopId: number;
   userId: number;
   startAt: string;
-  endAt?: string;
+  endAt: string;
 }
 
 export interface ICardUpdatePayload {

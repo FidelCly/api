@@ -3,25 +3,25 @@ import { PromotionCounterController } from "../controllers";
 
 const PromotionCounterRouter = Router();
 
-// get one shop for user
+// get one PromotionCounter for user
 PromotionCounterRouter.get(
-	"/user/:userId([0-9]+)/:shopId([0-9]+)/:promotionId([0-9]+)",
-	PromotionCounterController.oneByUser
+  "/user/:userId([0-9]+)/:PromotionCounterId([0-9]+)/:promotionId([0-9]+)",
+  PromotionCounterController.oneByUser
 );
 
-// get one shop for client | shop
+// get one PromotionCounter for client | PromotionCounter
 PromotionCounterRouter.get(
-	"/client/:shopId([0-9]+)/:userId?([0-9]+)/:promotionId?([0-9]+)",
-	PromotionCounterController.oneByClient
+  "/client/:PromotionCounterId([0-9]+)/:userId?([0-9]+)/:promotionId?([0-9]+)",
+  PromotionCounterController.oneByUser
 );
 
-// create a shop
+// create a PromotionCounter
 PromotionCounterRouter.post("/client", PromotionCounterController.create);
 
-// update a shop
-PromotionCounterRouter.put("/client/:userId?([0-9]+)", PromotionCounterController.update);
+// update a PromotionCounter
+PromotionCounterRouter.put("/client", PromotionCounterController.update);
 
-// delete a shop
+// delete a PromotionCounter
 //  will be done in the future
 // PromotionCounterRouter.delete("/:id([0-9]+)", PromotionCounterController.delete);
 
