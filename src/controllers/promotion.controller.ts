@@ -132,6 +132,7 @@ export class PromotionController {
       return;
     }
 
+    
     await PromotionRepository.delete(id);
     res.status(200).send({ message: "Promotion deleted" });
   };
