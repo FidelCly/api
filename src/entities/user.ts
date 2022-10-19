@@ -33,7 +33,7 @@ export class User {
   isActive: boolean;
 
   @OneToMany(() => Card, (card: Card) => card.user)
-  cards!: Card[];
+  cards!: Array<Card>;
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -50,9 +50,7 @@ export class Card {
   @Column({ nullable: true })
   shopId!: number;
 
-  @ManyToOne(() => Shop, (shop: Shop) => shop.cards, {
-    eager: true
-  })
+  @ManyToOne(() => Shop, (shop: Shop) => shop.cards)
   @JoinColumn()
   shop!: Shop;
 
