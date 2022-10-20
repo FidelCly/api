@@ -60,10 +60,10 @@ export class UserRepository {
   static getUsersCards = async (id: number): Promise<User> => {
     return await getDataSource()
       .getRepository(User)
-      .createQueryBuilder("user")
-      .leftJoinAndSelect("user.cards", "card")
-      .where("user.id = :id", { id })
-      .getOneOrFail();
+      .findOneOrFail({
+        where: { id },
+        relations: { cards: { shop: true } },
+      });
   };
 
   /**
