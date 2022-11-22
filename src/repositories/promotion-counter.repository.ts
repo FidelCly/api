@@ -8,24 +8,22 @@ export class PromotionCounterRepository {
 	 * @returns A promotionCounter if found
 	 */
 	static findOneUser = async (userId: number, shopId: number, promotionId: number): Promise<PromotionCounter> => {
-		return await getDataSource()
-			.getRepository(PromotionCounter)
-			.findOneByOrFail(
-				userId && !promotionId && !shopId
-					? {
-							userId: Number(userId)
-					  }
-					: userId && promotionId && !shopId
-					? {
-							userId: Number(userId),
-							promotionId: Number(promotionId)
-					  }
-					: {
-							userId: Number(userId),
-							promotionId: Number(promotionId),
-							shopId: Number(shopId)
-					  }
-			);
+		const data =
+			userId && !promotionId && !shopId
+				? {
+						userId: Number(userId)
+				  }
+				: userId && promotionId && !shopId
+				? {
+						userId: Number(userId),
+						promotionId: Number(promotionId)
+				  }
+				: {
+						userId: Number(userId),
+						shopId: Number(shopId),
+						promotionId: Number(promotionId)
+				  };
+		return await getDataSource().getRepository(PromotionCounter).findOneByOrFail(data);
 	};
 
 	/**
@@ -34,24 +32,22 @@ export class PromotionCounterRepository {
 	 * @returns A promotionCounter if found
 	 */
 	static findOneShop = async (shopId: number, userId: number, promotionId: number): Promise<PromotionCounter> => {
-		return await getDataSource()
-			.getRepository(PromotionCounter)
-			.findOneByOrFail(
-				shopId && !userId && !promotionId
-					? {
-							shopId: Number(shopId)
-					  }
-					: shopId && userId && !promotionId
-					? {
-							shopId: Number(shopId),
-							userId: Number(userId)
-					  }
-					: {
-							shopId: Number(shopId),
-							userId: Number(userId),
-							promotionId: Number(promotionId)
-					  }
-			);
+		const data =
+			shopId && !userId && !promotionId
+				? {
+						shopId: Number(shopId)
+				  }
+				: shopId && userId && !promotionId
+				? {
+						shopId: Number(shopId),
+						userId: Number(userId)
+				  }
+				: {
+						shopId: Number(shopId),
+						userId: Number(userId),
+						promotionId: Number(promotionId)
+				  };
+		return await getDataSource().getRepository(PromotionCounter).findOneByOrFail(data);
 	};
 
 	/**
