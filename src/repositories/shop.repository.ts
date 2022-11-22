@@ -3,6 +3,14 @@ import { Shop } from "../entities";
 
 export class ShopRepository {
   /**
+   * Get all shops
+   * @returns A list of shops
+   */
+  static all = async (): Promise<Shop[]> => {
+    return await getDataSource().getRepository(Shop).find();
+  };
+
+  /**
    * Find shop by id
    * @param id - Id of the shop
    * @returns A shop if found

@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import request from "supertest";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import app from "../../app";
+import { UserRepository } from "../../repositories";
 import { TestFactory } from "../factory";
 import { userFixture } from "../seeds/user.seed";
 
@@ -18,6 +20,7 @@ describe("Testing user controller", () => {
 
   beforeAll(async () => {
     await factory.init();
+    await factory.seedShop();
   });
 
   afterAll(async () => {
@@ -98,6 +101,38 @@ describe("Testing user controller", () => {
     it("responds with status 200", async () => {
       const response = await request(app)
         .get("/users/1")
+        .set("Accept", "application/json");
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(200);
+    });
+  });
+
+  describe("Get user's wallet", () => {
+    it("responds with status 404", async () => {
+      const response = await request(app)
+        .get("/users/10/wallet/")
+        .set("Accept", "application/json");
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(404);
+      expect(response.body.message).toMatch(/not found/);
+    });
+
+    it("responds with status 200 and empty list", async () => {
+      const response = await request(app)
+        .get("/users/1/wallet/")
+        .set("Accept", "application/json");
+
+      expect(response.headers["content-type"]).toMatch(/json/);
+      expect(response.statusCode).toBe(200);
+    });
+
+    it("responds with status 200 and a list of cards", async () => {
+      await factory.seedCard();
+
+      const response = await request(app)
+        .get("/users/1/wallet/")
         .set("Accept", "application/json");
 
       expect(response.headers["content-type"]).toMatch(/json/);

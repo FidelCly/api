@@ -7,7 +7,7 @@ import UserRouter from "./user.routes";
 
 const routes = Router();
 
-routes.use("/wallet", CardRouter);
+routes.use("/cards", CardRouter);
 routes.use("/users", UserRouter);
 routes.use("/shops", ShopRouter);
 routes.use("/promotions", PromotionRouter);

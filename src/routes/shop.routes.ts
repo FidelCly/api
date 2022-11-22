@@ -3,6 +3,9 @@ import { ShopController } from "../controllers";
 
 const ShopRouter = Router();
 
+// get all shops
+ShopRouter.get("/", ShopController.all);
+
 // get one shop
 ShopRouter.get("/:id([0-9]+)", ShopController.one);
 
