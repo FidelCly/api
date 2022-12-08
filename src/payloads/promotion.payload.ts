@@ -1,24 +1,17 @@
-import { TypePromotion } from "../enums/promotion-type";
-
 export interface IPromotionCreatePayload {
-  shopId: number;
-  userId: number;
   name: string;
   description?: string;
-  type: number;
-  startAt: string;
-  endAt: string;
-  limitPassage: number; // Number of passage in case of PASSAGE type
-  limitAmout: number; // Number of item in case of AMOUNT type
+  checkoutLimit: number;
+  startAt?: Date;
+  endAt: Date;
+  isActive?: boolean;
 }
 
 export interface IPromotionUpdatePayload {
-  shopId: number;
-  userId: number;
   name?: string;
   description?: string;
-  type?: TypePromotion;
-  endAt?: string;
-  limitPassage?: number;
-  limitAmout?: number;
+  checkoutLimit?: number;
+  startAt?: Date;
+  endAt?: Date;
+  isActive?: boolean;
 }
