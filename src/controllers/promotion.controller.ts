@@ -2,11 +2,7 @@ import { validateOrReject } from "class-validator";
 import { Request, Response } from "express";
 import { Promotion } from "../entities";
 import { IPromotionCreatePayload, IPromotionUpdatePayload } from "../payloads";
-import {
-  PromotionRepository,
-  ShopRepository,
-  UserRepository,
-} from "../repositories";
+import { PromotionRepository, ShopRepository } from "../repositories";
 
 export class PromotionController {
   /**
@@ -24,29 +20,16 @@ export class PromotionController {
   };
 
   /**
-   * Create promotion
+   * Create a promotion
    */
   static create = async (req: Request, res: Response) => {
     const payload: IPromotionCreatePayload = <IPromotionCreatePayload>req.body;
 
-    const shopId = Number(req.body.shopId);
-    const userId = Number(req.body.userId);
-
     try {
-      const [user, shop] = await Promise.all([
-        UserRepository.findOneById(userId),
-        ShopRepository.findOneById(shopId),
-      ]);
-
-      if (!user) {
-        res.status(404).send({ message: "User not found" });
-        return;
-      } else if (!shop) {
-        res.status(404).send({ message: "Shop not found" });
-        return;
-      }
+      if (payload.shopId) await ShopRepository.findOneById(payload.shopId);
     } catch (error) {
-      res.status(500).send({ message: ` Error while fetching Shop or user` });
+      res.status(404).send({ message: "Shop not found" });
+      return;
     }
 
     const promotion = new Promotion();
@@ -79,25 +62,6 @@ export class PromotionController {
   static update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const payload: IPromotionUpdatePayload = <IPromotionUpdatePayload>req.body;
-
-    const shopId = Number(req.body.shopId);
-    const userId = Number(req.body.userId);
-    try {
-      const [user, shop] = await Promise.all([
-        UserRepository.findOneById(userId),
-        ShopRepository.findOneById(shopId),
-      ]);
-
-      if (!user) res.status(400).send({ message: `user not found !` });
-      else if (!shop) res.status(400).send({ message: `shop not found !` });
-    } catch (error) {
-      res.status(500).send({ message: ` Error while fetching Shop or user` });
-    }
-
-    if (Object.keys(payload).length === 0) {
-      res.status(400).send({ message: "Validation failed" });
-      return;
-    }
 
     let promotion: Promotion;
 

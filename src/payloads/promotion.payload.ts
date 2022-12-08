@@ -1,4 +1,5 @@
 export interface IPromotionCreatePayload {
+  shopId: number;
   name: string;
   description?: string;
   checkoutLimit: number;
