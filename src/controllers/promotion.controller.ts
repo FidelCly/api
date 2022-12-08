@@ -57,7 +57,7 @@ export class PromotionController {
   };
 
   /**
-   * Update promotion
+   * Update a promotion
    */
   static update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
@@ -93,7 +93,7 @@ export class PromotionController {
   };
 
   /**
-   * Delete promotion
+   * Delete a promotion
    */
   static delete = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
