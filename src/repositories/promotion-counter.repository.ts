@@ -3,68 +3,21 @@ import { PromotionCounter } from "../entities/promotion-counter";
 
 export class PromotionCounterRepository {
   /**
-   * Find promotionCounter by promotionId for the user
-   * @param id - Id of the promotionCounter
-   * @returns A promotionCounter if found
+   * Find promotion counter by id
+   * @param id - Id of the promotion counter
+   * @returns A promotion counter if found
    */
-  static findOneUser = async (
-    userId: number,
-    shopId: number,
-    promotionId: number
-  ): Promise<PromotionCounter> => {
-    const data =
-      userId && !promotionId && !shopId
-        ? {
-            userId: Number(userId),
-          }
-        : userId && promotionId && !shopId
-        ? {
-            userId: Number(userId),
-            promotionId: Number(promotionId),
-          }
-        : {
-            userId: Number(userId),
-            shopId: Number(shopId),
-            promotionId: Number(promotionId),
-          };
+  static findOneById = async (id: number): Promise<PromotionCounter> => {
     return await getDataSource()
       .getRepository(PromotionCounter)
-      .findOneByOrFail(data);
+      .findOneByOrFail({
+        id: Number(id),
+      });
   };
 
   /**
-   * Find promotionCounter by promotionId for the client / shop
-   * @param id - Id of the promotionCounter
-   * @returns A promotionCounter if found
-   */
-  static findOneShop = async (
-    shopId: number,
-    userId: number,
-    promotionId: number
-  ): Promise<PromotionCounter> => {
-    const data =
-      shopId && !userId && !promotionId
-        ? {
-            shopId: Number(shopId),
-          }
-        : shopId && userId && !promotionId
-        ? {
-            shopId: Number(shopId),
-            userId: Number(userId),
-          }
-        : {
-            shopId: Number(shopId),
-            userId: Number(userId),
-            promotionId: Number(promotionId),
-          };
-    return await getDataSource()
-      .getRepository(PromotionCounter)
-      .findOneByOrFail(data);
-  };
-
-  /**
-   * Save a promotionCounter on the db
-   * @param promotionCounter - The promotionCounter to save
+   * Save a promotion counter on the db
+   * @param promotionCounter - The promotion counter to save
    */
   static save = async (promotionCounter: PromotionCounter) => {
     await getDataSource()

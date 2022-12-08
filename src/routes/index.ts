@@ -11,6 +11,6 @@ routes.use("/cards", CardRouter);
 routes.use("/users", UserRouter);
 routes.use("/shops", ShopRouter);
 routes.use("/promotions", PromotionRouter);
-routes.use("/promotions-counter", PromotionCounterRouter);
+routes.use("/promotion-counters", PromotionCounterRouter);
 
 export default routes;

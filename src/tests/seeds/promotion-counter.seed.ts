@@ -1,12 +1,13 @@
-import { IPromotionCounterCreatePayload } from "../../payloads";
+import {
+  IPromotionCounterCreatePayload,
+  IPromotionCounterUpdatePayload,
+} from "../../payloads";
 
 export const promotionCounterFixture: IPromotionCounterCreatePayload = {
-  shopId: 1,
-  userId: 1,
+  cardId: 1,
   promotionId: 1,
-  increment: 1,
-  isActive: true,
-  nbValidation: 1,
-  createAt: new Date().toUTCString(),
-  updatedAt: new Date().toUTCString(),
+};
+
+export const modifiedPromotionCounterFixture: IPromotionCounterUpdatePayload = {
+  counter: 2,
 };

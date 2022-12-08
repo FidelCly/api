@@ -2,20 +2,17 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { promotionCounterFixture } from "../seeds/promotion-counter.seed";
+import {
+  modifiedPromotionCounterFixture,
+  promotionCounterFixture,
+} from "../seeds/promotion-counter.seed";
 
 describe("Testing promotion counter controller", () => {
   const factory = new TestFactory();
 
-  const testPromotionCounterModified = {
-    increment: 2,
-    nbValidation: 20,
-  };
-
   beforeAll(async () => {
     await factory.init();
-    await factory.seedUser();
-    await factory.seedShop();
+    await factory.seed();
   });
 
   afterAll(async () => {
@@ -23,49 +20,83 @@ describe("Testing promotion counter controller", () => {
   });
 
   describe("Create promotion counter", () => {
-    it("responds with status 400", async () => {
-      const response = await request(app)
-        .post("/promotions-counter/client")
-        .set("Accept", "application/json");
+    describe("with empty payload", () => {
+      it("responds with status 400", async () => {
+        const response = await request(app)
+          .post("/promotion-counters/")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(400);
-      expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.message).toBe("Validation failed");
+      });
     });
 
-    it("responds with status 201", async () => {
-      const response = await request(app)
-        .post("/promotions-counter/client")
-        .set("Accept", "application/json")
-        .send(promotionCounterFixture);
+    describe("with correct paylaod", () => {
+      it("responds with status 201", async () => {
+        const response = await request(app)
+          .post("/promotion-counters/")
+          .set("Accept", "application/json")
+          .send(promotionCounterFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(201);
-      expect(response.body.message).toMatch(/created/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(201);
+        expect(response.body.message).toMatch(/created/);
+      });
     });
   });
 
   describe("Update promotion counter", () => {
-    it("responds with status 404", async () => {
-      const response = await request(factory.app)
-        .put("/promotions-counter/client")
-        .set("Accept", "application/json")
-        .send(testPromotionCounterModified);
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(factory.app)
+          .put("/promotion-counters/10")
+          .set("Accept", "application/json")
+          .send(modifiedPromotionCounterFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(factory.app)
-        .put("/promotions-counter/client")
-        .set("Accept", "application/json")
-        .send(testPromotionCounterModified);
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(factory.app)
+          .put("/promotions-counter/1")
+          .set("Accept", "application/json")
+          .send(modifiedPromotionCounterFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toMatch(/updated/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/updated/);
+      });
+    });
+  });
+
+  describe("Delete promotion counter", () => {
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(factory.app)
+          .delete("/promotion-counters/10")
+          .set("Accept", "application/json");
+
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
+    });
+
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(factory.app)
+          .delete("/promotion-counters/1")
+          .set("Accept", "application/json");
+
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/deleted/);
+      });
     });
   });
 });

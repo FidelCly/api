@@ -21,5 +21,4 @@ export const modifiedPromotionFixture: IPromotionUpdatePayload = {
 
 export const modifiedEmptyPromotionFixture: IPromotionUpdatePayload = {
   name: "",
-  description: "",
 };

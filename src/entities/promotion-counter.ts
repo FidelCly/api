@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Card } from "./card";
 import { Promotion } from "./promotion";
-import { User } from "./user";
 
 @Entity({ name: "promotion-counters" }) // table name in database
 export class PromotionCounter {
@@ -25,11 +25,11 @@ export class PromotionCounter {
   @IsNotEmpty()
   @IsNumber()
   @Column({ nullable: false })
-  userId: number;
+  cardId: number;
 
-  @ManyToOne(() => User, (user: User) => user.id)
+  @ManyToOne(() => Card, (card: Card) => card.id)
   @JoinColumn()
-  user!: User;
+  card!: Card;
 
   @IsNotEmpty()
   @IsNumber()

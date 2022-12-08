@@ -1,5 +1,5 @@
 export interface IPromotionCounterCreatePayload {
-  userId: number;
+  cardId: number;
   promotionId: number;
   counter?: number;
 }
