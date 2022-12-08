@@ -1,13 +1,25 @@
-import { IPromotionCreatePayload } from "../../payloads";
+import {
+  IPromotionCreatePayload,
+  IPromotionUpdatePayload,
+} from "../../payloads";
 
 export const promotionFixture: IPromotionCreatePayload = {
   shopId: 1,
-  userId: 1,
   name: "Promotion",
   description: "Promotion description",
-  type: 1,
-  startAt: new Date().toUTCString(),
-  endAt: new Date().toUTCString(),
-  limitPassage: 1,
-  limitAmout: 1,
+  startAt: new Date(),
+  endAt: new Date(),
+  checkoutLimit: 1,
+};
+
+export const modifiedPromotionFixture: IPromotionUpdatePayload = {
+  name: "testModified",
+  description: "testModified",
+  checkoutLimit: 10,
+  isActive: false,
+};
+
+export const modifiedEmptyPromotionFixture: IPromotionUpdatePayload = {
+  name: "",
+  description: "",
 };
