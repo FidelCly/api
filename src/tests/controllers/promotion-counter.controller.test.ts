@@ -12,7 +12,10 @@ describe("Testing promotion counter controller", () => {
 
   beforeAll(async () => {
     await factory.init();
-    await factory.seed();
+    await factory.seedUser();
+    await factory.seedShop();
+    await factory.seedCard();
+    await factory.seedPromotion();
   });
 
   afterAll(async () => {
@@ -26,8 +29,8 @@ describe("Testing promotion counter controller", () => {
           .post("/promotion-counters/")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toBe("Validation failed");
       });
     });
@@ -39,8 +42,8 @@ describe("Testing promotion counter controller", () => {
           .set("Accept", "application/json")
           .send(promotionCounterFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(201);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/created/);
       });
     });
@@ -54,8 +57,8 @@ describe("Testing promotion counter controller", () => {
           .set("Accept", "application/json")
           .send(modifiedPromotionCounterFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
@@ -63,12 +66,12 @@ describe("Testing promotion counter controller", () => {
     describe("of known id", () => {
       it("responds with status 200", async () => {
         const response = await request(factory.app)
-          .put("/promotions-counter/1")
+          .put("/promotion-counters/1")
           .set("Accept", "application/json")
           .send(modifiedPromotionCounterFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/updated/);
       });
     });
@@ -81,8 +84,8 @@ describe("Testing promotion counter controller", () => {
           .delete("/promotion-counters/10")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
@@ -93,8 +96,8 @@ describe("Testing promotion counter controller", () => {
           .delete("/promotion-counters/1")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/deleted/);
       });
     });

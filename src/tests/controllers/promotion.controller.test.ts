@@ -29,8 +29,8 @@ describe("Testing promotion controller", () => {
           .post("/promotions")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toBe("Validation failed");
       });
     });
@@ -42,8 +42,8 @@ describe("Testing promotion controller", () => {
           .set("Accept", "application/json")
           .send(promotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(201);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/created/);
       });
     });
@@ -57,8 +57,8 @@ describe("Testing promotion controller", () => {
           .set("Accept", "application/json")
           .send(modifiedPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
@@ -67,10 +67,11 @@ describe("Testing promotion controller", () => {
       it("responds with status 400", async () => {
         const response = await request(factory.app)
           .put("/promotions/1")
-          .set("Accept", "application/json");
+          .set("Accept", "application/json")
+          .send(modifiedEmptyPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/Validation failed/);
       });
     });
@@ -80,10 +81,10 @@ describe("Testing promotion controller", () => {
         const response = await request(factory.app)
           .put("/promotions/1")
           .set("Accept", "application/json")
-          .send(modifiedEmptyPromotionFixture);
+          .send(modifiedPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/updated/);
       });
     });
@@ -96,8 +97,8 @@ describe("Testing promotion controller", () => {
           .delete("/promotions/10")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
@@ -108,8 +109,8 @@ describe("Testing promotion controller", () => {
           .delete("/promotions/1")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/deleted/);
       });
     });

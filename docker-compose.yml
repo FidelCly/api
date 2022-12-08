@@ -47,7 +47,6 @@ services:
 volumes:
   db:
 
-
 networks:
   fidecloud:
     driver: bridge
