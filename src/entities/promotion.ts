@@ -1,47 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IsBoolean,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  Max,
-  Min,
 } from "class-validator";
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Shop } from "./shop";
-import { User } from "./user";
 
 @Entity({ name: "promotions" }) // table name in database
 export class Promotion {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Column({ nullable: true })
-  shopId: number;
-
-  @OneToMany(() => Shop, (shop: Shop) => shop.id)
-  @JoinColumn()
-  shop!: Shop;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Column({ nullable: false })
-  userId: number;
-
-  @ManyToMany(() => User, (user: User) => user.id)
-  @JoinColumn()
-  user!: User;
 
   @IsNotEmpty()
   @Column()
@@ -50,35 +29,44 @@ export class Promotion {
   @Column()
   description: string;
 
+  @IsNumber()
   @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
-  @Max(2)
-  @Column({ default: 0 })
-  type: number;
+  @Column()
+  checkoutLimit: number;
 
-  @IsNumber()
-  @IsOptional()
-  @Column({ default: 10 })
-  limitPassage: number;
+  @IsNotEmpty()
+  @IsDate()
+  @Column({
+    type: "timestamp",
+    precision: 3,
+  })
+  startAt!: Date;
 
-  @IsNumber()
-  @IsOptional()
-  @Column({ default: 10 })
-  limitAmout: number;
+  @IsNotEmpty()
+  @IsDate()
+  @Column({
+    type: "timestamp",
+    precision: 3,
+  })
+  endAt!: Date;
 
   @IsBoolean()
   @IsOptional()
   @Column({ default: true })
   isActive: boolean;
 
+  @IsNotEmpty()
+  @IsNumber()
+  @Column({ nullable: true })
+  shopId: number;
+
+  @ManyToOne(() => Shop, (shop: Shop) => shop.promotions)
+  @JoinColumn()
+  shop!: Shop;
+
   @CreateDateColumn()
   createdAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;
-
-  endAt!: Date;
-
-  startAt!: Date;
 }

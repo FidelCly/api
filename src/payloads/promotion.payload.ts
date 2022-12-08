@@ -1,4 +1,4 @@
-import { TypePromotion } from "../shared/enums/type-promotion";
+import { TypePromotion } from "../enums/promotion-type";
 
 export interface IPromotionCreatePayload {
   shopId: number;

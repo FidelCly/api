@@ -7,7 +7,7 @@ import {
   PromotionRepository,
   UserRepository,
 } from "../repositories";
-import { TypePromotion } from "../shared/enums/type-promotion";
+import { TypePromotion } from "../enums/promotion-type";
 
 export class PromotionCounterController {
   /**
