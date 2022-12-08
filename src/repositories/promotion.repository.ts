@@ -34,15 +34,15 @@ export class PromotionRepository {
   };
 
   /**
-   * Delete a user's cards from the db
-   * @param id - The id of user
+   * Delete a promotion's counters from the db
+   * @param id - The id of promotion
    */
-  static deletePromotionCounters = async (promoId: number) => {
+  static deletePromotionCounters = async (id: number) => {
     await getDataSource()
       .createQueryBuilder()
       .delete()
       .from(PromotionCounter)
-      .where({ promotionId: promoId })
+      .where({ promotionId: id })
       .execute();
   };
 }
