@@ -7,3 +7,12 @@ export const cardFixture: ICardCreatePayload = {
   startAt: new Date().toUTCString(),
   endAt: new Date().toUTCString(),
 };
+
+export const modifiedCardFixture = {
+  url: "http://testModified.com",
+  isActive: false,
+};
+
+export const emptyModifiedCardFixture = {
+  url: "",
+};

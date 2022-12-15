@@ -1,22 +1,16 @@
 /* eslint-disable no-undef */
 import request from "supertest";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import app from "../../app";
-import { UserRepository } from "../../repositories";
 import { TestFactory } from "../factory";
-import { userFixture } from "../seeds/user.seed";
+import {
+  emptyModifiedUserFixture,
+  modifiedUserFixture,
+  userFixture,
+} from "../seeds";
 
 describe("Testing user controller", () => {
   // Create instances
   const factory = new TestFactory();
-
-  const testUserModified = {
-    username: "testUsernameModified",
-  };
-
-  const testUserModifiedEmpty = {
-    username: "",
-  };
 
   beforeAll(async () => {
     await factory.init();
@@ -57,7 +51,7 @@ describe("Testing user controller", () => {
       const response = await request(factory.app)
         .put("/users/10")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(modifiedUserFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
@@ -68,7 +62,7 @@ describe("Testing user controller", () => {
       const response = await request(factory.app)
         .put("/users/1")
         .set("Accept", "application/json")
-        .send(testUserModifiedEmpty);
+        .send(emptyModifiedUserFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -79,7 +73,7 @@ describe("Testing user controller", () => {
       const response = await request(factory.app)
         .put("/users/1")
         .set("Accept", "application/json")
-        .send(testUserModified);
+        .send(modifiedUserFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(200);

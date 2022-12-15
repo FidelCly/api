@@ -2,20 +2,15 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { cardFixture } from "../seeds/card.seed";
+import {
+  cardFixture,
+  emptyModifiedCardFixture,
+  modifiedCardFixture,
+} from "../seeds";
 
 describe("Testing card controller", () => {
   // Create instances
   const factory = new TestFactory();
-
-  const testCardModified = {
-    url: "http://testModified.com",
-    isActive: false,
-  };
-
-  const testCardModifiedEmpty = {
-    url: "",
-  };
 
   beforeAll(async () => {
     await factory.init();
@@ -55,7 +50,7 @@ describe("Testing card controller", () => {
       const response = await request(factory.app)
         .put("/cards/10")
         .set("Accept", "application/json")
-        .send(testCardModified);
+        .send(modifiedCardFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
@@ -66,7 +61,7 @@ describe("Testing card controller", () => {
       const response = await request(factory.app)
         .put("/cards/1")
         .set("Accept", "application/json")
-        .send(testCardModifiedEmpty);
+        .send(emptyModifiedCardFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -77,7 +72,7 @@ describe("Testing card controller", () => {
       const response = await request(factory.app)
         .put("/cards/1")
         .set("Accept", "application/json")
-        .send(testCardModified);
+        .send(modifiedCardFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(200);

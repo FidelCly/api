@@ -2,19 +2,15 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { shopFixture } from "../seeds/shop.seed";
+import {
+  emptyModifiedShopFixture,
+  modifiedShopFixture,
+  shopFixture,
+} from "../seeds";
 
 describe("Testing shop controller", () => {
   // Create instances
   const factory = new TestFactory();
-
-  const testshopModified = {
-    companyName: "testshopnameModified",
-  };
-
-  const testshopModifiedEmpty = {
-    companyName: "",
-  };
 
   beforeAll(async () => {
     await factory.init();
@@ -52,7 +48,7 @@ describe("Testing shop controller", () => {
       const response = await request(factory.app)
         .put("/shops/10")
         .set("Accept", "application/json")
-        .send(testshopModified);
+        .send(modifiedShopFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(404);
@@ -63,7 +59,7 @@ describe("Testing shop controller", () => {
       const response = await request(factory.app)
         .put("/shops/1")
         .set("Accept", "application/json")
-        .send(testshopModifiedEmpty);
+        .send(emptyModifiedShopFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(400);
@@ -74,7 +70,7 @@ describe("Testing shop controller", () => {
       const response = await request(factory.app)
         .put("/shops/1")
         .set("Accept", "application/json")
-        .send(testshopModified);
+        .send(modifiedShopFixture);
 
       expect(response.headers["content-type"]).toMatch(/json/);
       expect(response.statusCode).toBe(200);
