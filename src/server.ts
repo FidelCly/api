@@ -6,7 +6,7 @@ import app from "./app";
 AppDataSource.initialize()
   .then(() => {
     // set env
-    process.env.NODE_ENV = "development";
+    process.env.NODE_ENV = "production";
 
     // configure dotenv
     dotenv.config({ path: path.join(__dirname, "../.env") });
@@ -14,7 +14,7 @@ AppDataSource.initialize()
     dotenv.config({ path: path.join(__dirname, "../.env.dev") });
 
     // configure port number
-    const port = process.env.NODE_DOCKER_PORT || 3000;
+    const port = process.env.PORT || 3000;
 
     // start express server
     app.listen(port, () => {
