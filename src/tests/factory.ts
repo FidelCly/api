@@ -32,7 +32,6 @@ export class TestFactory {
    */
   public async init(): Promise<void> {
     process.env.NODE_ENV = "test";
-    config({ path: path.join(__dirname, "../.env") });
     config({ path: path.join(__dirname, "../.env.test") });
     this._dataSource = await TestDataSource.initialize();
     this._app = app;

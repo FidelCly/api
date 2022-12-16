@@ -18,24 +18,13 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - fidecloud
-
-  db_test:
-    image: postgres
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    networks:
-      - fidecloud
-
   web:
     depends_on:
       - db
-      - db_test
     build: ./
     ports:
       - 3000:3000
     env_file:
-      - .env
-      - .env.dev
       - .env.test
     working_dir: /api
     volumes:
@@ -46,7 +35,6 @@ services:
 
 volumes:
   db:
-
 
 networks:
   fidecloud:
