@@ -1,5 +1,5 @@
 #!/bin/bash
 
 export NODE_ENV=production
-npm install
-npm start
+npm run build
+node build/src/server.js
