@@ -2,8 +2,9 @@ export interface ICardCreatePayload {
   url: string;
   shopId: number;
   userId: number;
-  startAt: string;
-  endAt: string;
+  startAt?: Date;
+  endAt: Date;
+  isActive?: boolean;
 }
 
 export interface ICardUpdatePayload {

@@ -16,7 +16,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Card } from ".";
+import { Card, Promotion } from ".";
 
 @Entity({ name: "shops" }) // table name in database
 export class Shop {
@@ -80,6 +80,9 @@ export class Shop {
 
   @OneToMany(() => Card, (card: Card) => card.shop)
   cards!: Array<Card>;
+
+  @OneToMany(() => Promotion, (promotion: Promotion) => promotion.shop)
+  promotions!: Array<Promotion>;
 
   @CreateDateColumn()
   createdAt!: Date;

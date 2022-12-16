@@ -3,18 +3,16 @@ import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
 import {
-  cardFixture,
-  emptyModifiedCardFixture,
-  modifiedCardFixture,
-} from "../seeds";
+  modifiedEmptyPromotionFixture,
+  modifiedPromotionFixture,
+  promotionFixture,
+} from "../seeds/promotion.seed";
 
-describe("Testing card controller", () => {
-  // Create instances
+describe("Testing promotion controller", () => {
   const factory = new TestFactory();
 
   beforeAll(async () => {
     await factory.init();
-    await factory.seedUser();
     await factory.seedShop();
   });
 
@@ -22,15 +20,15 @@ describe("Testing card controller", () => {
     await factory.close();
   });
 
-  describe("Create card", () => {
+  describe("Create promotion", () => {
     describe("with an empty payload", () => {
       it("responds with status 400", async () => {
         const response = await request(app)
-          .post("/cards")
+          .post("/promotions")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(400);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toBe("Validation failed");
       });
     });
@@ -38,27 +36,27 @@ describe("Testing card controller", () => {
     describe("with a correct payload", () => {
       it("responds with status 201", async () => {
         const response = await request(app)
-          .post("/cards")
+          .post("/promotions")
           .set("Accept", "application/json")
-          .send(cardFixture);
+          .send(promotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(201);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/created/);
       });
     });
   });
 
-  describe("Update card", () => {
+  describe("Update promotion", () => {
     describe("of unknown id", () => {
       it("responds with status 404", async () => {
         const response = await request(factory.app)
-          .put("/cards/10")
+          .put("/promotions/10")
           .set("Accept", "application/json")
-          .send(modifiedCardFixture);
+          .send(modifiedPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
@@ -66,76 +64,51 @@ describe("Testing card controller", () => {
     describe("with incorrect payload", () => {
       it("responds with status 400", async () => {
         const response = await request(factory.app)
-          .put("/cards/1")
+          .put("/promotions/1")
           .set("Accept", "application/json")
-          .send(emptyModifiedCardFixture);
+          .send(modifiedEmptyPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(400);
-        expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.message).toMatch(/Validation failed/);
       });
     });
 
     describe("with a correct payload", () => {
       it("responds with status 200", async () => {
         const response = await request(factory.app)
-          .put("/cards/1")
+          .put("/promotions/1")
           .set("Accept", "application/json")
-          .send(modifiedCardFixture);
+          .send(modifiedPromotionFixture);
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/updated/);
       });
     });
   });
 
-  describe("Get one card", () => {
+  describe("Delete promotion", () => {
     describe("of unknown id", () => {
       it("responds with status 404", async () => {
-        const response = await request(app)
-          .get("/cards/10")
+        const response = await request(factory.app)
+          .delete("/promotions/10")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(404);
+        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body.message).toMatch(/not found/);
       });
     });
 
     describe("of known id", () => {
       it("responds with status 200", async () => {
-        const response = await request(app)
-          .get("/cards/1")
+        const response = await request(factory.app)
+          .delete("/promotions/1")
           .set("Accept", "application/json");
 
-        expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.statusCode).toBe(200);
-      });
-    });
-  });
-
-  describe("Delete card", () => {
-    describe("of unknown id", () => {
-      it("responds with status 404", async () => {
-        const response = await request(app)
-          .delete("/cards/10")
-          .set("Accept", "application/json");
-
         expect(response.headers["content-type"]).toMatch(/json/);
-        expect(response.statusCode).toBe(404);
-        expect(response.body.message).toMatch(/not found/);
-      });
-    });
-
-    describe("of known id", () => {
-      it("responds with status 200", async () => {
-        const response = await request(app)
-          .delete("/cards/1")
-          .set("Accept", "application/json");
-
-        expect(response.headers["content-type"]).toMatch(/json/);
-        expect(response.statusCode).toBe(200);
         expect(response.body.message).toMatch(/deleted/);
       });
     });

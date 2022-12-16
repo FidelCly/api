@@ -1,22 +1,16 @@
 /* eslint-disable no-undef */
 import request from "supertest";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import app from "../../app";
-import { UserRepository } from "../../repositories";
 import { TestFactory } from "../factory";
-import { userFixture } from "../seeds/user.seed";
+import {
+  emptyModifiedUserFixture,
+  modifiedUserFixture,
+  userFixture,
+} from "../seeds";
 
 describe("Testing user controller", () => {
   // Create instances
   const factory = new TestFactory();
-
-  const testUserModified = {
-    username: "testUsernameModified",
-  };
-
-  const testUserModifiedEmpty = {
-    username: "",
-  };
 
   beforeAll(async () => {
     await factory.init();
@@ -28,137 +22,159 @@ describe("Testing user controller", () => {
   });
 
   describe("Create user", () => {
-    it("responds with status 400", async () => {
-      const response = await request(app)
-        .post("/users")
-        .set("Accept", "application/json");
+    describe("with an empty payload", () => {
+      it("responds with status 400", async () => {
+        const response = await request(app)
+          .post("/users")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(400);
-      expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.message).toBe("Validation failed");
+      });
     });
 
-    it("responds with status 201", async () => {
-      const response = await request(app)
-        .post("/users")
-        .send(userFixture)
-        .set("Accept", "application/json");
+    describe("with a correct payload", () => {
+      it("responds with status 201", async () => {
+        const response = await request(app)
+          .post("/users")
+          .send(userFixture)
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(201);
-      expect(response.body.message).toMatch(/created/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(201);
+        expect(response.body.message).toMatch(/created/);
+      });
     });
   });
 
   describe("Update user", () => {
-    beforeAll(async () => {});
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(factory.app)
+          .put("/users/10")
+          .set("Accept", "application/json")
+          .send(modifiedUserFixture);
 
-    it("responds with status 404", async () => {
-      const response = await request(factory.app)
-        .put("/users/10")
-        .set("Accept", "application/json")
-        .send(testUserModified);
-
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 400", async () => {
-      const response = await request(factory.app)
-        .put("/users/1")
-        .set("Accept", "application/json")
-        .send(testUserModifiedEmpty);
+    describe("with incorrect payload", () => {
+      it("responds with status 400", async () => {
+        const response = await request(factory.app)
+          .put("/users/1")
+          .set("Accept", "application/json")
+          .send(emptyModifiedUserFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(400);
-      expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.message).toBe("Validation failed");
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(factory.app)
-        .put("/users/1")
-        .set("Accept", "application/json")
-        .send(testUserModified);
+    describe("with a correct payload", () => {
+      it("responds with status 200", async () => {
+        const response = await request(factory.app)
+          .put("/users/1")
+          .set("Accept", "application/json")
+          .send(modifiedUserFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toMatch(/updated/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/updated/);
+      });
     });
   });
 
   describe("Get one user", () => {
-    it("responds with status 404", async () => {
-      const response = await request(app)
-        .get("/users/10")
-        .set("Accept", "application/json");
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(app)
+          .get("/users/10")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(app)
-        .get("/users/1")
-        .set("Accept", "application/json");
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(app)
+          .get("/users/1")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+      });
     });
   });
 
   describe("Get user's wallet", () => {
-    it("responds with status 404", async () => {
-      const response = await request(app)
-        .get("/users/10/wallet/")
-        .set("Accept", "application/json");
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(app)
+          .get("/users/10/wallet/")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200 and empty list", async () => {
-      const response = await request(app)
-        .get("/users/1/wallet/")
-        .set("Accept", "application/json");
+    describe("of known id", () => {
+      it("responds with status 200 and empty list", async () => {
+        const response = await request(app)
+          .get("/users/1/wallet/")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+      });
     });
 
-    it("responds with status 200 and a list of cards", async () => {
-      await factory.seedCard();
+    describe("of known id", () => {
+      it("responds with status 200 and a list of cards", async () => {
+        await factory.seedCard();
 
-      const response = await request(app)
-        .get("/users/1/wallet/")
-        .set("Accept", "application/json");
+        const response = await request(app)
+          .get("/users/1/wallet/")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+      });
     });
   });
 
   describe("Delete user", () => {
-    it("responds with status 404", async () => {
-      const response = await request(app)
-        .delete("/users/10")
-        .set("Accept", "application/json");
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(app)
+          .delete("/users/10")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(app)
-        .delete("/users/1")
-        .set("Accept", "application/json");
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(app)
+          .delete("/users/1")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toMatch(/deleted/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/deleted/);
+      });
     });
   });
 });

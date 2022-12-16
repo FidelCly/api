@@ -2,19 +2,15 @@
 import request from "supertest";
 import app from "../../app";
 import { TestFactory } from "../factory";
-import { shopFixture } from "../seeds/shop.seed";
+import {
+  emptyModifiedShopFixture,
+  modifiedShopFixture,
+  shopFixture,
+} from "../seeds";
 
 describe("Testing shop controller", () => {
   // Create instances
   const factory = new TestFactory();
-
-  const testshopModified = {
-    companyName: "testshopnameModified",
-  };
-
-  const testshopModifiedEmpty = {
-    companyName: "",
-  };
 
   beforeAll(async () => {
     await factory.init();
@@ -25,81 +21,95 @@ describe("Testing shop controller", () => {
   });
 
   describe("Create shop", () => {
-    it("responds with status 400", async () => {
-      const response = await request(app)
-        .post("/shops")
-        .set("Accept", "application/json");
+    describe("with an empty payload", () => {
+      it("responds with status 400", async () => {
+        const response = await request(app)
+          .post("/shops")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(400);
-      expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.message).toBe("Validation failed");
+      });
     });
 
-    it("responds with status 201", async () => {
-      const response = await request(app)
-        .post("/shops")
-        .send(shopFixture)
-        .set("Accept", "application/json");
+    describe("with a correct payload", () => {
+      it("responds with status 201", async () => {
+        const response = await request(app)
+          .post("/shops")
+          .send(shopFixture)
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(201);
-      expect(response.body.message).toMatch(/created/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(201);
+        expect(response.body.message).toMatch(/created/);
+      });
     });
   });
 
   describe("Update shop", () => {
-    it("responds with status 404", async () => {
-      const response = await request(factory.app)
-        .put("/shops/10")
-        .set("Accept", "application/json")
-        .send(testshopModified);
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(factory.app)
+          .put("/shops/10")
+          .set("Accept", "application/json")
+          .send(modifiedShopFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 400", async () => {
-      const response = await request(factory.app)
-        .put("/shops/1")
-        .set("Accept", "application/json")
-        .send(testshopModifiedEmpty);
+    describe("with incorrect payload", () => {
+      it("responds with status 400", async () => {
+        const response = await request(factory.app)
+          .put("/shops/1")
+          .set("Accept", "application/json")
+          .send(emptyModifiedShopFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(400);
-      expect(response.body.message).toBe("Validation failed");
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(400);
+        expect(response.body.message).toBe("Validation failed");
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(factory.app)
-        .put("/shops/1")
-        .set("Accept", "application/json")
-        .send(testshopModified);
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(factory.app)
+          .put("/shops/1")
+          .set("Accept", "application/json")
+          .send(modifiedShopFixture);
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toMatch(/updated/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/updated/);
+      });
     });
   });
 
   describe("Get one shop", () => {
-    it("responds with status 404", async () => {
-      const response = await request(app)
-        .get("/shops/10")
-        .set("Accept", "application/json");
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(app)
+          .get("/shops/10")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(app)
-        .get("/shops/1")
-        .set("Accept", "application/json");
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(app)
+          .get("/shops/1")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+      });
     });
   });
 
@@ -115,24 +125,28 @@ describe("Testing shop controller", () => {
   });
 
   describe("Delete shop", () => {
-    it("responds with status 404", async () => {
-      const response = await request(app)
-        .delete("/shops/10")
-        .set("Accept", "application/json");
+    describe("of unknown id", () => {
+      it("responds with status 404", async () => {
+        const response = await request(app)
+          .delete("/shops/10")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toMatch(/not found/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toMatch(/not found/);
+      });
     });
 
-    it("responds with status 200", async () => {
-      const response = await request(app)
-        .delete("/shops/1")
-        .set("Accept", "application/json");
+    describe("of known id", () => {
+      it("responds with status 200", async () => {
+        const response = await request(app)
+          .delete("/shops/1")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toMatch(/deleted/);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toMatch(/deleted/);
+      });
     });
   });
 });

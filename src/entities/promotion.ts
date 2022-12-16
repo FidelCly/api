@@ -3,8 +3,8 @@ import {
   IsBoolean,
   IsDate,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
-  IsUrl,
 } from "class-validator";
 import {
   Column,
@@ -15,19 +15,24 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Shop, User } from ".";
+import { Shop } from "./shop";
 
-@Entity({ name: "cards" }) // table name in database
-export class Card {
+@Entity({ name: "promotions" }) // table name in database
+export class Promotion {
   @PrimaryGeneratedColumn()
   id: number;
 
   @IsNotEmpty()
-  @IsUrl()
-  @Column({
-    unique: true,
-  })
-  url: string;
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Column()
+  checkoutLimit: number;
 
   @IsNotEmpty()
   @IsDate()
@@ -45,28 +50,19 @@ export class Card {
   })
   endAt: Date;
 
-  @IsOptional()
   @IsBoolean()
-  @Column({
-    default: true,
-  })
+  @IsOptional()
+  @Column({ default: true })
   isActive: boolean;
 
   @IsNotEmpty()
+  @IsNumber()
   @Column({ nullable: true })
-  shopId!: number;
+  shopId: number;
 
-  @ManyToOne(() => Shop, (shop: Shop) => shop.cards)
+  @ManyToOne(() => Shop, (shop: Shop) => shop.promotions)
   @JoinColumn()
   shop!: Shop;
-
-  @IsNotEmpty()
-  @Column({ nullable: true })
-  userId!: number;
-
-  @ManyToOne(() => User, (user: User) => user.cards)
-  @JoinColumn()
-  user!: User;
 
   @CreateDateColumn()
   createdAt!: Date;

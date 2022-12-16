@@ -10,3 +10,11 @@ export const shopFixture: IShopCreatePayload = {
   phone: "0632547698",
   address: "12 rue du bistrot",
 };
+
+export const modifiedShopFixture = {
+  companyName: "testshopnameModified",
+};
+
+export const emptyModifiedShopFixture = {
+  companyName: "",
+};
