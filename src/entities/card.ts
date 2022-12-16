@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsBoolean, IsDate, IsNotEmpty, IsUrl } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsUrl,
+} from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -39,7 +45,7 @@ export class Card {
   })
   endAt: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
   @Column({
     default: true,

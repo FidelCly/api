@@ -40,7 +40,7 @@ export class Promotion {
     type: "timestamp",
     precision: 3,
   })
-  startAt!: Date;
+  startAt: Date;
 
   @IsNotEmpty()
   @IsDate()
@@ -48,7 +48,7 @@ export class Promotion {
     type: "timestamp",
     precision: 3,
   })
-  endAt!: Date;
+  endAt: Date;
 
   @IsBoolean()
   @IsOptional()
