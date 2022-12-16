@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node-dev src/server.ts",
+    "start": "ts-node-dev src/server.ts",
     "build": "rm -rf build && tsc -p .",
     "test": "ENV_FILE=.env.test NODE_ENV=test jest --passWithNoTests --runInBand",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
