@@ -370,7 +370,7 @@ Status: 201 CREATED
 ```
 ```json
 {
-  "message": "User created",
+  "message": "Shop created",
 }
 ```
 
