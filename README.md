@@ -585,7 +585,7 @@ Status: 200 OK
 ```
 #### Create a promotion
 ```HTTP
-POST /cards
+POST /promotions
 ```
 
 | Parameters        | Type    | In    | Description    |
@@ -600,7 +600,7 @@ POST /cards
 
 ##### Request
 ```HTTP
-POST /cards
+POST /promotions
   {
     "shopId": 1,
     "name": "Promotion",
