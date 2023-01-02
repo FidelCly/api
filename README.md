@@ -527,7 +527,7 @@ Status: 200 OK
 ```
 ```json
 {
-  "message": "Shop updated",
+  "message": "Card updated",
 }
 ```
 
