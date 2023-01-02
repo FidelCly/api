@@ -61,7 +61,7 @@
       - [Update a promotion](#update-a-promotion)
         - [Request](#request-16)
         - [Response](#response-16)
-      - [Delete a card](#delete-a-card-1)
+      - [Delete a promotion](#delete-a-promotion)
         - [Request](#request-17)
         - [Response](#response-17)
 
@@ -652,7 +652,7 @@ Status: 200 OK
 }
 ```
 
-#### Delete a card
+#### Delete a promotion
 ```HTTP
 DELETE /promotions/:id
 ```
