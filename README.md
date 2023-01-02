@@ -352,7 +352,7 @@ POST /shops
 
 ##### Request
 ```HTTP
-POST /users
+POST /shops
   {
     "companyName": "Bistrot123",
     "siren": "123456789",
