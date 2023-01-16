@@ -1,4 +1,4 @@
-import { ICardCreatePayload } from "../../payloads";
+import { ICardCreatePayload, ICardUpdatePayload } from "../../payloads";
 
 export const cardFixture: ICardCreatePayload = {
   url: "https://example.com",
@@ -8,11 +8,11 @@ export const cardFixture: ICardCreatePayload = {
   endAt: new Date(),
 };
 
-export const modifiedCardFixture = {
+export const modifiedCardFixture: ICardUpdatePayload = {
   url: "http://testModified.com",
   isActive: false,
 };
 
-export const emptyModifiedCardFixture = {
+export const emptyModifiedCardFixture: ICardUpdatePayload = {
   url: "",
 };
