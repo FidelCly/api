@@ -12,10 +12,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Shop, User } from ".";
+import { Shop, User, Balance } from ".";
 
 @Entity({ name: "cards" }) // table name in database
 export class Card {
@@ -67,6 +68,9 @@ export class Card {
   @ManyToOne(() => User, (user: User) => user.cards)
   @JoinColumn()
   user!: User;
+
+  @OneToMany(() => Balance, (balance: Balance) => balance.card)
+  balances!: Array<Balance>;
 
   @CreateDateColumn()
   createdAt!: Date;

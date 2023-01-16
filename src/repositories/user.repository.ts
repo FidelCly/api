@@ -62,7 +62,7 @@ export class UserRepository {
       .getRepository(User)
       .findOneOrFail({
         where: { id },
-        relations: { cards: { shop: true } },
+        relations: { cards: { shop: true, balances: { promotion: true } } },
       });
   };
 
