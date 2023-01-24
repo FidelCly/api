@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-} from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 import {
   Column,
   CreateDateColumn,

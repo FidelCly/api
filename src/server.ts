@@ -5,7 +5,6 @@ import app from "./app";
 
 AppDataSource.initialize()
   .then(() => {
-
     // configure dotenv
     dotenv.config({ path: path.join(__dirname, "../.env") });
     dotenv.config({ path: path.join(__dirname, "../.env.test") });

@@ -4,4 +4,10 @@ import { UserController } from "./user.controller";
 import { PromotionController } from "./promotion.controller";
 import { BalanceController } from "./balance.controller";
 
-export { CardController, UserController, ShopController, PromotionController, BalanceController };
+export {
+  CardController,
+  UserController,
+  ShopController,
+  PromotionController,
+  BalanceController,
+};
