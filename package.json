@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/server.ts",
+    "dev": "ts-node src/dev.server.ts",
     "build": "rm -rf build && tsc -p .",
     "test": "ENV_FILE=.env.test NODE_ENV=test jest --passWithNoTests --runInBand",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/data-source.ts",
-    "db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/data-source.ts"
+    "migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/test-data-source.ts",
+    "db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/test-data-source.ts"
   },
   "repository": {
     "type": "git",

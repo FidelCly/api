@@ -49,4 +49,17 @@ export class ShopRepository {
   static delete = async (id: number) => {
     await getDataSource().getRepository(Shop).delete(id);
   };
+
+  /**
+   * Get a shop's promotions from the db
+   * @param id - The id of shop
+   */
+  static getShopsPromotions = async (id: number): Promise<Shop> => {
+    return await getDataSource()
+      .getRepository(Shop)
+      .findOneOrFail({
+        where: { id },
+        relations: { promotions: true },
+      });
+  };
 }

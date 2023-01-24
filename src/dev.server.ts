@@ -1,13 +1,11 @@
-import { AppDataSource } from "./data-source";
 import * as dotenv from "dotenv";
 import path from "path";
 import app from "./app";
+import { TestDataSource } from "./test-data-source";
 
-AppDataSource.initialize()
+TestDataSource.initialize()
   .then(() => {
-
     // configure dotenv
-    dotenv.config({ path: path.join(__dirname, "../.env") });
     dotenv.config({ path: path.join(__dirname, "../.env.test") });
 
     // configure port number

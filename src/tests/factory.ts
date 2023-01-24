@@ -4,18 +4,23 @@ import express from "express";
 import { DataSource } from "typeorm";
 import app from "../app";
 import path from "path";
-import { Card, Promotion, Shop, User } from "../entities";
+import { TestDataSource } from "../test-data-source";
+
+import { Card, Promotion, Shop, User, Balance } from "../entities";
 import {
   CardRepository,
   PromotionRepository,
   ShopRepository,
   UserRepository,
+  BalanceRepository,
 } from "../repositories";
-import { userFixture } from "./seeds/user.seed";
-import { shopFixture } from "./seeds/shop.seed";
-import { cardFixture } from "./seeds/card.seed";
-import { TestDataSource } from "../test-data-source";
-import { promotionFixture } from "./seeds/promotion.seed";
+import {
+  userFixture,
+  shopFixture,
+  cardFixture,
+  promotionFixture,
+  balanceFixture,
+} from "./seeds";
 
 export class TestFactory {
   private _app: express.Application;
@@ -55,6 +60,7 @@ export class TestFactory {
     this.seedShop();
     this.seedCard();
     this.seedPromotion();
+    this.seedBalance();
   }
 
   /**
@@ -91,5 +97,14 @@ export class TestFactory {
     const promotion: Promotion = new Promotion();
     Object.assign(promotion, promotionFixture);
     await PromotionRepository.save(promotion);
+  }
+
+  /**
+   * Seed balance
+   */
+  public async seedBalance(): Promise<void> {
+    const balance: Balance = new Balance();
+    Object.assign(balance, balanceFixture);
+    await BalanceRepository.save(balance);
   }
 }

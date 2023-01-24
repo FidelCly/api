@@ -18,13 +18,14 @@ import {
   modifiedShopFixture,
   emptyModifiedShopFixture,
 } from "./shop.seed";
+import { balanceFixture, modifiedBalanceFixture } from "./balance.seed";
 
 export {
   promotionFixture,
   modifiedPromotionFixture,
   modifiedEmptyPromotionFixture,
 };
-
 export { userFixture, modifiedUserFixture, emptyModifiedUserFixture };
 export { cardFixture, modifiedCardFixture, emptyModifiedCardFixture };
 export { shopFixture, modifiedShopFixture, emptyModifiedShopFixture };
+export { balanceFixture, modifiedBalanceFixture };
