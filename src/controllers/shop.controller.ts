@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Shop } from "../entities";
 import { IShopCreatePayload, IShopUpdatePayload } from "../payloads";
 import { ShopRepository } from "../repositories";
+import { getDistance } from "../utils/geoloc.utils";
 
 export class ShopController {
   /**
@@ -23,7 +24,21 @@ export class ShopController {
    * Get all shops
    */
   static all = async (req: Request, res: Response) => {
-    const shops = await ShopRepository.all();
+    const lat = Number(req.query.lat);
+    const long = Number(req.query.long);
+    const distance = Number(req.query.d);
+
+    let shops = await ShopRepository.all();
+
+    // Query params provided for shops in defined area
+    if (distance && lat && long) {
+      shops = shops.filter((shop: Shop) => {
+        return (
+          getDistance(Number(shop.lat), Number(shop.long), lat, long) < distance
+        );
+      });
+    }
+
     res.status(200).send(shops);
   };
 
