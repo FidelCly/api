@@ -2,7 +2,8 @@
 import {
   IsBoolean,
   IsEmail,
-  IsLatLong,
+  IsLatitude,
+  IsLongitude,
   IsNotEmpty,
   IsPhoneNumber,
   IsPostalCode,
@@ -55,9 +56,14 @@ export class Shop {
   zipCode: string;
 
   @IsNotEmpty()
-  @IsLatLong()
+  @IsLatitude()
   @Column()
-  geoloc: string;
+  lat: string;
+
+  @IsNotEmpty()
+  @IsLongitude()
+  @Column()
+  long: string;
 
   @IsNotEmpty()
   @IsPhoneNumber("FR")
