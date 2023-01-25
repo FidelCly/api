@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Shop } from "../entities";
 
@@ -38,16 +39,16 @@ export class ShopRepository {
    * Save a shop on the db
    * @param shop - The shop to save
    */
-  static save = async (shop: Shop) => {
-    getDataSource().getRepository(Shop).save(shop);
+  static save = async (shop: Shop): Promise<Shop> => {
+    return getDataSource().getRepository(Shop).save(shop);
   };
 
   /**
    * Delete a shop from the db
    * @param id - The id of the shop to delete
    */
-  static delete = async (id: number) => {
-    getDataSource().getRepository(Shop).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(Shop).delete(id);
   };
 
   /**

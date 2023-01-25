@@ -21,6 +21,7 @@ import {
   promotionFixture,
   balanceFixture,
 } from "./seeds";
+import { Console } from "console";
 
 export class TestFactory {
   private _app: express.Application;
@@ -56,11 +57,11 @@ export class TestFactory {
    * Seed db
    */
   public async seed(): Promise<void> {
-    this.seedUser();
-    this.seedShop();
-    this.seedCard();
-    this.seedPromotion();
-    this.seedBalance();
+    await this.seedUser();
+    await this.seedShop();
+    await this.seedCard();
+    await this.seedPromotion();
+    await this.seedBalance();
   }
 
   /**

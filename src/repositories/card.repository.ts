@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Card } from "../entities";
 
@@ -19,15 +20,15 @@ export class CardRepository {
    * Save a card on the db
    * @param card - The card to save
    */
-  static save = async (card: Card) => {
-    getDataSource().getRepository(Card).save(card);
+  static save = async (card: Card): Promise<Card> => {
+    return getDataSource().getRepository(Card).save(card);
   };
 
   /**
    * Delete a card from the db
    * @param id - The id of the card to delete
    */
-  static delete = async (id: number) => {
-    getDataSource().getRepository(Card).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(Card).delete(id);
   };
 }

@@ -50,7 +50,7 @@ export class UserController {
       await UserRepository.save(user);
       res.status(201).send({ message: "User created" });
     } catch (error) {
-      res.status(400).send({ message: error });
+      res.status(500).send({ message: error });
     }
   };
 

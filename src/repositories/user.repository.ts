@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Card, User } from "../entities";
 
@@ -41,16 +42,16 @@ export class UserRepository {
    * Save a user on the db
    * @param user - The user to save
    */
-  static save = async (user: User) => {
-    getDataSource().getRepository(User).save(user);
+  static save = async (user: User): Promise<User> => {
+    return getDataSource().getRepository(User).save(user);
   };
 
   /**
    * Delete a user from the db
    * @param id - The id of the user to delete
    */
-  static delete = async (id: number) => {
-    getDataSource().getRepository(User).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(User).delete(id);
   };
 
   /**
@@ -70,8 +71,8 @@ export class UserRepository {
    * Delete a user's cards from the db
    * @param id - The id of user
    */
-  static deleteUsersCards = async (id: number) => {
-    getDataSource()
+  static deleteUsersCards = async (id: number): Promise<DeleteResult> => {
+    return getDataSource()
       .createQueryBuilder()
       .delete()
       .from(Card)

@@ -72,7 +72,7 @@ export class BalanceController {
       await BalanceRepository.save(balance);
       res.status(201).send({ message: "Balance created" });
     } catch (error) {
-      res.status(400).send({ message: error });
+      res.status(500).send({ message: error });
     }
   };
 
@@ -128,7 +128,7 @@ export class BalanceController {
       await BalanceRepository.save(balance);
       res.status(200).send({ message: "Balance updated" });
     } catch (error) {
-      res.status(400).send({ message: error });
+      res.status(500).send({ message: error });
     }
   };
 
@@ -145,8 +145,12 @@ export class BalanceController {
       return;
     }
 
-    await BalanceRepository.delete(id);
-    res.status(200).send({ message: "Balance deleted" });
+    try {
+      await BalanceRepository.delete(id);
+      res.status(200).send({ message: "Balance deleted" });
+    } catch (error) {
+      res.status(500).send({ message: error });
+    }
   };
 
   /**
@@ -171,37 +175,41 @@ export class BalanceController {
       return;
     }
 
-    if (!promotion.isActive) {
-      balance.isActive = false;
-      await BalanceRepository.save(balance);
-      res.status(403).send({ message: "Promotion is not active" });
-      return;
-    }
+    try {
+      if (!promotion.isActive) {
+        balance.isActive = false;
+        await BalanceRepository.save(balance);
+        res.status(403).send({ message: "Promotion is not active" });
+        return;
+      }
 
-    if (new Date(promotion.endAt).getTime() < new Date().getTime()) {
-      promotion.isActive = false;
-      await PromotionRepository.save(promotion);
-      res.status(403).send({ message: "Promotion has expired" });
-      return;
-    }
+      if (new Date(promotion.endAt).getTime() < new Date().getTime()) {
+        promotion.isActive = false;
+        await PromotionRepository.save(promotion);
+        res.status(403).send({ message: "Promotion has expired" });
+        return;
+      }
 
-    if (balance.counter === promotion.checkoutLimit) {
-      balance.counter = 1;
-      balance.isActive = true;
+      if (balance.counter === promotion.checkoutLimit) {
+        balance.counter = 1;
+        balance.isActive = true;
+        await BalanceRepository.save(balance);
+        res.status(200).send({ message: "Balance updated" });
+        return;
+      }
+
+      if (balance.counter++ === promotion.checkoutLimit) {
+        balance.counter = promotion.checkoutLimit;
+        balance.isActive = false;
+        await BalanceRepository.save(balance);
+        res.status(200).send({ message: "Promotion limit reached" });
+      }
+
+      balance.counter++;
       await BalanceRepository.save(balance);
       res.status(200).send({ message: "Balance updated" });
-      return;
+    } catch (error) {
+      res.status(500).send({ message: error });
     }
-
-    if (balance.counter++ === promotion.checkoutLimit) {
-      balance.counter = promotion.checkoutLimit;
-      balance.isActive = false;
-      await BalanceRepository.save(balance);
-      res.status(200).send({ message: "Promotion limit reached" });
-    }
-
-    balance.counter++;
-    await BalanceRepository.save(balance);
-    res.status(200).send({ message: "Balance updated" });
   };
 }
