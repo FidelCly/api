@@ -4,7 +4,8 @@ export interface IShopCreatePayload {
   siret: string;
   email: string;
   zipCode: string;
-  geoloc: string;
+  lat: string;
+  long: string;
   phone: string;
   address: string;
 }
@@ -15,7 +16,8 @@ export interface IShopUpdatePayload {
   siret?: string;
   email?: string;
   zipCode?: string;
-  geoloc?: number;
+  lat?: string;
+  long?: string;
   phone?: string;
   address?: string;
 }
