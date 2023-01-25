@@ -243,6 +243,13 @@ Status: 200 OK
 ```HTTP
 GET /shops/
 ```
+
+| Parameters | Type   | In    | Description                       |
+| :--------- | :----- | :---- | :-------------------------------- |
+| **d**      | number | query | **[required]** Distance in metres |
+| **lat**    | number | query | **[required]** Latitude           |
+| **long**   | number | query | **[required]** Longitude          |
+
 ##### Request
 ```HTTP
 GET /shops/
