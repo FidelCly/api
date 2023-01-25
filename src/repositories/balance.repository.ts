@@ -8,7 +8,7 @@ export class BalanceRepository {
    * @returns A balance if found
    */
   static findOneById = async (id: number): Promise<Balance> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Balance)
       .findOneByOrFail({
         id: Number(id),
@@ -20,7 +20,7 @@ export class BalanceRepository {
    * @param balance - The balance to save
    */
   static save = async (balance: Balance) => {
-    await getDataSource().getRepository(Balance).save(balance);
+    getDataSource().getRepository(Balance).save(balance);
   };
 
   /**
@@ -28,6 +28,6 @@ export class BalanceRepository {
    * @param id - The id of the balance to delete
    */
   static delete = async (id: number) => {
-    await getDataSource().getRepository(Balance).delete(id);
+    getDataSource().getRepository(Balance).delete(id);
   };
 }

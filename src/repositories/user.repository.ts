@@ -8,7 +8,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneById = async (id: number): Promise<User> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(User)
       .findOneByOrFail({
         id: Number(id),
@@ -21,7 +21,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByUsername = async (username: string): Promise<User | null> => {
-    return await getDataSource().getRepository(User).findOneBy({
+    return getDataSource().getRepository(User).findOneBy({
       username,
     });
   };
@@ -32,7 +32,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByEmail = async (email: string): Promise<User | null> => {
-    return await getDataSource().getRepository(User).findOneBy({
+    return getDataSource().getRepository(User).findOneBy({
       email,
     });
   };
@@ -42,7 +42,7 @@ export class UserRepository {
    * @param user - The user to save
    */
   static save = async (user: User) => {
-    await getDataSource().getRepository(User).save(user);
+    getDataSource().getRepository(User).save(user);
   };
 
   /**
@@ -50,7 +50,7 @@ export class UserRepository {
    * @param id - The id of the user to delete
    */
   static delete = async (id: number) => {
-    await getDataSource().getRepository(User).delete(id);
+    getDataSource().getRepository(User).delete(id);
   };
 
   /**
@@ -58,7 +58,7 @@ export class UserRepository {
    * @param id - The id of user
    */
   static getUsersCards = async (id: number): Promise<User> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(User)
       .findOneOrFail({
         where: { id },
@@ -71,7 +71,7 @@ export class UserRepository {
    * @param id - The id of user
    */
   static deleteUsersCards = async (id: number) => {
-    await getDataSource()
+    getDataSource()
       .createQueryBuilder()
       .delete()
       .from(Card)

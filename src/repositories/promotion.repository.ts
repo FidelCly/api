@@ -8,7 +8,7 @@ export class PromotionRepository {
    * @returns A promotion if found
    */
   static findOneById = async (id: number): Promise<Promotion> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Promotion)
       .findOneByOrFail({
         id: Number(id),
@@ -20,7 +20,7 @@ export class PromotionRepository {
    * @param promotion - The promotion to save
    */
   static save = async (promotion: Promotion) => {
-    await getDataSource().getRepository(Promotion).save(promotion);
+    getDataSource().getRepository(Promotion).save(promotion);
   };
 
   /**
@@ -28,6 +28,6 @@ export class PromotionRepository {
    * @param id - The id of the promotion to delete
    */
   static delete = async (id: number) => {
-    await getDataSource().getRepository(Promotion).delete(id);
+    getDataSource().getRepository(Promotion).delete(id);
   };
 }

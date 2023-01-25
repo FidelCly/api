@@ -7,7 +7,7 @@ export class ShopRepository {
    * @returns A list of shops
    */
   static all = async (): Promise<Shop[]> => {
-    return await getDataSource().getRepository(Shop).find();
+    return getDataSource().getRepository(Shop).find();
   };
 
   /**
@@ -16,7 +16,7 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneById = async (id: number): Promise<Shop> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Shop)
       .findOneByOrFail({
         id: Number(id),
@@ -29,7 +29,7 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneByEmail = async (email: string): Promise<Shop | null> => {
-    return await getDataSource().getRepository(Shop).findOneBy({
+    return getDataSource().getRepository(Shop).findOneBy({
       email,
     });
   };
@@ -39,7 +39,7 @@ export class ShopRepository {
    * @param shop - The shop to save
    */
   static save = async (shop: Shop) => {
-    await getDataSource().getRepository(Shop).save(shop);
+    getDataSource().getRepository(Shop).save(shop);
   };
 
   /**
@@ -47,7 +47,7 @@ export class ShopRepository {
    * @param id - The id of the shop to delete
    */
   static delete = async (id: number) => {
-    await getDataSource().getRepository(Shop).delete(id);
+    getDataSource().getRepository(Shop).delete(id);
   };
 
   /**
@@ -55,7 +55,7 @@ export class ShopRepository {
    * @param id - The id of shop
    */
   static getShopsPromotions = async (id: number): Promise<Shop> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Shop)
       .findOneOrFail({
         where: { id },

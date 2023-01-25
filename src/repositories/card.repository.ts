@@ -8,7 +8,7 @@ export class CardRepository {
    * @returns A card if found
    */
   static findOneById = async (id: number): Promise<Card> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Card)
       .findOneByOrFail({
         id: Number(id),
@@ -20,7 +20,7 @@ export class CardRepository {
    * @param card - The card to save
    */
   static save = async (card: Card) => {
-    await getDataSource().getRepository(Card).save(card);
+    getDataSource().getRepository(Card).save(card);
   };
 
   /**
@@ -28,6 +28,6 @@ export class CardRepository {
    * @param id - The id of the card to delete
    */
   static delete = async (id: number) => {
-    await getDataSource().getRepository(Card).delete(id);
+    getDataSource().getRepository(Card).delete(id);
   };
 }
