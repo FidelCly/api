@@ -286,9 +286,16 @@ Status: 200 OK
 ```HTTP
 GET /shops/
 ```
+
+| Parameters | Type   | In    | Description                       |
+| :--------- | :----- | :---- | :-------------------------------- |
+| **d**      | number | query | **[required]** Distance in metres |
+| **lat**    | number | query | **[required]** Latitude           |
+| **long**   | number | query | **[required]** Longitude          |
+
 ##### Request
 ```HTTP
-GET /shops/
+GET /shops/?d=3000&long=2.3690961&lat=48.8573185
 ```
 ##### Response
 ``` HTTP
@@ -303,8 +310,8 @@ Status: 200 OK
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
     "zipCode": "12345",
-    "lat":"22.366329",
-    "long": "-10.137468",
+    "lat": "48.8578461",
+    "long": "2.3685758",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
   }

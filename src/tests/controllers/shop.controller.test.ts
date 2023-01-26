@@ -4,6 +4,7 @@ import app from "../../app";
 import { TestFactory } from "../factory";
 import {
   emptyModifiedShopFixture,
+  farAwayShopFixture,
   modifiedShopFixture,
   shopFixture,
 } from "../seeds";
@@ -114,13 +115,29 @@ describe("Testing shop controller", () => {
   });
 
   describe("Get all shops", () => {
-    it("responds with status 200", async () => {
-      const response = await request(app)
-        .get("/shops/")
-        .set("Accept", "application/json");
+    describe("without filters", () => {
+      it("responds with status 200", async () => {
+        const response = await request(app)
+          .get("/shops/")
+          .set("Accept", "application/json");
 
-      expect(response.headers["content-type"]).toMatch(/json/);
-      expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+      });
+    });
+
+    describe("with location fitlers", () => {
+      it("responds with status 200", async () => {
+        await factory.seedShop(farAwayShopFixture);
+
+        const response = await request(app)
+          .get("/shops/?d=3000&long=2.3690961&lat=48.8573185")
+          .set("Accept", "application/json");
+
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBe(1);
+      });
     });
   });
 
