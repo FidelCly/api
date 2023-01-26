@@ -14,6 +14,7 @@
   - [Shops endpoints](#shops-endpoints)
     - [Get all shops](#get-all-shops)
     - [Get a shop](#get-a-shop)
+    - [Get a shop's promotions](#get-a-shops-promotions)
     - [Create a shop](#create-a-shop)
     - [Update a shop](#update-a-shop)
     - [Delete a shop](#delete-a-shop)
@@ -27,7 +28,12 @@
     - [Create a promotion](#create-a-promotion)
     - [Update a promotion](#update-a-promotion)
     - [Delete a promotion](#delete-a-promotion)
-
+  - [Balances endpoints](#balances-endpoints)
+    - [Get a balance](#get-a-balance)
+    - [Create a balance](#create-a-balance)
+    - [Update a balance](#update-a-balance)
+    - [Delete a balance](#delete-a-balance)
+    - [Checkout a balance](#checkout-a-balance)
 
 ## Run locally
 ```
@@ -117,45 +123,80 @@ Status: 200 OK
 ```
 ```json
 [
-    {
-      "id": 1,
-      "url": "https://example.com",
-      "shopId": 1,
-      "userId": 1,
-      "startAt": "",
-      "endAt": "",
-      "shop": {
-        "companyName": "Bistrot123",
-        "siren": "123456789",
-        "siret": "12345678901234",
-        "email": "bistrot123@gmail.com",
-        "zipCode": "12345",
-        "geoloc": "22.366329,-10.137468",
-        "phone": "0632547698",
-        "address": "12 rue du bistrot",
-      }
+  {
+    "id": 1,
+    "url": "https://example.com",
+    "shopId": 1,
+    "userId": 1,
+    "startAt": "",
+    "endAt": "",
+    "shop": {
+      "companyName": "Bistrot123",
+      "siren": "123456789",
+      "siret": "12345678901234",
+      "email": "bistrot123@gmail.com",
+      "zipCode": "12345",
+      "geoloc": "22.366329,-10.137468",
+      "phone": "0632547698",
+      "address": "12 rue du bistrot",
     },
-    {
-      "id": 2,
-      "url": "https://example2.com",
-      "shopId": 2,
-      "userId": 1,
-      "startAt": "",
-      "endAt": "",
-      "shop": {
-        "companyName": "Coffee Shop",
-        "siren": "987654321",
-        "siret": "98765432101234",
-        "email": "coffeeshop@gmail.com",
-        "zipCode": "54321",
-        "geoloc": "18.365229,-11.147119",
-        "phone": "0698765432",
-        "address": "1 rue du café",
+    "balances": [
+      {
+        "id": 1,
+        "promotionId": 1,
+        "cardId": 1,
+        "counter": 0,
+        "isActive": true
+        "promotion": {
+          "id": 1,
+          "shopId": 1,
+          "name": "Promotion",
+          "description": "Promotion description",
+          "startAt": "2019-05-27",
+          "endAt": "2020-05-27",
+          "checkoutLimit": 10,
+        }
       }
-    }
+    ]
+  },
+  {
+    "id": 2,
+    "url": "https://example2.com",
+    "shopId": 2,
+    "userId": 1,
+    "startAt": "",
+    "endAt": "",
+    "shop": {
+      "companyName": "Coffee Shop",
+      "siren": "987654321",
+      "siret": "98765432101234",
+      "email": "coffeeshop@gmail.com",
+      "zipCode": "54321",
+      "geoloc": "18.365229,-11.147119",
+      "phone": "0698765432",
+      "address": "1 rue du café",
+    },
+    "balances": [
+      {
+        "id": 2,
+        "promotionId": 2,
+        "cardId": 2,
+        "counter": 5,
+        "isActive": true
+        "promotion": {
+          "id": 2,
+          "shopId": 2,
+          "name": "Promotion2",
+          "description": "Promotion2 description",
+          "startAt": "2019-05-27",
+          "endAt": "2020-05-27",
+          "checkoutLimit": 20,
+        }
+      }
+    ]
+  }
 ]
 ```
-
 
 #### Create a user
 ```HTTP
@@ -304,6 +345,38 @@ Status: 200 OK
   "address": "12 rue du bistrot",
 }
 ```
+
+#### Get a shop's promotions
+```HTTP
+GET /shops/:id/promotions
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+```HTTP
+GET /shops/1/promotions
+```
+##### Response
+``` HTTP
+Status: 200 OK
+```
+```json
+[
+  {
+      "id": 1,
+      "shopId": 1,
+      "name": "Promotion",
+      "description": "Promotion description",
+      "startAt": "2019-05-27",
+      "endAt": "2020-05-27",
+      "checkoutLimit": 10,
+  }
+]
+```
+
 #### Create a shop
 ```HTTP
 POST /shops
@@ -560,13 +633,13 @@ POST /promotions
 
 | Parameters        | Type    | In    | Description    |
 | :---------------- | :------ | :---- | :------------- |
-| **shopId**        | number  | query | **[required]** |
-| **name**          | string  | query | **[required]** |
-| **description**   | string  | query | **[optional]** |
-| **checkoutLimit** | number  | query | **[required]** |
-| **startAt**       | string  | query | **[optional]** |
-| **endAt**         | string  | query | **[required]** |
-| **isActive**      | boolean | query | **[optional]** |
+| **shopId**        | number  | body | **[required]** |
+| **name**          | string  | body | **[required]** |
+| **description**   | string  | body | **[optional]** |
+| **checkoutLimit** | number  | body | **[required]** |
+| **startAt**       | string  | body | **[optional]** |
+| **endAt**         | string  | body | **[required]** |
+| **isActive**      | boolean | body | **[optional]** |
 
 ##### Request
 ```HTTP
@@ -598,11 +671,11 @@ PUT /promotions/:id
 | Parameters        | Type    | In    | Description    |
 | :---------------- | :------ | :---- | :------------- |
 | **id**            | number  | query | **[required]** |
-| **name**          | string  | query | **[optional]** |
-| **description**   | string  | query | **[optional]** |
-| **checkoutLimit** | number  | query | **[optional]** |
-| **endAt**         | string  | query | **[optional]** |
-| **isActive**      | boolean | query | **[optional]** |
+| **name**          | string  | body | **[optional]** |
+| **description**   | string  | body | **[optional]** |
+| **checkoutLimit** | number  | body | **[optional]** |
+| **endAt**         | string  | body | **[optional]** |
+| **isActive**      | boolean | body | **[optional]** |
 
 ##### Request
 ```HTTP
@@ -644,3 +717,146 @@ Status: 200 OK
   "message": "Promotion deleted",
 }
 ```
+
+### Balances endpoints
+#### Get a balance
+```HTTP
+GET /balances/:id
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+```HTTP
+GET /balances/1
+```
+##### Response
+``` HTTP
+Status: 200 OK
+```
+```json
+{
+  "id": 1,
+  "promotionId": 1,
+  "cardId": 1,
+  "counter": 0,
+  "isActive": true
+}
+```
+
+#### Create a balance
+```HTTP
+POST /balances
+```
+
+| Parameters        | Type    | In    | Description    |
+| :---------------- | :------ | :---- | :------------- |
+| **promotionId**        | number  | body | **[required]** |
+| **cardId**          | number  | body | **[required]** |
+| **counter**   | number  | body | **[optional]** Default 0 |
+| **isActive**      | boolean | body | **[optional]** |
+
+##### Request
+```HTTP
+POST /balances
+  {
+    "promotionId": 1,
+    "cardId": 1,
+    "counter": 0,
+    "isActive": true
+  }
+```
+##### Response
+``` HTTP
+Status: 201 CREATED
+```
+```json
+{
+  "message": "Balance created",
+}
+```
+
+#### Update a balance
+```HTTP
+PUT /balances/:id
+```
+
+| Parameters        | Type    | In    | Description    |
+| :---------------- | :------ | :---- | :------------- |
+| **id**            | number  | query | **[required]** |
+| **counter**   | number  | body | **[optional]**  |
+| **isActive**      | boolean | body | **[optional]** |
+
+##### Request
+```HTTP
+PUT /balances/1
+  {
+    "counter": 10,
+    "isActive": false
+  }
+```
+##### Response
+``` HTTP
+Status: 200 OK
+```
+```json
+{
+  "message": "Balance updated",
+}
+```
+#### Delete a balance
+```HTTP
+DELETE /balances/:id
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+```HTTP
+DELETE /balances/1
+```
+##### Response
+``` HTTP
+Status: 200 OK
+```
+```json
+{
+  "message": "Balance deleted",
+}
+```
+#### Checkout a balance
+```HTTP
+PUT /balances/checkout/:id
+```
+
+| Parameters        | Type    | In    | Description    |
+| :---------------- | :------ | :---- | :------------- |
+| **id**            | number  | query | **[required]** |
+
+##### Request
+```HTTP
+PUT /balances/checkout/1
+```
+##### Response
+``` HTTP
+Status: 200 OK
+```
+```json
+{
+  "message": "Balance updated", // increments counter +1
+}
+```
+or
+``` HTTP
+Status: 200 OK
+```
+```json
+{
+  "message": "Promotion limit reached", // Limit is reached, customer gets prize
+}
+```
+

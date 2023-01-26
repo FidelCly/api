@@ -141,4 +141,18 @@ export class ShopController {
     await ShopRepository.delete(id);
     res.status(200).send({ message: "Shop deleted" });
   };
+
+  /**
+   * Get shop's promotions
+   */
+  static promotions = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      const shop = await ShopRepository.getShopsPromotions(id);
+      res.status(200).send(shop.promotions);
+    } catch (error) {
+      res.status(404).send({ message: "Shop not found" });
+    }
+  };
 }

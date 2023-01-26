@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Shop } from "../entities";
 
@@ -7,7 +8,7 @@ export class ShopRepository {
    * @returns A list of shops
    */
   static all = async (): Promise<Shop[]> => {
-    return await getDataSource().getRepository(Shop).find();
+    return getDataSource().getRepository(Shop).find();
   };
 
   /**
@@ -16,7 +17,7 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneById = async (id: number): Promise<Shop> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Shop)
       .findOneByOrFail({
         id: Number(id),
@@ -29,7 +30,7 @@ export class ShopRepository {
    * @returns A shop if found
    */
   static findOneByEmail = async (email: string): Promise<Shop | null> => {
-    return await getDataSource().getRepository(Shop).findOneBy({
+    return getDataSource().getRepository(Shop).findOneBy({
       email,
     });
   };
@@ -38,15 +39,28 @@ export class ShopRepository {
    * Save a shop on the db
    * @param shop - The shop to save
    */
-  static save = async (shop: Shop) => {
-    await getDataSource().getRepository(Shop).save(shop);
+  static save = async (shop: Shop): Promise<Shop> => {
+    return getDataSource().getRepository(Shop).save(shop);
   };
 
   /**
    * Delete a shop from the db
    * @param id - The id of the shop to delete
    */
-  static delete = async (id: number) => {
-    await getDataSource().getRepository(Shop).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(Shop).delete(id);
+  };
+
+  /**
+   * Get a shop's promotions from the db
+   * @param id - The id of shop
+   */
+  static getShopsPromotions = async (id: number): Promise<Shop> => {
+    return getDataSource()
+      .getRepository(Shop)
+      .findOneOrFail({
+        where: { id },
+        relations: { promotions: true },
+      });
   };
 }
