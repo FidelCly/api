@@ -15,6 +15,7 @@ import {
 } from "./user.seed";
 import {
   shopFixture,
+  farAwayShopFixture,
   modifiedShopFixture,
   emptyModifiedShopFixture,
 } from "./shop.seed";
@@ -27,5 +28,10 @@ export {
 };
 export { userFixture, modifiedUserFixture, emptyModifiedUserFixture };
 export { cardFixture, modifiedCardFixture, emptyModifiedCardFixture };
-export { shopFixture, modifiedShopFixture, emptyModifiedShopFixture };
+export {
+  shopFixture,
+  farAwayShopFixture,
+  modifiedShopFixture,
+  emptyModifiedShopFixture,
+};
 export { balanceFixture, modifiedBalanceFixture };

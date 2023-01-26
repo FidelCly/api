@@ -21,7 +21,13 @@ import {
   promotionFixture,
   balanceFixture,
 } from "./seeds";
-import { Console } from "console";
+import {
+  IBalanceCreatePayload,
+  ICardCreatePayload,
+  IPromotionCreatePayload,
+  IShopCreatePayload,
+  IUserCreatePayload,
+} from "../payloads";
 
 export class TestFactory {
   private _app: express.Application;
@@ -67,45 +73,47 @@ export class TestFactory {
   /**
    * Seed user
    */
-  public async seedUser(): Promise<void> {
+  public async seedUser(_user?: IUserCreatePayload): Promise<void> {
     const user: User = new User();
-    Object.assign(user, userFixture);
+    Object.assign(user, _user ?? userFixture);
     await UserRepository.save(user);
   }
 
   /**
    * Seed shop
    */
-  public async seedShop(): Promise<void> {
+  public async seedShop(_shop?: IShopCreatePayload): Promise<void> {
     const shop: Shop = new Shop();
-    Object.assign(shop, shopFixture);
+    Object.assign(shop, _shop ?? shopFixture);
     await ShopRepository.save(shop);
   }
 
   /**
    * Seed card
    */
-  public async seedCard(): Promise<void> {
+  public async seedCard(_card?: ICardCreatePayload): Promise<void> {
     const card: Card = new Card();
-    Object.assign(card, cardFixture);
+    Object.assign(card, _card ?? cardFixture);
     await CardRepository.save(card);
   }
 
   /**
    * Seed promotion
    */
-  public async seedPromotion(): Promise<void> {
+  public async seedPromotion(
+    _promotion?: IPromotionCreatePayload
+  ): Promise<void> {
     const promotion: Promotion = new Promotion();
-    Object.assign(promotion, promotionFixture);
+    Object.assign(promotion, _promotion ?? promotionFixture);
     await PromotionRepository.save(promotion);
   }
 
   /**
    * Seed balance
    */
-  public async seedBalance(): Promise<void> {
+  public async seedBalance(_balance?: IBalanceCreatePayload): Promise<void> {
     const balance: Balance = new Balance();
-    Object.assign(balance, balanceFixture);
+    Object.assign(balance, _balance ?? balanceFixture);
     await BalanceRepository.save(balance);
   }
 }

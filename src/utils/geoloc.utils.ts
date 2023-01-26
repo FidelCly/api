@@ -1,11 +1,11 @@
 /**
  * Get distance between two geolocation points.
- * 
+ *
  * @param lat1 - The latitude of the first geoloc
  * @param long1 - The longitude of the first geoloc
  * @param lat2 - The latitude of the second geoloc
  * @param long2 - The longitude of the second geoloc
- * 
+ *
  * @returns The distance in metres (float)
  */
 export function getDistance(
