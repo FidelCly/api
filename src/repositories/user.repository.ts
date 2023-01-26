@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Card, User } from "../entities";
 
@@ -8,7 +9,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneById = async (id: number): Promise<User> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(User)
       .findOneByOrFail({
         id: Number(id),
@@ -21,7 +22,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByUsername = async (username: string): Promise<User | null> => {
-    return await getDataSource().getRepository(User).findOneBy({
+    return getDataSource().getRepository(User).findOneBy({
       username,
     });
   };
@@ -32,7 +33,7 @@ export class UserRepository {
    * @returns A user if found
    */
   static findOneByEmail = async (email: string): Promise<User | null> => {
-    return await getDataSource().getRepository(User).findOneBy({
+    return getDataSource().getRepository(User).findOneBy({
       email,
     });
   };
@@ -41,16 +42,16 @@ export class UserRepository {
    * Save a user on the db
    * @param user - The user to save
    */
-  static save = async (user: User) => {
-    await getDataSource().getRepository(User).save(user);
+  static save = async (user: User): Promise<User> => {
+    return getDataSource().getRepository(User).save(user);
   };
 
   /**
    * Delete a user from the db
    * @param id - The id of the user to delete
    */
-  static delete = async (id: number) => {
-    await getDataSource().getRepository(User).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(User).delete(id);
   };
 
   /**
@@ -58,11 +59,11 @@ export class UserRepository {
    * @param id - The id of user
    */
   static getUsersCards = async (id: number): Promise<User> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(User)
       .findOneOrFail({
         where: { id },
-        relations: { cards: { shop: true } },
+        relations: { cards: { shop: true, balances: { promotion: true } } },
       });
   };
 
@@ -70,8 +71,8 @@ export class UserRepository {
    * Delete a user's cards from the db
    * @param id - The id of user
    */
-  static deleteUsersCards = async (id: number) => {
-    await getDataSource()
+  static deleteUsersCards = async (id: number): Promise<DeleteResult> => {
+    return getDataSource()
       .createQueryBuilder()
       .delete()
       .from(Card)

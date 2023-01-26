@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
 import { Promotion } from "../entities";
 
@@ -8,7 +9,7 @@ export class PromotionRepository {
    * @returns A promotion if found
    */
   static findOneById = async (id: number): Promise<Promotion> => {
-    return await getDataSource()
+    return getDataSource()
       .getRepository(Promotion)
       .findOneByOrFail({
         id: Number(id),
@@ -19,15 +20,15 @@ export class PromotionRepository {
    * Save a promotion on the db
    * @param promotion - The promotion to save
    */
-  static save = async (promotion: Promotion) => {
-    await getDataSource().getRepository(Promotion).save(promotion);
+  static save = async (promotion: Promotion): Promise<Promotion> => {
+    return getDataSource().getRepository(Promotion).save(promotion);
   };
 
   /**
    * Delete a promotion from the db
    * @param id - The id of the promotion to delete
    */
-  static delete = async (id: number) => {
-    await getDataSource().getRepository(Promotion).delete(id);
+  static delete = async (id: number): Promise<DeleteResult> => {
+    return getDataSource().getRepository(Promotion).delete(id);
   };
 }

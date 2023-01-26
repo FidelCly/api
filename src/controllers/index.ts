@@ -2,5 +2,12 @@ import { CardController } from "./card.controller";
 import { ShopController } from "./shop.controller";
 import { UserController } from "./user.controller";
 import { PromotionController } from "./promotion.controller";
+import { BalanceController } from "./balance.controller";
 
-export { CardController, UserController, ShopController, PromotionController };
+export {
+  CardController,
+  UserController,
+  ShopController,
+  PromotionController,
+  BalanceController,
+};

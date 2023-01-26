@@ -1,4 +1,4 @@
-import { IShopCreatePayload } from "../../payloads";
+import { IShopCreatePayload, IShopUpdatePayload } from "../../payloads";
 
 export const shopFixture: IShopCreatePayload = {
   companyName: "Bistrot123",
@@ -11,10 +11,10 @@ export const shopFixture: IShopCreatePayload = {
   address: "12 rue du bistrot",
 };
 
-export const modifiedShopFixture = {
+export const modifiedShopFixture: IShopUpdatePayload = {
   companyName: "testshopnameModified",
 };
 
-export const emptyModifiedShopFixture = {
+export const emptyModifiedShopFixture: IShopUpdatePayload = {
   companyName: "",
 };
