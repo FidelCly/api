@@ -6,7 +6,8 @@ export const shopFixture: IShopCreatePayload = {
   siret: "12345678901234",
   email: "bistrot123@gmail.com",
   zipCode: "12345",
-  geoloc: "22.366329,-10.137468",
+  lat: "22.366329",
+  long: "-10.137468",
   phone: "0632547698",
   address: "12 rue du bistrot",
 };
