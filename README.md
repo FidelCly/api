@@ -136,7 +136,8 @@ Status: 200 OK
       "siret": "12345678901234",
       "email": "bistrot123@gmail.com",
       "zipCode": "12345",
-      "geoloc": "22.366329,-10.137468",
+      "lat":"22.366329",
+      "long": "-10.137468",
       "phone": "0632547698",
       "address": "12 rue du bistrot",
     },
@@ -172,7 +173,8 @@ Status: 200 OK
       "siret": "98765432101234",
       "email": "coffeeshop@gmail.com",
       "zipCode": "54321",
-      "geoloc": "18.365229,-11.147119",
+      "lat": "18.365229",
+      "long": "-11.147119",
       "phone": "0698765432",
       "address": "1 rue du café",
     },
@@ -308,7 +310,8 @@ Status: 200 OK
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
     "zipCode": "12345",
-    "geoloc": "22.366329,-10.137468",
+    "lat":"22.366329",
+    "long": "-10.137468",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
   }
@@ -340,7 +343,8 @@ Status: 200 OK
   "siret": "12345678901234",
   "email": "bistrot123@gmail.com",
   "zipCode": "12345",
-  "geoloc": "22.366329,-10.137468",
+  "lat":"22.366329",
+  "long": "-10.137468",
   "phone": "0632547698",
   "address": "12 rue du bistrot",
 }
@@ -389,7 +393,8 @@ POST /shops
 | **siret**       | string | body | **[required]** |
 | **email**       | string | body | **[required]** |
 | **zipCode**     | string | body | **[required]** |
-| **geoloc**      | string | body | **[required]** |
+| **lat**      | string | body | **[required]** |
+| **long**      | string | body | **[required]** |
 | **phone**       | string | body | **[required]** |
 | **address**     | string | body | **[required]** |
 
@@ -402,7 +407,8 @@ POST /shops
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
     "zipCode": "12345",
-    "geoloc": "22.366329,-10.137468",
+    "lat":"22.366329",
+    "long": "-10.137468",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
   }
@@ -430,7 +436,8 @@ PUT /shops/:id
 | **siret**       | string | body  | **[optional]** |
 | **email**       | string | body  | **[optional]** |
 | **zipCode**     | string | body  | **[optional]** |
-| **geoloc**      | string | body  | **[optional]** |
+| **lat**      | string | body  | **[optional]** |
+| **long**      | string | body  | **[optional]** |
 | **phone**       | string | body  | **[optional]** |
 | **address**     | string | body  | **[optional]** |
 
@@ -443,7 +450,8 @@ PUT /shops/1
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
     "zipCode": "12345",
-    "geoloc": "22.366329,-10.137468",
+    "lat":"22.366329",
+    "long": "-10.137468",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
   }
