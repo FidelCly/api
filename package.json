@@ -11,8 +11,10 @@
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/test-data-source.ts",
-    "db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/test-data-source.ts"
+    "migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/data-source.ts",
+    "db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
+    "test:migrate": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:generate -d ./src/test-data-source.ts",
+    "test:db:push": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/test-data-source.ts"
   },
   "repository": {
     "type": "git",
