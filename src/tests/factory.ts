@@ -4,7 +4,6 @@ import express from "express";
 import { DataSource } from "typeorm";
 import app from "../app";
 import path from "path";
-import { TestDataSource } from "../test-data-source";
 
 import { Card, Promotion, Shop, User, Balance } from "../entities";
 import {
@@ -28,6 +27,7 @@ import {
   IShopCreatePayload,
   IUserCreatePayload,
 } from "../payloads";
+import { AppDataSource } from "../data-source";
 
 export class TestFactory {
   private _app: express.Application;
@@ -47,7 +47,7 @@ export class TestFactory {
   public async init(): Promise<void> {
     process.env.NODE_ENV = "test";
     config({ path: path.join(__dirname, "../.env.test") });
-    this._dataSource = await TestDataSource.initialize();
+    this._dataSource = await AppDataSource.initialize();
     this._app = app;
   }
 

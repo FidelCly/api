@@ -52,9 +52,9 @@ docker-compose run --rm web <your-command>
 - `npm run typeorm`
 - `npm run lint` (`npm run lint -- --fix` to lint automatically)
 - `npm run format`
-- `npm run migrate <migration_destination>`
+- `npm run migration:generate <migration_destination>`
   - `<migration_destination>` should be `./src/migrations/<your_migration_name>` (see [Typeorm - Generating migrations](https://typeorm.io/migrations#generating-migrations))
-- `npm run db:push`
+- `npm run migration:run`
 
 ### Introduce code changes
 
@@ -73,8 +73,8 @@ docker-compose run --rm web npm test
 
 - IF the entities have been updated, generate a migration and apply it:
 ```
-docker-compose run --rm web npm run migrate ./src/migrations/<your_migration>
-docker-compose run --rm web npm run db:push
+docker-compose run --rm web npm run migration:generate ./src/migrations/<your_migration>
+docker-compose run --rm web npm run migration:run
 ```
 
 ## API reference

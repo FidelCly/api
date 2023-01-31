@@ -27,7 +27,7 @@ services:
     working_dir: /api
     volumes:
       - .:/api
-    command: "npm run dev"
+    command: "npm run start"
     networks:
       - fidecloud
 
