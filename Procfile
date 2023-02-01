@@ -1,3 +1,2 @@
 web: bash start.sh
-postdeploy: npm run db:push
-
+postdeploy: npm run migration:run
