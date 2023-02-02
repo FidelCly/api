@@ -2,6 +2,7 @@
 import {
   IsBoolean,
   IsEmail,
+  IsEnum,
   IsLatitude,
   IsLongitude,
   IsNotEmpty,
@@ -19,6 +20,14 @@ import {
 } from "typeorm";
 import { Card, Promotion } from ".";
 
+export enum ShopActivity {
+  Restauration = "Restauration",
+  Supply = "Supply",
+  Entertainment = "Entertainment",
+  Store = "Store",
+  Service = "Service",
+}
+
 @Entity({ name: "shops" }) // table name in database
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -27,6 +36,11 @@ export class Shop {
   @IsNotEmpty()
   @Column()
   companyName: string;
+
+  @IsNotEmpty()
+  @IsEnum(ShopActivity)
+  @Column()
+  activity: ShopActivity;
 
   @IsNotEmpty()
   @Length(9, 9)

@@ -1,7 +1,7 @@
 import { User } from "./user";
-import { Shop } from "./shop";
+import { Shop, ShopActivity } from "./shop";
 import { Card } from "./card";
 import { Promotion } from "./promotion";
 import { Balance } from "./balance";
 
-export { User, Shop, Card, Promotion, Balance };
+export { User, Shop, ShopActivity, Card, Promotion, Balance };
