@@ -1,7 +1,9 @@
+import { ShopActivity } from "../../entities";
 import { IShopCreatePayload, IShopUpdatePayload } from "../../payloads";
 
 export const shopFixture: IShopCreatePayload = {
   companyName: "Bistrot123",
+  activity: ShopActivity.Restauration,
   siren: "123456789",
   siret: "12345678901234",
   email: "bistrot123@gmail.com",
@@ -14,6 +16,7 @@ export const shopFixture: IShopCreatePayload = {
 
 export const farAwayShopFixture: IShopCreatePayload = {
   companyName: "Coffeeshop",
+  activity: ShopActivity.Restauration,
   siren: "123456789",
   siret: "12345678901234",
   email: "Coffeeshop@gmail.com",

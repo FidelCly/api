@@ -1,51 +1,55 @@
 # api
 
-- [Run locally](#run-locally)
-  - [Execute a command inside the container](#execute-a-command-inside-the-container)
-  - [Available commands](#available-commands)
-  - [Introduce code changes](#introduce-code-changes)
-- [API reference](#api-reference)
-  - [Users endpoints](#users-endpoints)
-    - [Get a user](#get-a-user)
-    - [Get a user's wallet](#get-a-users-wallet)
-    - [Create a user](#create-a-user)
-    - [Update a user](#update-a-user)
-    - [Delete a user](#delete-a-user)
-  - [Shops endpoints](#shops-endpoints)
-    - [Get all shops](#get-all-shops)
-    - [Get a shop](#get-a-shop)
-    - [Get a shop's promotions](#get-a-shops-promotions)
-    - [Create a shop](#create-a-shop)
-    - [Update a shop](#update-a-shop)
-    - [Delete a shop](#delete-a-shop)
-  - [Cards endpoints](#cards-endpoints)
-    - [Get a card](#get-a-card)
-    - [Create a card](#create-a-card)
-    - [Update a card](#update-a-card)
-    - [Delete a card](#delete-a-card)
-  - [Promotions endpoints](#promotions-endpoints)
-    - [Get a promotion](#get-a-promotion)
-    - [Create a promotion](#create-a-promotion)
-    - [Update a promotion](#update-a-promotion)
-    - [Delete a promotion](#delete-a-promotion)
-  - [Balances endpoints](#balances-endpoints)
-    - [Get a balance](#get-a-balance)
-    - [Create a balance](#create-a-balance)
-    - [Update a balance](#update-a-balance)
-    - [Delete a balance](#delete-a-balance)
-    - [Checkout a balance](#checkout-a-balance)
+- [api](#api)
+  - [Run locally](#run-locally)
+    - [Execute a command inside the container](#execute-a-command-inside-the-container)
+    - [Available commands](#available-commands)
+    - [Introduce code changes](#introduce-code-changes)
+  - [API reference](#api-reference)
+    - [Users endpoints](#users-endpoints)
+      - [Get a user](#get-a-user)
+      - [Get a user's wallet](#get-a-users-wallet)
+      - [Create a user](#create-a-user)
+      - [Update a user](#update-a-user)
+      - [Delete a user](#delete-a-user)
+    - [Shops endpoints](#shops-endpoints)
+      - [Get all shops](#get-all-shops)
+      - [Get a shop](#get-a-shop)
+      - [Get a shop's promotions](#get-a-shops-promotions)
+      - [Create a shop](#create-a-shop)
+      - [Update a shop](#update-a-shop)
+      - [Delete a shop](#delete-a-shop)
+    - [Cards endpoints](#cards-endpoints)
+      - [Get a card](#get-a-card)
+      - [Create a card](#create-a-card)
+      - [Update a card](#update-a-card)
+      - [Delete a card](#delete-a-card)
+    - [Promotions endpoints](#promotions-endpoints)
+      - [Get a promotion](#get-a-promotion)
+      - [Create a promotion](#create-a-promotion)
+      - [Update a promotion](#update-a-promotion)
+      - [Delete a promotion](#delete-a-promotion)
+    - [Balances endpoints](#balances-endpoints)
+      - [Get a balance](#get-a-balance)
+      - [Create a balance](#create-a-balance)
+      - [Update a balance](#update-a-balance)
+      - [Delete a balance](#delete-a-balance)
+      - [Checkout a balance](#checkout-a-balance)
 
 ## Run locally
+
 ```
 docker-compose up
 ```
 
 ### Execute a command inside the container
+
 ```
 docker-compose run --rm web <your-command>
 ```
 
 ### Available commands
+
 - `npm start`
 - `npm run build`
 - `npm run test`
@@ -58,28 +62,34 @@ docker-compose run --rm web <your-command>
 
 ### Introduce code changes
 
-Before pushing your changes, you should: 
+Before pushing your changes, you should:
 
 - Lint and format your code:
+
 ```
 docker-compose run --rm web npm run format
 docker-compose run --rm web npm run lint -- --fix
 ```
 
 - Check that the tests still pass:
+
 ```
 docker-compose run --rm web npm test
 ```
 
 - IF the entities have been updated, generate a migration and apply it:
+
 ```
 docker-compose run --rm web npm run migration:generate ./src/migrations/<your_migration>
 docker-compose run --rm web npm run migration:run
 ```
 
 ## API reference
+
 ### Users endpoints
+
 #### Get a user
+
 ```HTTP
 GET /users/:id
 ```
@@ -89,13 +99,17 @@ GET /users/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /users/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "id": 1,
@@ -105,6 +119,7 @@ Status: 200 OK
 ```
 
 #### Get a user's wallet
+
 ```HTTP
 GET /users/:id/wallet
 ```
@@ -114,13 +129,17 @@ GET /users/:id/wallet
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /users/1/wallet
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 [
   {
@@ -132,6 +151,7 @@ Status: 200 OK
     "endAt": "",
     "shop": {
       "companyName": "Bistrot123",
+      "activity":"Restauration",
       "siren": "123456789",
       "siret": "12345678901234",
       "email": "bistrot123@gmail.com",
@@ -169,6 +189,7 @@ Status: 200 OK
     "endAt": "",
     "shop": {
       "companyName": "Coffee Shop",
+      "activity":"Restauration",
       "siren": "987654321",
       "siret": "98765432101234",
       "email": "coffeeshop@gmail.com",
@@ -201,6 +222,7 @@ Status: 200 OK
 ```
 
 #### Create a user
+
 ```HTTP
 POST /users
 ```
@@ -211,6 +233,7 @@ POST /users
 | **email**    | string | body | **[required]** |
 
 ##### Request
+
 ```HTTP
 POST /users
   {
@@ -218,10 +241,13 @@ POST /users
     "email":"test@fidecly.com"
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 201 CREATED
 ```
+
 ```json
 {
   "message": "User created",
@@ -229,6 +255,7 @@ Status: 201 CREATED
 ```
 
 #### Update a user
+
 ```HTTP
 PUT /users/:id
 ```
@@ -240,6 +267,7 @@ PUT /users/:id
 | **email**    | string | body  | **[optional]** |
 
 ##### Request
+
 ```HTTP
 PUT /users/1
   {
@@ -247,10 +275,13 @@ PUT /users/1
     "email":"test@fidecly.com"
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "User updated",
@@ -259,6 +290,7 @@ Status: 200 OK
 ```
 
 #### Delete a user
+
 ```HTTP
 DELETE /users/:id
 ```
@@ -268,13 +300,17 @@ DELETE /users/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 DELETE /users/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "User deleted",
@@ -282,7 +318,9 @@ Status: 200 OK
 ```
 
 ### Shops endpoints
+
 #### Get all shops
+
 ```HTTP
 GET /shops/
 ```
@@ -294,18 +332,23 @@ GET /shops/
 | **long**   | number | query | **[required]** Longitude          |
 
 ##### Request
+
 ```HTTP
 GET /shops/?d=3000&long=2.3690961&lat=48.8573185
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 [
   {
     "id": 1,
     "companyName": "Bistrot123",
+    "activity":"Restauration",
     "siren": "123456789",
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
@@ -319,6 +362,7 @@ Status: 200 OK
 ```
 
 #### Get a shop
+
 ```HTTP
 GET /shops/:id
 ```
@@ -328,17 +372,22 @@ GET /shops/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /shops/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "id": 1,
   "companyName": "Bistrot123",
+  "activity":"Restauration",
   "siren": "123456789",
   "siret": "12345678901234",
   "email": "bistrot123@gmail.com",
@@ -351,6 +400,7 @@ Status: 200 OK
 ```
 
 #### Get a shop's promotions
+
 ```HTTP
 GET /shops/:id/promotions
 ```
@@ -360,13 +410,17 @@ GET /shops/:id/promotions
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /shops/1/promotions
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 [
   {
@@ -382,6 +436,7 @@ Status: 200 OK
 ```
 
 #### Create a shop
+
 ```HTTP
 POST /shops
 ```
@@ -389,20 +444,23 @@ POST /shops
 | Parameters      | Type   | In   | Description    |
 | :-------------- | :----- | :--- | :------------- |
 | **companyName** | string | body | **[required]** |
+| **activity** | string | body | **[required]** |
 | **siren**       | string | body | **[required]** |
 | **siret**       | string | body | **[required]** |
 | **email**       | string | body | **[required]** |
 | **zipCode**     | string | body | **[required]** |
-| **lat**      | string | body | **[required]** |
-| **long**      | string | body | **[required]** |
+| **lat**         | string | body | **[required]** |
+| **long**        | string | body | **[required]** |
 | **phone**       | string | body | **[required]** |
 | **address**     | string | body | **[required]** |
 
 ##### Request
+
 ```HTTP
 POST /shops
   {
     "companyName": "Bistrot123",
+    "activity":"Restauration",
     "siren": "123456789",
     "siret": "12345678901234",
     "email": "bistrot123@gmail.com",
@@ -413,10 +471,13 @@ POST /shops
     "address": "12 rue du bistrot",
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 201 CREATED
 ```
+
 ```json
 {
   "message": "Shop created",
@@ -424,6 +485,7 @@ Status: 201 CREATED
 ```
 
 #### Update a shop
+
 ```HTTP
 PUT /shops/:id
 ```
@@ -432,16 +494,18 @@ PUT /shops/:id
 | :-------------- | :----- | :---- | :------------- |
 | **id**          | number | query | **[required]** |
 | **companyName** | string | body  | **[optional]** |
+| **activity**    | string | body  | **[optional]** |
 | **siren**       | string | body  | **[optional]** |
 | **siret**       | string | body  | **[optional]** |
 | **email**       | string | body  | **[optional]** |
 | **zipCode**     | string | body  | **[optional]** |
-| **lat**      | string | body  | **[optional]** |
-| **long**      | string | body  | **[optional]** |
+| **lat**         | string | body  | **[optional]** |
+| **long**        | string | body  | **[optional]** |
 | **phone**       | string | body  | **[optional]** |
 | **address**     | string | body  | **[optional]** |
 
 ##### Request
+
 ```HTTP
 PUT /shops/1
   {
@@ -456,10 +520,13 @@ PUT /shops/1
     "address": "12 rue du bistrot",
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Shop updated",
@@ -467,6 +534,7 @@ Status: 200 OK
 ```
 
 #### Delete a shop
+
 ```HTTP
 DELETE /shops/:id
 ```
@@ -476,13 +544,17 @@ DELETE /shops/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 DELETE /shops/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Shop deleted",
@@ -490,7 +562,9 @@ Status: 200 OK
 ```
 
 ### Cards endpoints
+
 #### Get a card
+
 ```HTTP
 GET /cards/:id
 ```
@@ -500,13 +574,17 @@ GET /cards/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /cards/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "id": 1,
@@ -519,6 +597,7 @@ Status: 200 OK
 ```
 
 #### Create a card
+
 ```HTTP
 POST /cards
 ```
@@ -533,6 +612,7 @@ POST /cards
 | **isActive** | boolean | body | **[optional]** |
 
 ##### Request
+
 ```HTTP
 POST /cards
   {
@@ -543,16 +623,21 @@ POST /cards
     "endAt": "",
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 201 CREATED
 ```
+
 ```json
 {
   "message": "Card created",
 }
 ```
+
 #### Update a card
+
 ```HTTP
 PUT /cards/:id
 ```
@@ -566,16 +651,20 @@ PUT /cards/:id
 | **isActive** | boolean | body  | **[optional]** |
 
 ##### Request
+
 ```HTTP
 PUT /cards/1
   {
     "url": "https://example2.com",
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Card updated",
@@ -583,6 +672,7 @@ Status: 200 OK
 ```
 
 #### Delete a card
+
 ```HTTP
 DELETE /cards/:id
 ```
@@ -592,13 +682,17 @@ DELETE /cards/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 DELETE /cards/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Card deleted",
@@ -606,7 +700,9 @@ Status: 200 OK
 ```
 
 ### Promotions endpoints
+
 #### Get a promotion
+
 ```HTTP
 GET /promotions/:id
 ```
@@ -616,13 +712,17 @@ GET /promotions/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /promotions/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "id": 1,
@@ -634,13 +734,15 @@ Status: 200 OK
   "checkoutLimit": 10,
 }
 ```
+
 #### Create a promotion
+
 ```HTTP
 POST /promotions
 ```
 
-| Parameters        | Type    | In    | Description    |
-| :---------------- | :------ | :---- | :------------- |
+| Parameters        | Type    | In   | Description    |
+| :---------------- | :------ | :--- | :------------- |
 | **shopId**        | number  | body | **[required]** |
 | **name**          | string  | body | **[required]** |
 | **description**   | string  | body | **[optional]** |
@@ -650,6 +752,7 @@ POST /promotions
 | **isActive**      | boolean | body | **[optional]** |
 
 ##### Request
+
 ```HTTP
 POST /promotions
   {
@@ -661,10 +764,13 @@ POST /promotions
     "checkoutLimit": 10,
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 201 CREATED
 ```
+
 ```json
 {
   "message": "Promotion created",
@@ -672,6 +778,7 @@ Status: 201 CREATED
 ```
 
 #### Update a promotion
+
 ```HTTP
 PUT /promotions/:id
 ```
@@ -679,13 +786,14 @@ PUT /promotions/:id
 | Parameters        | Type    | In    | Description    |
 | :---------------- | :------ | :---- | :------------- |
 | **id**            | number  | query | **[required]** |
-| **name**          | string  | body | **[optional]** |
-| **description**   | string  | body | **[optional]** |
-| **checkoutLimit** | number  | body | **[optional]** |
-| **endAt**         | string  | body | **[optional]** |
-| **isActive**      | boolean | body | **[optional]** |
+| **name**          | string  | body  | **[optional]** |
+| **description**   | string  | body  | **[optional]** |
+| **checkoutLimit** | number  | body  | **[optional]** |
+| **endAt**         | string  | body  | **[optional]** |
+| **isActive**      | boolean | body  | **[optional]** |
 
 ##### Request
+
 ```HTTP
 PUT /promotions/1
   {
@@ -693,10 +801,13 @@ PUT /promotions/1
     "endAt": "2020-05-27",
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Promotion updated",
@@ -704,6 +815,7 @@ Status: 200 OK
 ```
 
 #### Delete a promotion
+
 ```HTTP
 DELETE /promotions/:id
 ```
@@ -713,13 +825,17 @@ DELETE /promotions/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 DELETE /promotions/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Promotion deleted",
@@ -727,7 +843,9 @@ Status: 200 OK
 ```
 
 ### Balances endpoints
+
 #### Get a balance
+
 ```HTTP
 GET /balances/:id
 ```
@@ -737,13 +855,17 @@ GET /balances/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 GET /balances/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "id": 1,
@@ -755,18 +877,20 @@ Status: 200 OK
 ```
 
 #### Create a balance
+
 ```HTTP
 POST /balances
 ```
 
-| Parameters        | Type    | In    | Description    |
-| :---------------- | :------ | :---- | :------------- |
-| **promotionId**        | number  | body | **[required]** |
-| **cardId**          | number  | body | **[required]** |
-| **counter**   | number  | body | **[optional]** Default 0 |
-| **isActive**      | boolean | body | **[optional]** |
+| Parameters      | Type    | In   | Description              |
+| :-------------- | :------ | :--- | :----------------------- |
+| **promotionId** | number  | body | **[required]**           |
+| **cardId**      | number  | body | **[required]**           |
+| **counter**     | number  | body | **[optional]** Default 0 |
+| **isActive**    | boolean | body | **[optional]**           |
 
 ##### Request
+
 ```HTTP
 POST /balances
   {
@@ -776,10 +900,13 @@ POST /balances
     "isActive": true
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 201 CREATED
 ```
+
 ```json
 {
   "message": "Balance created",
@@ -787,17 +914,19 @@ Status: 201 CREATED
 ```
 
 #### Update a balance
+
 ```HTTP
 PUT /balances/:id
 ```
 
-| Parameters        | Type    | In    | Description    |
-| :---------------- | :------ | :---- | :------------- |
-| **id**            | number  | query | **[required]** |
-| **counter**   | number  | body | **[optional]**  |
-| **isActive**      | boolean | body | **[optional]** |
+| Parameters   | Type    | In    | Description    |
+| :----------- | :------ | :---- | :------------- |
+| **id**       | number  | query | **[required]** |
+| **counter**  | number  | body  | **[optional]** |
+| **isActive** | boolean | body  | **[optional]** |
 
 ##### Request
+
 ```HTTP
 PUT /balances/1
   {
@@ -805,16 +934,21 @@ PUT /balances/1
     "isActive": false
   }
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Balance updated",
 }
 ```
+
 #### Delete a balance
+
 ```HTTP
 DELETE /balances/:id
 ```
@@ -824,47 +958,59 @@ DELETE /balances/:id
 | **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 DELETE /balances/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Balance deleted",
 }
 ```
+
 #### Checkout a balance
+
 ```HTTP
 PUT /balances/checkout/:id
 ```
 
-| Parameters        | Type    | In    | Description    |
-| :---------------- | :------ | :---- | :------------- |
-| **id**            | number  | query | **[required]** |
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
 
 ##### Request
+
 ```HTTP
 PUT /balances/checkout/1
 ```
+
 ##### Response
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Balance updated", // increments counter +1
 }
 ```
+
 or
+
 ``` HTTP
 Status: 200 OK
 ```
+
 ```json
 {
   "message": "Promotion limit reached", // Limit is reached, customer gets prize
 }
 ```
-

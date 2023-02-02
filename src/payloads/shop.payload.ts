@@ -1,5 +1,8 @@
+import { ShopActivity } from "../entities";
+
 export interface IShopCreatePayload {
   companyName: string;
+  activity: ShopActivity;
   siren: string;
   siret: string;
   email: string;
@@ -12,6 +15,7 @@ export interface IShopCreatePayload {
 
 export interface IShopUpdatePayload {
   companyName?: string;
+  activity?: ShopActivity;
   siren?: string;
   siret?: string;
   email?: string;
