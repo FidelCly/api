@@ -70,6 +70,10 @@ export class Shop {
   zipCode: string;
 
   @IsNotEmpty()
+  @Column()
+  city: string;
+
+  @IsNotEmpty()
   @IsLatitude()
   @Column()
   lat: string;
