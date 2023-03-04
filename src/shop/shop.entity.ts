@@ -63,6 +63,14 @@ export class Shop {
   })
   isActive: boolean;
 
+  @IsOptional()
+  @IsString()
+  @Column()
+  description!: string;
+
+  @Column()
+  picture!: string;
+
   @OneToMany(() => Card, (card: Card) => card.shop)
   cards!: Array<Card>;
 
