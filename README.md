@@ -16,6 +16,7 @@
       - [Get all shops](#get-all-shops)
       - [Get a shop](#get-a-shop)
       - [Get a shop's promotions](#get-a-shops-promotions)
+      - [Get a shop's clients](#get-a-shops-clients)
       - [Create a shop](#create-a-shop)
       - [Update a shop](#update-a-shop)
       - [Delete a shop](#delete-a-shop)
@@ -325,16 +326,17 @@ Status: 200 OK
 GET /shops/
 ```
 
-| Parameters | Type   | In    | Description                       |
-| :--------- | :----- | :---- | :-------------------------------- |
-| **d**      | number | query | **[required]** Distance in metres |
-| **lat**    | number | query | **[required]** Latitude           |
-| **long**   | number | query | **[required]** Longitude          |
+| Parameters | Type    | In    | Description                       |
+| :--------- | :------ | :---- | :-------------------------------- |
+| **d**      | number  | query | **[required]** Distance in metres |
+| **lat**    | number  | query | **[required]** Latitude           |
+| **long**   | number  | query | **[required]** Longitude          |
+| **active** | boolean | query | **[required]** Active             |
 
 ##### Request
 
 ```HTTP
-GET /shops/?d=3000&long=2.3690961&lat=48.8573185
+GET /shops/?d=3000&long=2.3690961&lat=48.8573185&active=true
 ```
 
 ##### Response
@@ -357,6 +359,7 @@ Status: 200 OK
     "long": "2.3685758",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
+    "isActive": true,
   }
 ]
 ```
@@ -435,6 +438,61 @@ Status: 200 OK
 ]
 ```
 
+#### Get a shop's clients
+
+```HTTP
+GET /shops/:id/clients
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+
+```HTTP
+GET /shops/1/clients
+```
+
+##### Response
+
+``` HTTP
+Status: 200 OK
+```
+
+```json
+[
+  {
+    "id": 1,
+    "url": "https://example.com",
+    "isActive": true,
+    "shopId": 1,
+    "userId": 1,
+    "user": {
+        "id": 1,
+        "username": "test",
+        "email": "test@fidecly.com",
+        "isActive": true,
+    },
+    "balances": []
+  },
+  {
+    "id": 2,
+    "url": "https://example.com",
+    "isActive": true,
+    "shopId": 1,
+    "userId": 2,
+    "user": {
+        "id": 2,
+        "username": "test2",
+        "email": "test2@fidecly.com",
+        "isActive": true,
+    },
+    "balances": []
+  }
+]
+```
+
 #### Create a shop
 
 ```HTTP
@@ -444,7 +502,7 @@ POST /shops
 | Parameters      | Type   | In   | Description    |
 | :-------------- | :----- | :--- | :------------- |
 | **companyName** | string | body | **[required]** |
-| **activity** | string | body | **[required]** |
+| **activity**    | string | body | **[required]** |
 | **siren**       | string | body | **[required]** |
 | **siret**       | string | body | **[required]** |
 | **email**       | string | body | **[required]** |
