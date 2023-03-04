@@ -34,7 +34,7 @@ export class ShopController {
     // Return active shops only
     if (active) {
       shops = shops.filter((shop: Shop) => {
-        return shop.isActive === true;
+        return shop.isActive;
       });
     }
 
