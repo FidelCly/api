@@ -27,10 +27,18 @@ export class ShopController {
     const lat = Number(req.query.lat);
     const long = Number(req.query.long);
     const distance = Number(req.query.d);
+    const active = Boolean(req.query.active);
 
     let shops = await ShopRepository.all();
 
-    // Query params provided for shops in defined area
+    // Return active shops only
+    if (active) {
+      shops = shops.filter((shop: Shop) => {
+        return shop.isActive;
+      });
+    }
+
+    // Return shops located in defined area
     if (distance && lat && long) {
       shops = shops.filter((shop: Shop) => {
         return (
@@ -138,6 +146,8 @@ export class ShopController {
       return;
     }
 
+    await ShopRepository.deleteShopsCards(id);
+
     await ShopRepository.delete(id);
     res.status(200).send({ message: "Shop deleted" });
   };
@@ -151,6 +161,20 @@ export class ShopController {
     try {
       const shop = await ShopRepository.getShopsPromotions(id);
       res.status(200).send(shop.promotions);
+    } catch (error) {
+      res.status(404).send({ message: "Shop not found" });
+    }
+  };
+
+  /**
+   * Get shop's promotions
+   */
+  static clients = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      const shop = await ShopRepository.getShopsClients(id);
+      res.status(200).send(shop.cards);
     } catch (error) {
       res.status(404).send({ message: "Shop not found" });
     }

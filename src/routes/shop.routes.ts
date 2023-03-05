@@ -12,6 +12,9 @@ ShopRouter.get("/:id([0-9]+)", ShopController.one);
 // get shop's promotions
 ShopRouter.get("/:id([0-9]+)/promotions/", ShopController.promotions);
 
+// get shop's promotions
+ShopRouter.get("/:id([0-9]+)/clients/", ShopController.clients);
+
 // create a shop
 ShopRouter.post("/", ShopController.create);
 

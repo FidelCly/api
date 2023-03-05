@@ -1,6 +1,6 @@
 import { DeleteResult } from "typeorm";
 import { getDataSource } from ".";
-import { Shop } from "../entities";
+import { Card, Shop } from "../entities";
 
 export class ShopRepository {
   /**
@@ -52,6 +52,19 @@ export class ShopRepository {
   };
 
   /**
+   * Delete a shop from the db
+   * @param id - The id of the shop to delete
+   */
+  static deleteShopsCards = async (id: number): Promise<DeleteResult> => {
+    return getDataSource()
+      .createQueryBuilder()
+      .delete()
+      .from(Card)
+      .where({ shopId: id })
+      .execute();
+  };
+
+  /**
    * Get a shop's promotions from the db
    * @param id - The id of shop
    */
@@ -61,6 +74,19 @@ export class ShopRepository {
       .findOneOrFail({
         where: { id },
         relations: { promotions: true },
+      });
+  };
+
+  /**
+   * Get a shop's clients from the db
+   * @param id - The id of shop
+   */
+  static getShopsClients = async (id: number): Promise<Shop> => {
+    return getDataSource()
+      .getRepository(Shop)
+      .findOneOrFail({
+        where: { id },
+        relations: { cards: { user: true, balances: true } },
       });
   };
 }
