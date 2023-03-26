@@ -948,7 +948,7 @@ Status: 200 OK
 #### Checkout a balance
 
 ```HTTP
-PUT /balances/checkout/:id
+PUT /balances/:id/checkout
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -958,7 +958,7 @@ PUT /balances/checkout/:id
 ##### Request
 
 ```HTTP
-PUT /balances/checkout/1
+PUT /balances/1/checkout
 ```
 
 ##### Response
