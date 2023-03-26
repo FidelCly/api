@@ -26,26 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - uses: nashmaniac/create-issue-action@v1.1
-      if: ${{ failure() }} # only run when this job is failed.
-      name: Create Issue Action
-      with:
-          title: Linter Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: refactoring-needed, help needed
-          body: Workflow failed for commit ${{github.sha}}
-    - run: npm run build --if-present
-    - uses: nashmaniac/create-issue-action@v1.1
-      if: ${{ failure() }} # only run when this job is failed.
-      name: Create Issue Action
-      with:
-          title: Linter Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: refactoring-needed, help needed
-          body: Workflow failed for commit ${{github.sha}}
     - run: docker-compose run --rm web npm test:e2e
     - uses: nashmaniac/create-issue-action@v1.1
       if: ${{ failure() }} # only run when this job is failed.
