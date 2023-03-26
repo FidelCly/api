@@ -13,5 +13,3 @@ export const cardFixture: CreateCardDto = {
 export const modifiedCardFixture: UpdateCardDto = {
   isActive: false,
 };
-
-export const emptyModifiedCardFixture: UpdateCardDto = {};

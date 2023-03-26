@@ -5,7 +5,7 @@ import { AppModule } from './../src/app.module';
 import { CreateUserDto } from '../src/user/user.dto';
 import { UserService } from '../src/user/user.service';
 import { DataSource } from 'typeorm';
-import { CreateShopDto } from 'src/shop/shop.dto';
+import { CreateShopDto } from '../src/shop/shop.dto';
 import { shopFixture } from './shop/shop.seed';
 import { ShopService } from '../src/shop/shop.service';
 import { CardService } from '../src/card/card.service';
@@ -34,10 +34,12 @@ export class TestFactory {
 
     this._app = moduleRef.createNestApplication();
     this._app.useGlobalPipes(new ValidationPipe());
+
     this.dataSource = moduleRef.get<DataSource>(DataSource);
     this.userService = moduleRef.get<UserService>(UserService);
     this.cardService = moduleRef.get<CardService>(CardService);
     this.shopService = moduleRef.get<ShopService>(ShopService);
+
     this.dataSource.synchronize();
     await this._app.init();
   }
@@ -52,13 +54,6 @@ export class TestFactory {
   }
 
   /**
-   * Seed db
-   */
-  public async seed() {
-    await this.seedUser();
-  }
-
-  /**
    * Seed user
    */
   public async seedUser(_user?: CreateUserDto) {
@@ -68,14 +63,14 @@ export class TestFactory {
   /**
    * Seed shop
    */
-  public async seedShop(shop?: CreateShopDto) {
-    await this.shopService.create(shop ?? shopFixture);
+  public async seedShop(_shop?: CreateShopDto) {
+    await this.shopService.create(_shop ?? shopFixture);
   }
 
   /**
    * Seed card
    */
-  public async seedCard(card?: CreateCardDto) {
-    await this.cardService.create(card ?? cardFixture);
+  public async seedCard(_card?: CreateCardDto) {
+    await this.cardService.create(_card ?? cardFixture);
   }
 }

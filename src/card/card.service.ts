@@ -8,34 +8,31 @@ import { Card } from './card.entity';
 export class CardService {
   constructor(
     @InjectRepository(Card)
-    private cardsRepository: Repository<Card>,
+    private cardRepository: Repository<Card>,
   ) {}
 
   findOne(id: number): Promise<Card | null> {
-    return this.cardsRepository.findOneBy({ id });
+    return this.cardRepository.findOneBy({ id });
   }
 
   create(createCardDto: CreateCardDto): Promise<Card> {
     const card = { ...new Card(), ...createCardDto };
-    return this.cardsRepository.save(card);
+    return this.cardRepository.save(card);
   }
 
-  async update(
-    id: number,
-    updateCardDto: UpdateCardDto,
-  ): Promise<UpdateResult> {
-    return this.cardsRepository.update(id, updateCardDto);
+  update(id: number, updateCardDto: UpdateCardDto): Promise<UpdateResult> {
+    return this.cardRepository.update(id, updateCardDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.cardsRepository.softDelete(id);
+  remove(id: number): Promise<UpdateResult> {
+    return this.cardRepository.softDelete(id);
   }
 
-  async removeUsersCards(userId: number): Promise<UpdateResult> {
-    return this.cardsRepository.softDelete({ userId: userId });
+  removeUsersCards(userId: number): Promise<UpdateResult> {
+    return this.cardRepository.softDelete({ userId: userId });
   }
 
-  async removeShopsCards(shopId: number): Promise<UpdateResult> {
-    return this.cardsRepository.softDelete({ shopId: shopId });
+  removeShopsCards(shopId: number): Promise<UpdateResult> {
+    return this.cardRepository.softDelete({ shopId: shopId });
   }
 }
