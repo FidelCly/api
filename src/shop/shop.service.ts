@@ -8,7 +8,7 @@ import { Shop } from './shop.entity';
 export class ShopService {
   constructor(
     @InjectRepository(Shop)
-    private shopRepository: Repository<Shop>,
+    private repository: Repository<Shop>,
   ) {}
 
   /**
@@ -16,7 +16,7 @@ export class ShopService {
    * @returns A list of shops
    */
   all(): Promise<Shop[]> {
-    return this.shopRepository.find();
+    return this.repository.find();
   }
 
   /**
@@ -25,7 +25,7 @@ export class ShopService {
    * @returns A shop if found
    */
   findOne = (id: number): Promise<Shop | null> => {
-    return this.shopRepository.findOneBy({
+    return this.repository.findOneBy({
       id,
     });
   };
@@ -36,7 +36,7 @@ export class ShopService {
    * @returns A shop if found
    */
   findOneByEmail = (email: string): Promise<Shop | null> => {
-    return this.shopRepository.findOneBy({
+    return this.repository.findOneBy({
       email,
     });
   };
@@ -47,7 +47,7 @@ export class ShopService {
    * @returns A shop if found
    */
   findOnePromotions = (id: number): Promise<Shop | null> => {
-    return this.shopRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: { promotions: true },
     });
@@ -59,7 +59,7 @@ export class ShopService {
    * @returns A shop if found
    */
   findOneClients = (id: number): Promise<Shop | null> => {
-    return this.shopRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: { cards: { user: true, balances: true } },
     });
@@ -71,7 +71,7 @@ export class ShopService {
    */
   create(createShopDto: CreateShopDto): Promise<Shop> {
     const shop = { ...new Shop(), ...createShopDto };
-    return this.shopRepository.save(shop);
+    return this.repository.save(shop);
   }
 
   /**
@@ -80,7 +80,7 @@ export class ShopService {
    * @param updateShopDto - The updated shop
    */
   update(id: number, updateShopDto: UpdateShopDto): Promise<UpdateResult> {
-    return this.shopRepository.update(id, updateShopDto);
+    return this.repository.update(id, updateShopDto);
   }
 
   /**
@@ -88,7 +88,7 @@ export class ShopService {
    * @param id - The id of the shop to delete
    */
   remove(id: number): Promise<UpdateResult> {
-    return this.shopRepository.softDelete(id);
+    return this.repository.softDelete(id);
   }
 
   /**

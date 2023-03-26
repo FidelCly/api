@@ -8,7 +8,7 @@ import { User } from './user.entity';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private repository: Repository<User>,
   ) {}
 
   /**
@@ -17,7 +17,7 @@ export class UserService {
    * @returns A user if found
    */
   findOne(id: number): Promise<User | null> {
-    return this.userRepository.findOne({
+    return this.repository.findOne({
       where: { id },
       relations: { cards: { shop: true, balances: { promotion: true } } },
     });
@@ -29,7 +29,7 @@ export class UserService {
    * @returns A user if found
    */
   findOneByUsername = (username: string): Promise<User | null> => {
-    return this.userRepository.findOneBy({
+    return this.repository.findOneBy({
       username,
     });
   };
@@ -40,7 +40,7 @@ export class UserService {
    * @returns A user if found
    */
   findOneByEmail = (email: string): Promise<User | null> => {
-    return this.userRepository.findOneBy({
+    return this.repository.findOneBy({
       email,
     });
   };
@@ -51,7 +51,7 @@ export class UserService {
    */
   create(createUserDto: CreateUserDto): Promise<User> {
     const user = { ...new User(), ...createUserDto };
-    return this.userRepository.save(user);
+    return this.repository.save(user);
   }
 
   /**
@@ -60,7 +60,7 @@ export class UserService {
    * @param updateUserDto - The updated user
    */
   update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-    return this.userRepository.update(id, updateUserDto);
+    return this.repository.update(id, updateUserDto);
   }
 
   /**
@@ -68,6 +68,6 @@ export class UserService {
    * @param id - The id of the user to delete
    */
   remove(id: number): Promise<UpdateResult> {
-    return this.userRepository.softDelete(id);
+    return this.repository.softDelete(id);
   }
 }

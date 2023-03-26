@@ -10,6 +10,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { PromotionService } from '../promotion/promotion.service';
 import { CardService } from '../card/card.service';
 import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
@@ -17,7 +18,11 @@ import { ShopService } from './shop.service';
 
 @Controller('shop')
 export class ShopController {
-  constructor(private service: ShopService, private cardService: CardService) {}
+  constructor(
+    private service: ShopService,
+    private cardService: CardService,
+    private promotionService: PromotionService,
+  ) {}
 
   @Get()
   async all(@Query() query: ShopFilterOptions) {
@@ -93,6 +98,8 @@ export class ShopController {
     }
 
     await this.cardService.removeShopsCards(+id);
+    await this.promotionService.removeShopsPromotions(+id);
+
     await this.service.remove(+id);
     return { message: 'Shop deleted' };
   }

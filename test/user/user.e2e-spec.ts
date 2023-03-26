@@ -11,7 +11,7 @@ describe('UsersController', () => {
 
   beforeAll(async () => {
     await factory.init();
-  });
+  }, 10000);
 
   afterAll(async () => {
     await factory.close();

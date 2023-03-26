@@ -1,44 +1,73 @@
-import { IsBoolean, IsDateString, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreatePromotionDto {
+  @IsNotEmpty()
   @IsNumber()
-  private readonly shopId: number;
+  readonly shopId: number;
 
+  @IsNotEmpty()
   @IsString()
-  private readonly name: string;
+  readonly name: string;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  private readonly description?: string;
+  readonly description?: string;
 
+  @IsNotEmpty()
   @IsNumber()
-  private readonly checkoutLimit: number;
+  readonly checkoutLimit: number;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsDateString()
-  private readonly startAt?: Date;
+  readonly startAt?: Date;
 
+  @IsNotEmpty()
   @IsDateString()
-  private readonly endAt: Date;
+  readonly endAt: Date;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
-  private readonly isActive?: boolean;
+  readonly isActive?: boolean;
 }
 
 export class UpdatePromotionDto {
+  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  private readonly name?: string;
+  readonly name?: string;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  private readonly description?: string;
+  readonly description?: string;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  private readonly checkoutLimit?: number;
+  readonly checkoutLimit?: number;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsDateString()
-  private readonly startAt?: Date;
+  readonly startAt?: Date;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsDateString()
-  private readonly endAt?: Date;
+  readonly endAt?: Date;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
-  private readonly isActive?: boolean;
+  readonly isActive?: boolean;
 }

@@ -1,7 +1,6 @@
 import { Balance } from '../balance/balance.entity';
 import { Shop } from '../shop/shop.entity';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -14,7 +13,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Promotion extends BaseEntity {
+export class Promotion {
   @PrimaryGeneratedColumn()
   id: number;
 
