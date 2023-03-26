@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export NODE_ENV=production
-npm start:prod
+npm run start:prod
