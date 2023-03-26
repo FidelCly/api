@@ -8,31 +8,31 @@ import { Card } from './card.entity';
 export class CardService {
   constructor(
     @InjectRepository(Card)
-    private cardRepository: Repository<Card>,
+    private repository: Repository<Card>,
   ) {}
 
   findOne(id: number): Promise<Card | null> {
-    return this.cardRepository.findOneBy({ id });
+    return this.repository.findOneBy({ id });
   }
 
   create(createCardDto: CreateCardDto): Promise<Card> {
     const card = { ...new Card(), ...createCardDto };
-    return this.cardRepository.save(card);
+    return this.repository.save(card);
   }
 
   update(id: number, updateCardDto: UpdateCardDto): Promise<UpdateResult> {
-    return this.cardRepository.update(id, updateCardDto);
+    return this.repository.update(id, updateCardDto);
   }
 
   remove(id: number): Promise<UpdateResult> {
-    return this.cardRepository.softDelete(id);
+    return this.repository.softDelete(id);
   }
 
   removeUsersCards(userId: number): Promise<UpdateResult> {
-    return this.cardRepository.softDelete({ userId: userId });
+    return this.repository.softDelete({ userId: userId });
   }
 
   removeShopsCards(shopId: number): Promise<UpdateResult> {
-    return this.cardRepository.softDelete({ shopId: shopId });
+    return this.repository.softDelete({ shopId: shopId });
   }
 }

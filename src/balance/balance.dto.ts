@@ -1,23 +1,33 @@
-import { IsBoolean, IsNumber } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateBalanceDto {
+  @IsNotEmpty()
   @IsNumber()
-  public readonly promotionId: number;
+  readonly promotionId: number;
 
+  @IsNotEmpty()
   @IsNumber()
-  public readonly cardId: number;
+  readonly cardId: number;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  public readonly counter?: number;
+  readonly counter?: number;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
-  public readonly isActive?: boolean;
+  readonly isActive?: boolean;
 }
 
 export class UpdateBalanceDto {
+  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  public readonly counter?: number;
+  readonly counter?: number;
 
+  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
-  public readonly isActive?: boolean;
+  readonly isActive?: boolean;
 }

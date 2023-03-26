@@ -2,7 +2,6 @@
 import { Card } from '../card/card.entity';
 import { Promotion } from '../promotion/promotion.entity';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -13,8 +12,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'balances' }) // table name in database
-export class Balance extends BaseEntity {
+@Entity()
+export class Balance {
   @PrimaryGeneratedColumn()
   id: number;
 
