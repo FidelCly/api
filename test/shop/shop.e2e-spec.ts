@@ -1,3 +1,4 @@
+import { HttpServer } from '@nestjs/common';
 import * as request from 'supertest';
 import { TestFactory } from '../factory';
 import {
@@ -10,9 +11,12 @@ import {
 describe('Testing shop controller', () => {
   // Create instances
   const factory = new TestFactory();
+  let app: HttpServer;
 
   beforeAll(async () => {
     await factory.init();
+
+    app = factory.app.getHttpServer();
   }, 10000);
 
   afterAll(async () => {
@@ -22,7 +26,7 @@ describe('Testing shop controller', () => {
   describe('Create shop', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .post('/shop')
           .set('Accept', 'application/json');
 
@@ -33,7 +37,7 @@ describe('Testing shop controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .post('/shop')
           .send(shopFixture)
           .set('Accept', 'application/json');
@@ -49,7 +53,7 @@ describe('Testing shop controller', () => {
   describe('Update shop', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/shop/10')
           .set('Accept', 'application/json')
           .send(modifiedShopFixture);
@@ -62,7 +66,7 @@ describe('Testing shop controller', () => {
 
     describe('with incorrect payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/shop/1')
           .set('Accept', 'application/json')
           .send(emptyModifiedShopFixture);
@@ -74,7 +78,7 @@ describe('Testing shop controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/shop/1')
           .set('Accept', 'application/json')
           .send(modifiedShopFixture);
@@ -89,7 +93,7 @@ describe('Testing shop controller', () => {
   describe('Get one shop', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/10')
           .set('Accept', 'application/json');
 
@@ -101,7 +105,7 @@ describe('Testing shop controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/1')
           .set('Accept', 'application/json');
 
@@ -114,7 +118,7 @@ describe('Testing shop controller', () => {
   describe('Get all shops', () => {
     describe('without filters', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/')
           .set('Accept', 'application/json');
 
@@ -127,7 +131,7 @@ describe('Testing shop controller', () => {
       it('responds with status 200', async () => {
         await factory.seedShop(farAwayShopFixture);
 
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/?distance=3000&long=2.3690961&lat=48.8573185')
           .set('Accept', 'application/json');
 
@@ -141,7 +145,7 @@ describe('Testing shop controller', () => {
   describe("Get one shop's promotions", () => {
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/1/promotions')
           .set('Accept', 'application/json');
 
@@ -157,7 +161,7 @@ describe('Testing shop controller', () => {
         await factory.seedUser();
         await factory.seedCard();
 
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .get('/shop/1/clients')
           .set('Accept', 'application/json');
 
@@ -171,7 +175,7 @@ describe('Testing shop controller', () => {
   describe('Delete shop', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .delete('/shop/10')
           .set('Accept', 'application/json');
 
@@ -183,7 +187,7 @@ describe('Testing shop controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .delete('/shop/1')
           .set('Accept', 'application/json');
 

@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { HttpServer } from '@nestjs/common';
 import * as request from 'supertest';
 import { TestFactory } from '../factory';
 import {
@@ -10,10 +11,14 @@ import {
 describe('Testing promotion controller', () => {
   // Create instances
   const factory = new TestFactory();
+  let app: HttpServer;
 
   beforeAll(async () => {
     await factory.init();
+
     await factory.seedShop();
+
+    app = factory.app.getHttpServer();
   }, 10000);
 
   afterAll(async () => {
@@ -23,7 +28,7 @@ describe('Testing promotion controller', () => {
   describe('Create promotion', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .post('/promotion')
           .set('Accept', 'application/json');
 
@@ -34,7 +39,7 @@ describe('Testing promotion controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .post('/promotion')
           .set('Accept', 'application/json')
           .send(promotionFixture);
@@ -53,7 +58,7 @@ describe('Testing promotion controller', () => {
   describe('Update promotion', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/promotion/10')
           .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
@@ -66,7 +71,7 @@ describe('Testing promotion controller', () => {
 
     describe('with incorrect payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/promotion/1')
           .set('Accept', 'application/json')
           .send(modifiedEmptyPromotionFixture);
@@ -78,7 +83,7 @@ describe('Testing promotion controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .put('/promotion/1')
           .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
@@ -93,7 +98,7 @@ describe('Testing promotion controller', () => {
   describe('Delete promotion', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .delete('/promotion/10')
           .set('Accept', 'application/json');
 
@@ -105,7 +110,7 @@ describe('Testing promotion controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(factory.app.getHttpServer())
+        const response = await request(app)
           .delete('/promotion/1')
           .set('Accept', 'application/json');
 

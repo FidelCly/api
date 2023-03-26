@@ -11,6 +11,7 @@ describe('Testing balance controller', () => {
 
   beforeAll(async () => {
     await factory.init();
+
     await factory.seedUser();
     await factory.seedShop();
     await factory.seedCard();
