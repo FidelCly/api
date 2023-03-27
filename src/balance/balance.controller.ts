@@ -8,7 +8,9 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CardService } from '../card/card.service';
 import { Promotion } from '../promotion/promotion.entity';
 import { PromotionService } from '../promotion/promotion.service';
@@ -17,6 +19,7 @@ import { Balance } from './balance.entity';
 import { BalanceService } from './balance.service';
 
 @Controller('balance')
+@UseGuards(AuthGuard)
 export class BalanceController {
   constructor(
     private service: BalanceService,

@@ -9,14 +9,17 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PromotionService } from '../promotion/promotion.service';
 import { CardService } from '../card/card.service';
 import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('shop')
+@UseGuards(AuthGuard)
 export class ShopController {
   constructor(
     private service: ShopService,

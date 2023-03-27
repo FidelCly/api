@@ -7,12 +7,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { ShopService } from '../shop/shop.service';
 import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';
 import { PromotionService } from './promotion.service';
 
 @Controller('promotion')
+@UseGuards(AuthGuard)
 export class PromotionController {
   constructor(
     private service: PromotionService,

@@ -8,12 +8,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CardService } from '../card/card.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(private service: UserService, private cardService: CardService) {}
 
