@@ -16,7 +16,7 @@ describe('UsersController', () => {
     await factory.init();
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();

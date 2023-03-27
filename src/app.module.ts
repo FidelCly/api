@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env', '.env.test', '.env.dev', '.env.local'],
+      envFilePath: ['.env', '.env.dev'],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',

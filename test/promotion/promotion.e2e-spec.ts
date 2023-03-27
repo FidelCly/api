@@ -19,7 +19,7 @@ describe('Testing promotion controller', () => {
     await factory.seedShop();
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();

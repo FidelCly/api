@@ -18,7 +18,7 @@ describe('Testing balance controller', () => {
     await factory.seedPromotion();
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();

@@ -41,7 +41,7 @@ describe('Testing auth controller', () => {
     await app.init();
 
     server = app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await app.close();
