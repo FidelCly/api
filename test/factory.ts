@@ -2,16 +2,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { userFixture } from './user/user.seed';
 import { CreateUserDto } from '../src/user/user.dto';
-import { UserService } from '../src/user/user.service';
 import { DataSource } from 'typeorm';
 import { CreateShopDto } from '../src/shop/shop.dto';
 import { shopFixture } from './shop/shop.seed';
-import { ShopService } from '../src/shop/shop.service';
-import { CardService } from '../src/card/card.service';
 import { CreateCardDto } from '../src/card/card.dto';
 import { cardFixture } from './card/card.seed';
-import { PromotionService } from '../src/promotion/promotion.service';
-import { BalanceService } from '../src/balance/balance.service';
 import { CreatePromotionDto } from '../src/promotion/promotion.dto';
 import { promotionFixture } from './promotion/promotion.seed';
 import { CreateBalanceDto } from '../src/balance/balance.dto';
@@ -28,11 +23,6 @@ import { AppModule } from '../src/app.module';
 export class TestFactory {
   private _app: INestApplication;
   private dataSource: DataSource;
-  private userService: UserService;
-  private shopService: ShopService;
-  private cardService: CardService;
-  private promotionService: PromotionService;
-  private balanceService: BalanceService;
 
   public get app(): INestApplication {
     return this._app;
@@ -42,8 +32,6 @@ export class TestFactory {
    * Connect to DB and start server
    */
   public async init() {
-    process.env.NODE_ENV = 'test';
-
     const db = newDb({ autoCreateForeignKeyIndices: true });
     db.public.registerFunction({
       implementation: () => 'test',
@@ -54,34 +42,25 @@ export class TestFactory {
       name: 'version',
     });
 
-    const customDataSource: DataSource =
-      await db.adapters.createTypeormDataSource({
-        type: 'postgres',
-        entities: [User, Card, Shop, Promotion, Balance],
-      });
+    this.dataSource = await db.adapters.createTypeormDataSource({
+      type: 'postgres',
+      entities: [User, Card, Shop, Promotion, Balance],
+    });
 
-    await customDataSource.initialize();
-    await customDataSource.synchronize();
+    await this.dataSource.initialize();
+    await this.dataSource.synchronize();
 
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(DataSource)
-      .useValue(customDataSource)
+      .useValue(this.dataSource)
       .overrideGuard(AuthGuard)
       .useValue(null)
       .compile();
 
     this._app = moduleRef.createNestApplication();
     this._app.useGlobalPipes(new ValidationPipe());
-
-    this.dataSource = customDataSource;
-    this.userService = moduleRef.get<UserService>(UserService);
-    this.cardService = moduleRef.get<CardService>(CardService);
-    this.shopService = moduleRef.get<ShopService>(ShopService);
-    this.promotionService = moduleRef.get<PromotionService>(PromotionService);
-    this.balanceService = moduleRef.get<BalanceService>(BalanceService);
-
     await this._app.init();
   }
 
@@ -97,34 +76,44 @@ export class TestFactory {
    * Seed user
    */
   public async seedUser(_user?: CreateUserDto) {
-    await this.userService.create(_user ?? userFixture);
+    await this.dataSource
+      .getRepository(User)
+      .save({ ...new User(), ...(_user ?? userFixture) });
   }
 
   /**
    * Seed shop
    */
   public async seedShop(_shop?: CreateShopDto) {
-    await this.shopService.create(_shop ?? shopFixture);
+    await this.dataSource
+      .getRepository(Shop)
+      .save({ ...new Shop(), ...(_shop ?? shopFixture) });
   }
 
   /**
    * Seed card
    */
   public async seedCard(_card?: CreateCardDto) {
-    await this.cardService.create(_card ?? cardFixture);
+    await this.dataSource
+      .getRepository(Card)
+      .save({ ...new Card(), ...(_card ?? cardFixture) });
   }
 
   /**
    * Seed promotion
    */
   public async seedPromotion(_promotion?: CreatePromotionDto) {
-    await this.promotionService.create(_promotion ?? promotionFixture);
+    await this.dataSource
+      .getRepository(Promotion)
+      .save({ ...new Promotion(), ...(_promotion ?? promotionFixture) });
   }
 
   /**
    * Seed balance
    */
   public async seedBalance(_balance?: CreateBalanceDto) {
-    await this.balanceService.create(_balance ?? balanceFixture);
+    await this.dataSource
+      .getRepository(Balance)
+      .save({ ...new Balance(), ...(_balance ?? balanceFixture) });
   }
 }
