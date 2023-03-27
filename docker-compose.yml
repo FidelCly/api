@@ -24,7 +24,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - .env.dev
+      - .env.local
     working_dir: /api
     volumes:
       - .:/api
