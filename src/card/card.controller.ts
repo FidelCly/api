@@ -9,7 +9,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { ShopService } from '../shop/shop.service';
 import { UserService } from '../user/user.service';
 import { CreateCardDto, UpdateCardDto } from './card.dto';

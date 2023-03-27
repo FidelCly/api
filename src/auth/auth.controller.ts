@@ -1,52 +1,35 @@
 import {
   Body,
   Controller,
-  HttpException,
-  HttpStatus,
   Inject,
-  OnModuleInit,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
 import {
-  AuthServiceClient,
-  RegisterResponse,
   RegisterRequest,
-  AUTH_SERVICE_NAME,
   LoginRequest,
+  RegisterResponse,
   LoginResponse,
 } from './auth.pb';
+import { AuthService } from './auth.service';
+import { ExceptionInterceptor } from './exception.interceptor';
 
 @Controller('auth')
-export class AuthController implements OnModuleInit {
-  private svc: AuthServiceClient;
-
-  @Inject(AUTH_SERVICE_NAME)
-  private readonly client: ClientGrpc;
-
-  public onModuleInit(): void {
-    this.svc = this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
-  }
+@UseInterceptors(new ExceptionInterceptor())
+export class AuthController {
+  @Inject(AuthService)
+  private svc: AuthService;
 
   @Post('register')
-  private async register(@Body() body: RegisterRequest) {
-    const { status, errors }: RegisterResponse = await firstValueFrom(
-      this.svc.register(body),
-    );
-
-    if (status != HttpStatus.OK) throw new HttpException(errors, status);
-    return { message: 'Account created' };
+  private async register(
+    @Body() body: RegisterRequest,
+  ): Promise<RegisterResponse> {
+    return this.svc.register(body);
   }
 
   @Put('login')
-  private async login(@Body() body: LoginRequest) {
-    const { status, errors, token }: LoginResponse = await firstValueFrom(
-      this.svc.login(body),
-    );
-
-    if (status != HttpStatus.OK) throw new HttpException(errors, status);
-    return { message: 'Login successful', token };
+  private async login(@Body() body: LoginRequest): Promise<LoginResponse> {
+    return this.svc.login(body);
   }
 }

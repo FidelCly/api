@@ -10,7 +10,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
 import { Promotion } from '../promotion/promotion.entity';
 import { PromotionService } from '../promotion/promotion.service';

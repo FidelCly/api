@@ -16,7 +16,7 @@ import { CardService } from '../card/card.service';
 import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('shop')
 @UseGuards(AuthGuard)
