@@ -16,6 +16,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       - fidecloud
+      
   web:
     depends_on:
       - db
@@ -27,7 +28,7 @@ services:
     working_dir: /api
     volumes:
       - .:/api
-    command: "npm run start"
+    command: "npm run start:dev"
     networks:
       - fidecloud
 

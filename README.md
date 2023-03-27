@@ -8,7 +8,6 @@
   - [API reference](#api-reference)
     - [Users endpoints](#users-endpoints)
       - [Get a user](#get-a-user)
-      - [Get a user's wallet](#get-a-users-wallet)
       - [Create a user](#create-a-user)
       - [Update a user](#update-a-user)
       - [Delete a user](#delete-a-user)
@@ -103,36 +102,6 @@ GET /users/:id
 
 ```HTTP
 GET /users/1
-```
-
-##### Response
-
-``` HTTP
-Status: 200 OK
-```
-
-```json
-{
-  "id": 1,
-  "username": "test",
-  "email": "test@fidecly.com",
-}
-```
-
-#### Get a user's wallet
-
-```HTTP
-GET /users/:id/wallet
-```
-
-| Parameters | Type   | In    | Description    |
-| :--------- | :----- | :---- | :------------- |
-| **id**     | number | query | **[required]** |
-
-##### Request
-
-```HTTP
-GET /users/1/wallet
 ```
 
 ##### Response
@@ -326,17 +295,17 @@ Status: 200 OK
 GET /shops/
 ```
 
-| Parameters | Type    | In    | Description                       |
-| :--------- | :------ | :---- | :-------------------------------- |
-| **d**      | number  | query | **[required]** Distance in metres |
-| **lat**    | number  | query | **[required]** Latitude           |
-| **long**   | number  | query | **[required]** Longitude          |
-| **active** | boolean | query | **[required]** Active             |
+| Parameters   | Type    | In    | Description                       |
+| :----------- | :------ | :---- | :-------------------------------- |
+| **distance** | number  | query | **[required]** Distance in metres |
+| **lat**      | number  | query | **[required]** Latitude           |
+| **long**     | number  | query | **[required]** Longitude          |
+| **isActive** | boolean | query | **[required]** Active             |
 
 ##### Request
 
 ```HTTP
-GET /shops/?d=3000&long=2.3690961&lat=48.8573185&active=true
+GET /shops/?distance=3000&long=2.3690961&lat=48.8573185
 ```
 
 ##### Response
@@ -1036,7 +1005,7 @@ Status: 200 OK
 #### Checkout a balance
 
 ```HTTP
-PUT /balances/checkout/:id
+PUT /balances/:id/checkout
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -1046,7 +1015,7 @@ PUT /balances/checkout/:id
 ##### Request
 
 ```HTTP
-PUT /balances/checkout/1
+PUT /balances/1/checkout
 ```
 
 ##### Response
