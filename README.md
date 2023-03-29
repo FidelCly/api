@@ -91,7 +91,7 @@ docker-compose run --rm web npm run migration:run
 #### Get a user
 
 ```HTTP
-GET /users/:id
+GET /user/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -101,7 +101,7 @@ GET /users/:id
 ##### Request
 
 ```HTTP
-GET /users/1
+GET /user/1
 ```
 
 ##### Response
@@ -194,7 +194,7 @@ Status: 200 OK
 #### Create a user
 
 ```HTTP
-POST /users
+POST /user
 ```
 
 | Parameters   | Type   | In   | Description    |
@@ -205,7 +205,7 @@ POST /users
 ##### Request
 
 ```HTTP
-POST /users
+POST /user
   {
     "username": "test",
     "email":"test@fidecly.com"
@@ -227,7 +227,7 @@ Status: 201 CREATED
 #### Update a user
 
 ```HTTP
-PUT /users/:id
+PUT /user/:id
 ```
 
 | Parameters   | Type   | In    | Description    |
@@ -239,7 +239,7 @@ PUT /users/:id
 ##### Request
 
 ```HTTP
-PUT /users/1
+PUT /user/1
   {
     "username": "test",
     "email":"test@fidecly.com"
@@ -262,7 +262,7 @@ Status: 200 OK
 #### Delete a user
 
 ```HTTP
-DELETE /users/:id
+DELETE /user/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -272,7 +272,7 @@ DELETE /users/:id
 ##### Request
 
 ```HTTP
-DELETE /users/1
+DELETE /user/1
 ```
 
 ##### Response
@@ -292,7 +292,7 @@ Status: 200 OK
 #### Get all shops
 
 ```HTTP
-GET /shops/
+GET /shop/
 ```
 
 | Parameters   | Type    | In    | Description                       |
@@ -305,7 +305,7 @@ GET /shops/
 ##### Request
 
 ```HTTP
-GET /shops/?distance=3000&long=2.3690961&lat=48.8573185
+GET /shop/?distance=3000&long=2.3690961&lat=48.8573185
 ```
 
 ##### Response
@@ -336,7 +336,7 @@ Status: 200 OK
 #### Get a shop
 
 ```HTTP
-GET /shops/:id
+GET /shop/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -346,7 +346,7 @@ GET /shops/:id
 ##### Request
 
 ```HTTP
-GET /shops/1
+GET /shop/1
 ```
 
 ##### Response
@@ -374,7 +374,7 @@ Status: 200 OK
 #### Get a shop's promotions
 
 ```HTTP
-GET /shops/:id/promotions
+GET /shop/:id/promotion
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -384,7 +384,7 @@ GET /shops/:id/promotions
 ##### Request
 
 ```HTTP
-GET /shops/1/promotions
+GET /shop/1/promotion
 ```
 
 ##### Response
@@ -410,7 +410,7 @@ Status: 200 OK
 #### Get a shop's clients
 
 ```HTTP
-GET /shops/:id/clients
+GET /shop/:id/clients
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -420,7 +420,7 @@ GET /shops/:id/clients
 ##### Request
 
 ```HTTP
-GET /shops/1/clients
+GET /shop/1/clients
 ```
 
 ##### Response
@@ -465,7 +465,7 @@ Status: 200 OK
 #### Create a shop
 
 ```HTTP
-POST /shops
+POST /shop
 ```
 
 | Parameters      | Type   | In   | Description    |
@@ -484,7 +484,7 @@ POST /shops
 ##### Request
 
 ```HTTP
-POST /shops
+POST /shop
   {
     "companyName": "Bistrot123",
     "activity":"Restauration",
@@ -514,7 +514,7 @@ Status: 201 CREATED
 #### Update a shop
 
 ```HTTP
-PUT /shops/:id
+PUT /shop/:id
 ```
 
 | Parameters      | Type   | In    | Description    |
@@ -534,7 +534,7 @@ PUT /shops/:id
 ##### Request
 
 ```HTTP
-PUT /shops/1
+PUT /shop/1
   {
     "companyName": "Bistrot123",
     "siren": "123456789",
@@ -563,7 +563,7 @@ Status: 200 OK
 #### Delete a shop
 
 ```HTTP
-DELETE /shops/:id
+DELETE /shop/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -573,7 +573,7 @@ DELETE /shops/:id
 ##### Request
 
 ```HTTP
-DELETE /shops/1
+DELETE /shop/1
 ```
 
 ##### Response
@@ -593,7 +593,7 @@ Status: 200 OK
 #### Get a card
 
 ```HTTP
-GET /cards/:id
+GET /card/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -603,7 +603,7 @@ GET /cards/:id
 ##### Request
 
 ```HTTP
-GET /cards/1
+GET /card/1
 ```
 
 ##### Response
@@ -626,7 +626,7 @@ Status: 200 OK
 #### Create a card
 
 ```HTTP
-POST /cards
+POST /card
 ```
 
 | Parameters   | Type    | In   | Description    |
@@ -641,7 +641,7 @@ POST /cards
 ##### Request
 
 ```HTTP
-POST /cards
+POST /card
   {
     "url": "https://example.com",
     "shopId": 1,
@@ -666,7 +666,7 @@ Status: 201 CREATED
 #### Update a card
 
 ```HTTP
-PUT /cards/:id
+PUT /card/:id
 ```
 
 | Parameters   | Type    | In    | Description    |
@@ -680,7 +680,7 @@ PUT /cards/:id
 ##### Request
 
 ```HTTP
-PUT /cards/1
+PUT /card/1
   {
     "url": "https://example2.com",
   }
@@ -701,7 +701,7 @@ Status: 200 OK
 #### Delete a card
 
 ```HTTP
-DELETE /cards/:id
+DELETE /card/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -711,7 +711,7 @@ DELETE /cards/:id
 ##### Request
 
 ```HTTP
-DELETE /cards/1
+DELETE /card/1
 ```
 
 ##### Response
@@ -731,7 +731,7 @@ Status: 200 OK
 #### Get a promotion
 
 ```HTTP
-GET /promotions/:id
+GET /promotion/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -741,7 +741,7 @@ GET /promotions/:id
 ##### Request
 
 ```HTTP
-GET /promotions/1
+GET /promotion/1
 ```
 
 ##### Response
@@ -765,7 +765,7 @@ Status: 200 OK
 #### Create a promotion
 
 ```HTTP
-POST /promotions
+POST /promotion
 ```
 
 | Parameters        | Type    | In   | Description    |
@@ -781,7 +781,7 @@ POST /promotions
 ##### Request
 
 ```HTTP
-POST /promotions
+POST /promotion
   {
     "shopId": 1,
     "name": "Promotion",
@@ -807,7 +807,7 @@ Status: 201 CREATED
 #### Update a promotion
 
 ```HTTP
-PUT /promotions/:id
+PUT /promotion/:id
 ```
 
 | Parameters        | Type    | In    | Description    |
@@ -822,7 +822,7 @@ PUT /promotions/:id
 ##### Request
 
 ```HTTP
-PUT /promotions/1
+PUT /promotion/1
   {
     "description": "Promotion description",
     "endAt": "2020-05-27",
@@ -844,7 +844,7 @@ Status: 200 OK
 #### Delete a promotion
 
 ```HTTP
-DELETE /promotions/:id
+DELETE /promotion/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -854,7 +854,7 @@ DELETE /promotions/:id
 ##### Request
 
 ```HTTP
-DELETE /promotions/1
+DELETE /promotion/1
 ```
 
 ##### Response
@@ -874,7 +874,7 @@ Status: 200 OK
 #### Get a balance
 
 ```HTTP
-GET /balances/:id
+GET /balance/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -884,7 +884,7 @@ GET /balances/:id
 ##### Request
 
 ```HTTP
-GET /balances/1
+GET /balance/1
 ```
 
 ##### Response
@@ -906,7 +906,7 @@ Status: 200 OK
 #### Create a balance
 
 ```HTTP
-POST /balances
+POST /balance
 ```
 
 | Parameters      | Type    | In   | Description              |
@@ -919,7 +919,7 @@ POST /balances
 ##### Request
 
 ```HTTP
-POST /balances
+POST /balance
   {
     "promotionId": 1,
     "cardId": 1,
@@ -943,7 +943,7 @@ Status: 201 CREATED
 #### Update a balance
 
 ```HTTP
-PUT /balances/:id
+PUT /balance/:id
 ```
 
 | Parameters   | Type    | In    | Description    |
@@ -955,7 +955,7 @@ PUT /balances/:id
 ##### Request
 
 ```HTTP
-PUT /balances/1
+PUT /balance/1
   {
     "counter": 10,
     "isActive": false
@@ -977,7 +977,7 @@ Status: 200 OK
 #### Delete a balance
 
 ```HTTP
-DELETE /balances/:id
+DELETE /balance/:id
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -987,7 +987,7 @@ DELETE /balances/:id
 ##### Request
 
 ```HTTP
-DELETE /balances/1
+DELETE /balance/1
 ```
 
 ##### Response
@@ -1005,7 +1005,7 @@ Status: 200 OK
 #### Checkout a balance
 
 ```HTTP
-PUT /balances/:id/checkout
+PUT /balance/:id/checkout
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -1015,7 +1015,7 @@ PUT /balances/:id/checkout
 ##### Request
 
 ```HTTP
-PUT /balances/1/checkout
+PUT /balance/1/checkout
 ```
 
 ##### Response
