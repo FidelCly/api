@@ -12,6 +12,7 @@ export interface RegisterRequest {
 export interface RegisterResponse {
   status: number;
   errors: string[];
+  userUuid?: string | undefined;
 }
 
 export interface LoginRequest {
@@ -32,7 +33,7 @@ export interface ValidateRequest {
 export interface ValidateResponse {
   status: number;
   errors: string[];
-  userId?: number | undefined;
+  userUuid?: string | undefined;
 }
 
 export const AUTH_PACKAGE_NAME = 'auth';

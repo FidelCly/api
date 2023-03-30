@@ -7,14 +7,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/user.dto';
-import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-import {
-  RegisterRequest,
-  LoginRequest,
-  RegisterResponse,
-  LoginResponse,
-} from './auth.pb';
+import { RegisterRequestDto } from './auth.dto';
+import { RegisterResponse, LoginResponse, LoginRequest } from './auth.pb';
 import { AuthService } from './auth.service';
 import { ExceptionInterceptor } from './exception.interceptor';
 
@@ -27,23 +22,34 @@ export class AuthController {
   @Inject(UserService)
   private userService: UserService;
 
+  // @Post('register')
+  // private async register(
+  //   @Body() body: RegisterRequest,
+  // ): Promise<RegisterResponse> {
+  //   return this.svc.register(body);
+  // }
+
   @Post('register')
-  private async register(
-    @Body() body: RegisterRequest,
-  ): Promise<RegisterResponse | User> {
-    const res = await this.svc.register(body);
-    if (res.status != 201) return res;
+  private async register(@Body() registerRequestDto: RegisterRequestDto) {
+    const { status, errors, userUuid }: RegisterResponse =
+      await this.svc.register(registerRequestDto);
+    console.log(status, errors, userUuid);
+    if (status != 201) return { status, errors };
 
     const createUserDto = {
       ...new CreateUserDto(),
-      ...body,
-      username: body.email.split('@')[0],
+      ...registerRequestDto,
+      uuid: userUuid,
+      username: registerRequestDto.email.split('@')[0],
     };
+
     return this.userService.create(createUserDto);
   }
 
   @Put('login')
-  private async login(@Body() body: LoginRequest): Promise<LoginResponse> {
-    return this.svc.login(body);
+  private async login(
+    @Body() loginRequestDto: LoginRequest,
+  ): Promise<LoginResponse> {
+    return this.svc.login(loginRequestDto);
   }
 }

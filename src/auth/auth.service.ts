@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import {
   AuthServiceClient,
   AUTH_SERVICE_NAME,
@@ -27,10 +27,10 @@ export class AuthService {
   }
 
   public async login(body: LoginRequest): Promise<LoginResponse> {
-    return firstValueFrom(this.svc.login(body));
+    return lastValueFrom(this.svc.login(body));
   }
 
   public async validate(token: string): Promise<ValidateResponse> {
-    return firstValueFrom(this.svc.validate({ token }));
+    return lastValueFrom(this.svc.validate({ token }));
   }
 }

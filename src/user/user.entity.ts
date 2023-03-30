@@ -17,6 +17,9 @@ export class User {
   id: number;
 
   @Column()
+  uuid: string;
+
+  @Column()
   username: string;
 
   @Column()
@@ -30,15 +33,12 @@ export class User {
   @OneToMany(() => Card, (card: Card) => card.user)
   cards?: Array<Card>;
 
-  @Exclude()
   @CreateDateColumn()
   createdAt?: Date;
 
-  @Exclude()
   @UpdateDateColumn()
   updatedAt?: Date;
 
-  @Exclude()
   @DeleteDateColumn()
   deletedAt?: Date;
 }

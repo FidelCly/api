@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { UpdateUserDto } from './user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -25,15 +25,6 @@ export class UserController {
     const user = await this.service.findOne(+id);
     if (!user) throw new NotFoundException();
     return user;
-  }
-
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    if (await this.service.findOneByEmail(createUserDto.email)) {
-      throw new ConflictException('Email already in use');
-    }
-
-    return this.service.create(createUserDto);
   }
 
   @Put(':id')
