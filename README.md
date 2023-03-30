@@ -136,6 +136,7 @@ Status: 200 OK
         "long": "-10.137468",
         "phone": "0632547698",
         "address": "12 rue du bistrot",
+        "city": "Paris"
       },
       "balances": [
         {
@@ -174,6 +175,7 @@ Status: 200 OK
         "long": "-11.147119",
         "phone": "0698765432",
         "address": "1 rue du café",
+        "city": "Paris"
       },
       "balances": [
         {
@@ -339,6 +341,7 @@ Status: 200 OK
     "long": "2.3685758",
     "phone": "0632547698",
     "address": "12 rue du bistrot",
+    "city": "Paris"
     "isActive": true,
   }
 ]
@@ -379,6 +382,8 @@ Status: 200 OK
   "long": "-10.137468",
   "phone": "0632547698",
   "address": "12 rue du bistrot",
+  "city": "Paris",
+  "isActive": true,
 }
 ```
 
@@ -414,6 +419,7 @@ Status: 200 OK
       "startAt": "2019-05-27",
       "endAt": "2020-05-27",
       "checkoutLimit": 10,
+      "isActive": true,
   }
 ]
 ```
