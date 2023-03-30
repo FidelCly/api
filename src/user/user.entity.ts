@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' }) // table name in database
 export class User {
@@ -29,12 +30,15 @@ export class User {
   @OneToMany(() => Card, (card: Card) => card.user)
   cards?: Array<Card>;
 
+  @Exclude()
   @CreateDateColumn()
   createdAt?: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt?: Date;
 
+  @Exclude()
   @DeleteDateColumn()
   deletedAt?: Date;
 }

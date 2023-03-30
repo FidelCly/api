@@ -1,5 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AUTH_SERVICE_NAME, AUTH_PACKAGE_NAME } from './auth.pb';
 import { AuthService } from './auth.service';
@@ -7,6 +8,7 @@ import { AuthService } from './auth.service';
 @Global()
 @Module({
   imports: [
+    UserModule,
     ClientsModule.register([
       {
         name: AUTH_SERVICE_NAME,

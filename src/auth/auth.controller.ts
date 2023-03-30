@@ -6,6 +6,9 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
+import { CreateUserDto } from 'src/user/user.dto';
+import { User } from 'src/user/user.entity';
+import { UserService } from 'src/user/user.service';
 import {
   RegisterRequest,
   LoginRequest,
@@ -21,11 +24,22 @@ export class AuthController {
   @Inject(AuthService)
   private svc: AuthService;
 
+  @Inject(UserService)
+  private userService: UserService;
+
   @Post('register')
   private async register(
     @Body() body: RegisterRequest,
-  ): Promise<RegisterResponse> {
-    return this.svc.register(body);
+  ): Promise<RegisterResponse | User> {
+    const res = await this.svc.register(body);
+    if (res.status != 201) return res;
+
+    const createUserDto = {
+      ...new CreateUserDto(),
+      ...body,
+      username: body.email.split('@')[0],
+    };
+    return this.userService.create(createUserDto);
   }
 
   @Put('login')
