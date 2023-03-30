@@ -111,84 +111,91 @@ Status: 200 OK
 ```
 
 ```json
-[
-  {
-    "id": 1,
-    "url": "https://example.com",
-    "shopId": 1,
-    "userId": 1,
-    "startAt": "",
-    "endAt": "",
-    "shop": {
-      "companyName": "Bistrot123",
-      "activity":"Restauration",
-      "siren": "123456789",
-      "siret": "12345678901234",
-      "email": "bistrot123@gmail.com",
-      "zipCode": "12345",
-      "lat":"22.366329",
-      "long": "-10.137468",
-      "phone": "0632547698",
-      "address": "12 rue du bistrot",
-    },
-    "balances": [
-      {
-        "id": 1,
-        "promotionId": 1,
-        "cardId": 1,
-        "counter": 0,
-        "isActive": true
-        "promotion": {
+{
+  "id": 1,
+  "username": "test",
+  "email": "test@fidecly.com",
+  "isActive": true,
+  "cards":
+  [
+    {
+      "id": 1,
+      "shopId": 1,
+      "userId": 1,
+      "startAt": "",
+      "endAt": "",
+      "isActive": true,
+      "shop": {
+        "companyName": "Bistrot123",
+        "activity":"Restauration",
+        "siren": "123456789",
+        "siret": "12345678901234",
+        "email": "bistrot123@gmail.com",
+        "zipCode": "12345",
+        "lat":"22.366329",
+        "long": "-10.137468",
+        "phone": "0632547698",
+        "address": "12 rue du bistrot",
+      },
+      "balances": [
+        {
           "id": 1,
-          "shopId": 1,
-          "name": "Promotion",
-          "description": "Promotion description",
-          "startAt": "2019-05-27",
-          "endAt": "2020-05-27",
-          "checkoutLimit": 10,
+          "promotionId": 1,
+          "cardId": 1,
+          "counter": 0,
+          "isActive": true
+          "promotion": {
+            "id": 1,
+            "shopId": 1,
+            "name": "Promotion",
+            "description": "Promotion description",
+            "startAt": "2019-05-27",
+            "endAt": "2020-05-27",
+            "checkoutLimit": 10,
+          }
         }
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "url": "https://example2.com",
-    "shopId": 2,
-    "userId": 1,
-    "startAt": "",
-    "endAt": "",
-    "shop": {
-      "companyName": "Coffee Shop",
-      "activity":"Restauration",
-      "siren": "987654321",
-      "siret": "98765432101234",
-      "email": "coffeeshop@gmail.com",
-      "zipCode": "54321",
-      "lat": "18.365229",
-      "long": "-11.147119",
-      "phone": "0698765432",
-      "address": "1 rue du café",
+      ]
     },
-    "balances": [
-      {
-        "id": 2,
-        "promotionId": 2,
-        "cardId": 2,
-        "counter": 5,
-        "isActive": true
-        "promotion": {
+    {
+      "id": 2,
+      "shopId": 2,
+      "userId": 1,
+      "startAt": "",
+      "endAt": "",
+      "isActive": true,
+      "shop": {
+        "companyName": "Coffee Shop",
+        "activity":"Restauration",
+        "siren": "987654321",
+        "siret": "98765432101234",
+        "email": "coffeeshop@gmail.com",
+        "zipCode": "54321",
+        "lat": "18.365229",
+        "long": "-11.147119",
+        "phone": "0698765432",
+        "address": "1 rue du café",
+      },
+      "balances": [
+        {
           "id": 2,
-          "shopId": 2,
-          "name": "Promotion2",
-          "description": "Promotion2 description",
-          "startAt": "2019-05-27",
-          "endAt": "2020-05-27",
-          "checkoutLimit": 20,
+          "promotionId": 2,
+          "cardId": 2,
+          "counter": 5,
+          "isActive": true
+          "promotion": {
+            "id": 2,
+            "shopId": 2,
+            "name": "Promotion2",
+            "description": "Promotion2 description",
+            "startAt": "2019-05-27",
+            "endAt": "2020-05-27",
+            "checkoutLimit": 20,
+          }
         }
-      }
-    ]
-  }
-]
+      ]
+    }
+  ]
+}
 ```
 
 #### Create a user
@@ -254,7 +261,11 @@ Status: 200 OK
 
 ```json
 {
-  "message": "User updated",
+  "id": 1,
+  "username": "test",
+  "email":"test@fidecly.com"
+  "isActive": true,
+  "cards": []
 }
 
 ```
