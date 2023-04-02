@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import {
@@ -12,7 +12,7 @@ import {
 } from './auth.pb';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   private svc: AuthServiceClient;
 
   @Inject(AUTH_SERVICE_NAME)
