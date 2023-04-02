@@ -14,10 +14,11 @@ describe('Testing shop controller', () => {
   let app: HttpServer;
 
   beforeAll(async () => {
-    await factory.init();
+    const module = await factory.configure();
+    await factory.init(module);
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();

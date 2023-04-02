@@ -10,7 +10,8 @@ describe('Testing balance controller', () => {
   let app: HttpServer;
 
   beforeAll(async () => {
-    await factory.init();
+    const module = await factory.configure();
+    await factory.init(module);
 
     await factory.seedUser();
     await factory.seedShop();
@@ -18,7 +19,7 @@ describe('Testing balance controller', () => {
     await factory.seedPromotion();
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();

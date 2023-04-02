@@ -1,9 +1,5 @@
 import * as request from 'supertest';
-import {
-  userFixture,
-  modifiedUserFixture,
-  emptyModifiedUserFixture,
-} from './user.seed';
+import { modifiedUserFixture, emptyModifiedUserFixture } from './user.seed';
 import { TestFactory } from '../factory';
 import { HttpServer } from '@nestjs/common';
 
@@ -13,40 +9,16 @@ describe('UsersController', () => {
   let app: HttpServer;
 
   beforeAll(async () => {
-    await factory.init();
+    const module = await factory.configure();
+    await factory.init(module);
+
+    await factory.seedUser();
 
     app = factory.app.getHttpServer();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await factory.close();
-  });
-
-  describe('Create user', () => {
-    describe('with an empty payload', () => {
-      it('responds with status 400', async () => {
-        const response = await request(app)
-          .post('/user')
-          .set('Accept', 'application/json');
-
-        expect(response.headers['content-type']).toMatch(/json/);
-        expect(response.statusCode).toBe(400);
-      });
-    });
-
-    describe('with a correct payload', () => {
-      it('responds with status 201', async () => {
-        const response = await request(app)
-          .post('/user')
-          .set('Accept', 'application/json')
-          .send(userFixture);
-
-        expect(response.headers['content-type']).toMatch(/json/);
-        expect(response.statusCode).toBe(201);
-        expect(response.body.username).toBe(userFixture.username);
-        expect(response.body.email).toBe(userFixture.email);
-      });
-    });
   });
 
   describe('Update user', () => {

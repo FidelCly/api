@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -14,6 +15,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  readonly uuid: string;
 }
 
 export class UpdateUserDto {

@@ -6,9 +6,11 @@
     - [Available commands](#available-commands)
     - [Introduce code changes](#introduce-code-changes)
   - [API reference](#api-reference)
+    - [Authentication endpoints](#authentication-endpoints)
+      - [Register](#register)
+      - [Login](#login)
     - [Users endpoints](#users-endpoints)
       - [Get a user](#get-a-user)
-      - [Create a user](#create-a-user)
       - [Update a user](#update-a-user)
       - [Delete a user](#delete-a-user)
     - [Shops endpoints](#shops-endpoints)
@@ -85,6 +87,82 @@ docker-compose run --rm web npm run migration:run
 ```
 
 ## API reference
+
+### Authentication endpoints
+
+#### Register
+
+```HTTP
+POST /auth/register
+```
+
+| Parameters   | Type   | In   | Description    |
+| :----------- | :----- | :--- | :------------- |
+| **email**    | string | body | **[required]** |
+| **password** | string | body | **[required]** |
+
+##### Request
+
+```HTTP
+POST /auth/register
+  {
+    "email":"test@fidecly.com"
+    "password":"12345678"
+  }
+```
+
+##### Response
+
+``` HTTP
+Status: 201 CREATED
+```
+
+```json
+{
+  "id": 1,
+  "uuid": "some-uuid",
+  "username": "test",
+  "email":"test@fidecly.com"
+  "isActive": true,
+  "cards": []
+}
+
+```
+
+#### Login
+
+```HTTP
+PUT /auth/login
+```
+
+| Parameters   | Type   | In   | Description    |
+| :----------- | :----- | :--- | :------------- |
+| **email**    | string | body | **[required]** |
+| **password** | string | body | **[required]** |
+
+##### Request
+
+```HTTP
+PUT /auth/login
+  {
+    "email":"test@fidecly.com"
+    "password":"12345678"
+  }
+```
+
+##### Response
+
+``` HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "token": "some-jwt-token"
+}
+
+```
 
 ### Users endpoints
 
@@ -197,39 +275,6 @@ Status: 200 OK
       ]
     }
   ]
-}
-```
-
-#### Create a user
-
-```HTTP
-POST /user
-```
-
-| Parameters   | Type   | In   | Description    |
-| :----------- | :----- | :--- | :------------- |
-| **username** | string | body | **[required]** |
-| **email**    | string | body | **[required]** |
-
-##### Request
-
-```HTTP
-POST /user
-  {
-    "username": "test",
-    "email":"test@fidecly.com"
-  }
-```
-
-##### Response
-
-``` HTTP
-Status: 201 CREATED
-```
-
-```json
-{
-  "message": "User created",
 }
 ```
 

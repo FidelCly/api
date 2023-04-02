@@ -7,13 +7,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
 import { ShopService } from '../shop/shop.service';
 import { UserService } from '../user/user.service';
 import { CreateCardDto, UpdateCardDto } from './card.dto';
 import { CardService } from './card.service';
 
 @Controller('card')
+@UseGuards(AuthGuard)
 export class CardController {
   constructor(
     private service: CardService,
