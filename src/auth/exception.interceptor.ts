@@ -18,13 +18,21 @@ export class ExceptionInterceptor implements NestInterceptor {
       map((res) => {
         switch (res.status) {
           case HttpStatus.BAD_REQUEST:
-            throw new BadRequestException(res.errors);
+            throw new BadRequestException(
+              res.errors.length > 1 ? res.errors : res.errors[0],
+            );
           case HttpStatus.CONFLICT:
-            throw new ConflictException(res.errors);
+            throw new ConflictException(
+              res.errors.length > 1 ? res.errors : res.errors[0],
+            );
           case HttpStatus.UNAUTHORIZED:
-            throw new UnauthorizedException(res.errors);
+            throw new UnauthorizedException(
+              res.errors.length > 1 ? res.errors : res.errors[0],
+            );
           case HttpStatus.FORBIDDEN:
-            throw new ForbiddenException(res.errors);
+            throw new ForbiddenException(
+              res.errors.length > 1 ? res.errors : res.errors[0],
+            );
 
           default:
             return res;
