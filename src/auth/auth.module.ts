@@ -12,11 +12,13 @@ import { AuthService } from './auth.service';
     ClientsModule.register([
       {
         name: AUTH_SERVICE_NAME,
-        transport: Transport.GRPC,
+        transport: Transport.TCP,
         options: {
-          url: process.env.AUTH_SERVICE_URL,
-          package: AUTH_PACKAGE_NAME,
-          protoPath: 'node_modules/proto/proto/auth.proto',
+          // url: process.env.AUTH_SERVICE_URL,
+          // package: AUTH_PACKAGE_NAME,
+          // protoPath: 'node_modules/proto/proto/auth.proto',
+          host: process.env.AUTH_SERVICE_HOST,
+          port: +process.env.AUTH_SERVICE_PORT,
         },
       },
     ]),
