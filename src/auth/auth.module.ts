@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { AUTH_SERVICE_NAME, AUTH_PACKAGE_NAME } from './auth.pb';
 import { AuthService } from './auth.service';
 import { join } from 'path';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 
 @Global()
 @Module({

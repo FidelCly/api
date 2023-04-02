@@ -1,5 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { userFixture } from './user/user.seed';
 import { CreateUserDto } from '../src/user/user.dto';
 import { DataSource } from 'typeorm';
@@ -31,7 +31,16 @@ export class TestFactory {
   /**
    * Connect to DB and start server
    */
-  public async init() {
+  public async init(moduleRef: TestingModuleBuilder): Promise<TestingModule> {
+    const module = await moduleRef.compile();
+
+    this._app = module.createNestApplication();
+    this._app.useGlobalPipes(new ValidationPipe());
+    await this._app.init();
+    return module;
+  }
+
+  public async configure(): Promise<TestingModuleBuilder> {
     const db = newDb({ autoCreateForeignKeyIndices: true });
     db.public.registerFunction({
       implementation: () => 'test',
@@ -56,12 +65,9 @@ export class TestFactory {
       .overrideProvider(DataSource)
       .useValue(this.dataSource)
       .overrideGuard(AuthGuard)
-      .useValue(null)
-      .compile();
+      .useValue(null);
 
-    this._app = moduleRef.createNestApplication();
-    this._app.useGlobalPipes(new ValidationPipe());
-    await this._app.init();
+    return moduleRef;
   }
 
   /**

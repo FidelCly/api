@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 import { LoginRequest, RegisterRequest } from './auth.pb';
 
 export class RegisterRequestDto implements RegisterRequest {
@@ -7,7 +7,6 @@ export class RegisterRequestDto implements RegisterRequest {
   readonly email: string;
 
   @IsNotEmpty()
-  //   @IsStrongPassword()
   readonly password: string;
 }
 

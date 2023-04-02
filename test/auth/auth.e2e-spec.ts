@@ -1,46 +1,31 @@
 /* eslint-disable no-undef */
 import * as request from 'supertest';
-import {
-  HttpServer,
-  HttpStatus,
-  INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { HttpServer, HttpStatus } from '@nestjs/common';
 import { AuthService } from '../../src/auth/auth.service';
 import {
   invalidLoginRequestFixture,
   registerRequestFixture,
 } from './auth.seed';
-import { AuthModule } from '../../src/auth/auth.module';
+import { TestFactory } from '../factory';
 
 describe('Testing auth controller', () => {
   // Create instances
-  let app: INestApplication;
-  let server: HttpServer;
+  const factory = new TestFactory();
+  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AuthModule],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            register: jest.fn(),
-            login: jest.fn(),
-            validate: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
+    const moduleRef = await factory.configure();
+    moduleRef.overrideProvider(AuthService).useValue({
+      register: jest.fn(),
+      login: jest.fn(),
+      validate: jest.fn(),
+    });
 
-    app = moduleRef.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe());
-    service = moduleRef.get<AuthService>(AuthService);
-    await app.init();
+    const module = await factory.init(moduleRef);
+    service = module.get<AuthService>(AuthService);
 
-    server = app.getHttpServer();
+    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
@@ -55,31 +40,34 @@ describe('Testing auth controller', () => {
           errors: ['bad request'],
         });
 
-        const response = await request(server)
+        const response = await request(app)
           .post('/auth/register')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.BAD_REQUEST);
-        expect(response.body.message).toMatchObject(['bad request']);
+        expect(response.body.message).toBe('bad request');
       });
     });
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
         jest.spyOn(service, 'register').mockResolvedValue({
-          status: HttpStatus.OK,
-          errors: [],
+          status: HttpStatus.CREATED,
+          userUuid: 'some-uuid',
+          errors: null,
         });
 
-        const response = await request(server)
+        const response = await request(app)
           .post('/auth/register')
           .set('Accept', 'application/json')
           .send(registerRequestFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.CREATED);
-        expect(response.body.errors.length).toBe(0);
+        expect(response.body.errors).toBeUndefined;
+        expect(response.body.email).toBe(registerRequestFixture.email);
+        expect(response.body.uuid).toBe('some-uuid');
       });
     });
   });
@@ -93,7 +81,7 @@ describe('Testing auth controller', () => {
           errors: [],
         });
 
-        const response = await request(server)
+        const response = await request(app)
           .put('/auth/login')
           .set('Accept', 'application/json')
           .send(registerRequestFixture);
@@ -112,14 +100,14 @@ describe('Testing auth controller', () => {
           errors: ['Invalid password'],
         });
 
-        const response = await request(server)
+        const response = await request(app)
           .put('/auth/login')
           .set('Accept', 'application/json')
           .send(invalidLoginRequestFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.UNAUTHORIZED);
-        expect(response.body.message).toMatchObject(['Invalid password']);
+        expect(response.body.message).toBe('Invalid password');
       });
     });
   });

@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { RegisterRequest, LoginRequest, LoginResponse } from './auth.pb';
 import { AuthService } from './auth.service';
-import { UserService } from 'src/user/user.service';
-import { CreateUserDto } from 'src/user/user.dto';
+import { UserService } from '../user/user.service';
+import { CreateUserDto } from '../user/user.dto';
 import { ExceptionInterceptor } from './exception.interceptor';
 
 @Controller('auth')
@@ -28,7 +28,7 @@ export class AuthController {
     if (status != 201) return { status, errors };
 
     const newUser: CreateUserDto = {
-      ...body,
+      email: body.email,
       username: body.email.split('@')[0],
       uuid: userUuid,
     };
