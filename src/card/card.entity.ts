@@ -1,6 +1,3 @@
-import { Balance } from '../balance/balance.entity';
-import { Shop } from '../shop/shop.entity';
-import { User } from '../user/user.entity';
 import {
   BaseEntity,
   Column,
@@ -13,6 +10,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Balance } from '../balance/balance.entity';
+import { Shop } from '../shop/shop.entity';
+import { User } from '../user/user.entity';
 
 @Entity() // table name in database
 export class Card extends BaseEntity {
@@ -42,6 +42,9 @@ export class Card extends BaseEntity {
   @ManyToOne(() => Shop, (shop: Shop) => shop.cards)
   @JoinColumn()
   shop!: Shop;
+
+  @Column({ nullable: true })
+  userUuid!: string;
 
   @Column({ nullable: true })
   userId!: number;

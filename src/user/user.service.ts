@@ -12,14 +12,13 @@ export class UserService {
   ) {}
 
   /**
-   * Find user by id
-   * @param id - Id of the user
+   * Find user by uid
+   * @param uid - Id of the user
    * @returns A user if found
    */
-  findOne(id: number): Promise<User | null> {
-    return this.repository.findOne({
-      where: { id },
-      relations: { cards: { shop: true, balances: { promotion: true } } },
+  findOne(uuid: string): Promise<User | null> {
+    return this.repository.findOneBy({
+      uuid,
     });
   }
 
@@ -59,15 +58,15 @@ export class UserService {
    * @param id - The user to update
    * @param updateUserDto - The updated user
    */
-  update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-    return this.repository.update(id, updateUserDto);
+  update(uuid: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+    return this.repository.update(uuid, updateUserDto);
   }
 
   /**
    * Delete a user from the db
    * @param id - The id of the user to delete
    */
-  remove(id: number): Promise<UpdateResult> {
-    return this.repository.softDelete(id);
+  remove(uuid: string): Promise<UpdateResult> {
+    return this.repository.softDelete(uuid);
   }
 }

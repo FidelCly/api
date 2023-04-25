@@ -28,8 +28,8 @@ export class CardService {
     return this.repository.softDelete(id);
   }
 
-  removeUsersCards(userId: number): Promise<UpdateResult> {
-    return this.repository.softDelete({ userId: userId });
+  removeUsersCards(userUuid: string): Promise<UpdateResult> {
+    return this.repository.softDelete({ userUuid: userUuid });
   }
 
   removeShopsCards(shopId: number): Promise<UpdateResult> {

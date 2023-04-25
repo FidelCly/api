@@ -18,31 +18,34 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private service: UserService, private cardService: CardService) {}
 
-  @Get(':id')
-  async one(@Param('id') id: string) {
-    const user = await this.service.findOne(+id);
+  @Get(':uuid')
+  async one(@Param('uuid') uuid: string) {
+    const user = await this.service.findOne(uuid);
     if (!user) throw new NotFoundException();
     return user;
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    if (!(await this.service.findOne(+id))) {
+  @Put(':uuid')
+  async update(
+    @Param('uuid') uuid: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    if (!(await this.service.findOne(uuid))) {
       throw new NotFoundException();
     }
 
-    await this.service.update(+id, updateUserDto);
+    await this.service.update(uuid, updateUserDto);
     return { message: 'User updated' };
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    if (!(await this.service.findOne(+id))) {
+  @Delete(':uuid')
+  async remove(@Param('uuid') uuid: string) {
+    if (!(await this.service.findOne(uuid))) {
       throw new NotFoundException();
     }
 
-    await this.cardService.removeUsersCards(+id);
-    await this.service.remove(+id);
+    await this.cardService.removeUsersCards(uuid);
+    await this.service.remove(uuid);
     return { message: 'User deleted' };
   }
 }
