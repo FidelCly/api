@@ -1,7 +1,7 @@
-import * as request from 'supertest';
-import { modifiedUserFixture, emptyModifiedUserFixture } from './user.seed';
-import { TestFactory } from '../factory';
 import { HttpServer } from '@nestjs/common';
+import * as request from 'supertest';
+import { TestFactory } from '../factory';
+import { emptyModifiedUserFixture, modifiedUserFixture } from './user.seed';
 
 describe('UsersController', () => {
   // Create instances
@@ -62,10 +62,10 @@ describe('UsersController', () => {
   });
 
   describe('Get one user', () => {
-    describe('of unknown id', () => {
+    describe('of unknown uuid', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
-          .get('/user/10')
+          .get('/user/some-unknown-uuid')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -74,10 +74,10 @@ describe('UsersController', () => {
       });
     });
 
-    describe('of known id', () => {
+    describe('of known uuid', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
-          .get('/user/1')
+          .get('/user/some-uuid')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
