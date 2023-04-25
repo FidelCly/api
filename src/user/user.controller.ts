@@ -18,9 +18,9 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private service: UserService, private cardService: CardService) {}
 
-  @Get(':id')
-  async one(@Param('id') id: string) {
-    const user = await this.service.findOne(+id);
+  @Get(':uuid')
+  async one(@Param('uuid') uuid: string) {
+    const user = await this.service.findByUuid(uuid);
     if (!user) throw new NotFoundException();
     return user;
   }

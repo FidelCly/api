@@ -24,6 +24,18 @@ export class UserService {
   }
 
   /**
+   * Find user by Uuid
+   * @param uuid - uuid of the user
+   * @returns A user if found
+   */
+  findByUuid(uuid: string): Promise<User | null> {
+    return this.repository.findOne({
+      where: { uuid },
+      relations: { cards: { shop: true, balances: { promotion: true } } },
+    });
+  }
+
+  /**
    * Find user by username
    * @param username - Username of the user
    * @returns A user if found
