@@ -23,6 +23,12 @@ export class Shop {
   @Column()
   activity: ShopActivity;
 
+  @Column({ nullable: true })
+  description!: string;
+
+  @Column({ nullable: true })
+  picture!: string;
+
   @Column({
     length: 9,
   })
@@ -62,14 +68,6 @@ export class Shop {
     default: true,
   })
   isActive: boolean;
-
-  @IsOptional()
-  @IsString()
-  @Column()
-  description!: string;
-
-  @Column()
-  picture!: string;
 
   @OneToMany(() => Card, (card: Card) => card.shop)
   cards!: Array<Card>;
