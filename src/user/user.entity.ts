@@ -26,10 +26,10 @@ export class User {
   email: string;
 
   @Column()
-  birthday?: Date;
+  birthday!: Date;
 
   @Column()
-  sexe?: Sexe;
+  sexe!: Sexe;
 
   @Column({
     default: true,
