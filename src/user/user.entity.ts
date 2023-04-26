@@ -25,10 +25,10 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   birthday!: Date;
 
-  @Column()
+  @Column({ nullable: true })
   sexe!: Sexe;
 
   @Column({
