@@ -102,7 +102,7 @@ POST /auth/register
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 201 CREATED
 ```
 
@@ -141,7 +141,7 @@ PUT /auth/login
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -150,7 +150,6 @@ Status: 200 OK
   "status": 200,
   "token": "some-jwt-token"
 }
-
 ```
 
 ### Users endpoints
@@ -173,7 +172,7 @@ GET /user/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -278,6 +277,8 @@ PUT /user/:id
 | **id**       | number | query | **[required]** |
 | **username** | string | body  | **[optional]** |
 | **email**    | string | body  | **[optional]** |
+| **birthday** | string | body  | **[optional]** |
+| **sexe**     | string | body  | **[optional]** |
 
 ##### Request
 
@@ -291,7 +292,7 @@ PUT /user/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -324,13 +325,13 @@ DELETE /user/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "User deleted",
+  "message": "User deleted"
 }
 ```
 
@@ -357,7 +358,7 @@ GET /shop/?distance=3000&long=2.3690961&lat=48.8573185
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -399,7 +400,7 @@ GET /shop/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -407,17 +408,17 @@ Status: 200 OK
 {
   "id": 1,
   "companyName": "Bistrot123",
-  "activity":"Restauration",
+  "activity": "Restauration",
   "siren": "123456789",
   "siret": "12345678901234",
   "email": "bistrot123@gmail.com",
   "zipCode": "12345",
-  "lat":"22.366329",
+  "lat": "22.366329",
   "long": "-10.137468",
   "phone": "0632547698",
   "address": "12 rue du bistrot",
   "city": "Paris",
-  "isActive": true,
+  "isActive": true
 }
 ```
 
@@ -439,21 +440,21 @@ GET /shop/1/promotion
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 [
   {
-      "id": 1,
-      "shopId": 1,
-      "name": "Promotion",
-      "description": "Promotion description",
-      "startAt": "2019-05-27",
-      "endAt": "2020-05-27",
-      "checkoutLimit": 10,
-      "isActive": true,
+    "id": 1,
+    "shopId": 1,
+    "name": "Promotion",
+    "description": "Promotion description",
+    "startAt": "2019-05-27",
+    "endAt": "2020-05-27",
+    "checkoutLimit": 10,
+    "isActive": true
   }
 ]
 ```
@@ -476,7 +477,7 @@ GET /shop/1/clients
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -489,10 +490,10 @@ Status: 200 OK
     "shopId": 1,
     "userId": 1,
     "user": {
-        "id": 1,
-        "username": "test",
-        "email": "test@fidecly.com",
-        "isActive": true,
+      "id": 1,
+      "username": "test",
+      "email": "test@fidecly.com",
+      "isActive": true
     },
     "balances": []
   },
@@ -503,10 +504,10 @@ Status: 200 OK
     "shopId": 1,
     "userId": 2,
     "user": {
-        "id": 2,
-        "username": "test2",
-        "email": "test2@fidecly.com",
-        "isActive": true,
+      "id": 2,
+      "username": "test2",
+      "email": "test2@fidecly.com",
+      "isActive": true
     },
     "balances": []
   }
@@ -552,13 +553,13 @@ POST /shop
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 201 CREATED
 ```
 
 ```json
 {
-  "message": "Shop created",
+  "message": "Shop created"
 }
 ```
 
@@ -601,13 +602,13 @@ PUT /shop/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Shop updated",
+  "message": "Shop updated"
 }
 ```
 
@@ -629,13 +630,13 @@ DELETE /shop/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Shop deleted",
+  "message": "Shop deleted"
 }
 ```
 
@@ -659,7 +660,7 @@ GET /card/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -670,7 +671,7 @@ Status: 200 OK
   "shopId": 1,
   "userId": 1,
   "startAt": "",
-  "endAt": "",
+  "endAt": ""
 }
 ```
 
@@ -704,13 +705,13 @@ POST /card
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 201 CREATED
 ```
 
 ```json
 {
-  "message": "Card created",
+  "message": "Card created"
 }
 ```
 
@@ -739,13 +740,13 @@ PUT /card/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Card updated",
+  "message": "Card updated"
 }
 ```
 
@@ -767,13 +768,13 @@ DELETE /card/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Card deleted",
+  "message": "Card deleted"
 }
 ```
 
@@ -797,7 +798,7 @@ GET /promotion/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -809,7 +810,7 @@ Status: 200 OK
   "description": "Promotion description",
   "startAt": "2019-05-27",
   "endAt": "2020-05-27",
-  "checkoutLimit": 10,
+  "checkoutLimit": 10
 }
 ```
 
@@ -845,13 +846,13 @@ POST /promotion
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 201 CREATED
 ```
 
 ```json
 {
-  "message": "Promotion created",
+  "message": "Promotion created"
 }
 ```
 
@@ -882,13 +883,13 @@ PUT /promotion/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Promotion updated",
+  "message": "Promotion updated"
 }
 ```
 
@@ -910,13 +911,13 @@ DELETE /promotion/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Promotion deleted",
+  "message": "Promotion deleted"
 }
 ```
 
@@ -940,7 +941,7 @@ GET /balance/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
@@ -981,13 +982,13 @@ POST /balance
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 201 CREATED
 ```
 
 ```json
 {
-  "message": "Balance created",
+  "message": "Balance created"
 }
 ```
 
@@ -1015,13 +1016,13 @@ PUT /balance/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Balance updated",
+  "message": "Balance updated"
 }
 ```
 
@@ -1043,13 +1044,13 @@ DELETE /balance/1
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Balance deleted",
+  "message": "Balance deleted"
 }
 ```
 
@@ -1071,24 +1072,24 @@ PUT /balance/1/checkout
 
 ##### Response
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Balance updated", // increments counter +1
+  "message": "Balance updated" // increments counter +1
 }
 ```
 
 or
 
-``` HTTP
+```HTTP
 Status: 200 OK
 ```
 
 ```json
 {
-  "message": "Promotion limit reached", // Limit is reached, customer gets prize
+  "message": "Promotion limit reached" // Limit is reached, customer gets prize
 }
 ```
