@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Sexe } from './user.enum';
 
 @Entity({ name: 'users' }) // table name in database
 export class User {
@@ -23,6 +24,12 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column({ nullable: true })
+  birthday!: Date;
+
+  @Column({ nullable: true })
+  sexe!: Sexe;
 
   @Column({
     default: true,

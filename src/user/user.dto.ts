@@ -1,11 +1,14 @@
 import {
   IsBoolean,
+  IsDateString,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
+import { Sexe } from './user.enum';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -30,6 +33,14 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
   readonly email?: string;
+
+  @IsOptional()
+  @IsEnum(Sexe)
+  readonly sexe?: Sexe;
+
+  @IsOptional()
+  @IsDateString()
+  readonly birthday?: Date;
 
   @IsOptional()
   @IsBoolean()
