@@ -6,10 +6,12 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Sexe } from './user.enum';
+import { Shop } from '../shop/shop.entity';
 
 @Entity({ name: 'users' }) // table name in database
 export class User {
@@ -35,6 +37,9 @@ export class User {
     default: true,
   })
   isActive: boolean;
+
+  @OneToOne(() => Shop, (shop: Shop) => shop.user)
+  shop?: Shop;
 
   @OneToMany(() => Card, (card: Card) => card.user)
   cards?: Array<Card>;

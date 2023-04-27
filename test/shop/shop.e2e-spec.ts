@@ -7,6 +7,7 @@ import {
   emptyModifiedShopFixture,
   farAwayShopFixture,
 } from './shop.seed';
+import { userFixture2 } from '../user/user.seed';
 
 describe('Testing shop controller', () => {
   // Create instances
@@ -16,6 +17,9 @@ describe('Testing shop controller', () => {
   beforeAll(async () => {
     const module = await factory.configure();
     await factory.init(module);
+
+    await factory.seedUser();
+    await factory.seedUser(userFixture2);
 
     app = factory.app.getHttpServer();
   });
