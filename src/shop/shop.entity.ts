@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { User } from '../user/user.entity';
 import { Card } from '../card/card.entity';
 import { Promotion } from '../promotion/promotion.entity';
 import { ShopActivity } from './shop.enum';
@@ -8,6 +9,8 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
+  JoinColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -62,6 +65,13 @@ export class Shop {
     default: true,
   })
   isActive: boolean;
+
+  @Column({ nullable: true })
+  userId!: number;
+
+  @OneToOne(() => User, (user: User) => user.shop)
+  @JoinColumn()
+  user!: User;
 
   @OneToMany(() => Card, (card: Card) => card.shop)
   cards!: Array<Card>;

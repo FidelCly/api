@@ -5,11 +5,13 @@ import { CardModule } from '../card/card.module';
 import { ShopController } from './shop.controller';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Shop]),
     forwardRef(() => CardModule),
+    forwardRef(() => UserModule),
     forwardRef(() => PromotionModule),
   ],
   controllers: [ShopController],

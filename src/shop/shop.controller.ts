@@ -17,12 +17,14 @@ import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { AuthGuard } from '../auth/auth.guard';
+import { UserService } from '../user/user.service';
 
 @Controller('shop')
 @UseGuards(AuthGuard)
 export class ShopController {
   constructor(
     private service: ShopService,
+    private userService: UserService,
     private cardService: CardService,
     private promotionService: PromotionService,
   ) {}
@@ -77,6 +79,10 @@ export class ShopController {
 
   @Post()
   async create(@Body() createShopDto: CreateShopDto) {
+    if (!(await this.userService.findOne(createShopDto.userId))) {
+      throw new NotFoundException('User not found');
+    }
+
     if (await this.service.findOneByEmail(createShopDto.email)) {
       throw new ConflictException('Email already in use');
     }

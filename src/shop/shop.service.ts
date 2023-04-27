@@ -92,6 +92,14 @@ export class ShopService {
   }
 
   /**
+   * Delete a user's shop when fider
+   * @param userId - The id of the shop's user to delete
+   */
+  removeUsersShop(userId: number): Promise<UpdateResult> {
+    return this.repository.softDelete({ userId: userId });
+  }
+
+  /**
    * Get distance between two geolocation points.
    *
    * @param lat1 - The latitude of the first geoloc

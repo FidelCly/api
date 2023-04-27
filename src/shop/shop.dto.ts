@@ -6,6 +6,7 @@ import {
   IsLatitude,
   IsLongitude,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsPhoneNumber,
   IsPostalCode,
@@ -14,6 +15,10 @@ import {
 } from 'class-validator';
 
 export class CreateShopDto {
+  @IsNotEmpty()
+  @IsNumber()
+  readonly userId: number;
+
   @IsNotEmpty()
   @IsString()
   readonly companyName: string;

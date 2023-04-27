@@ -17,6 +17,7 @@ describe('Testing promotion controller', () => {
     const module = await factory.configure();
     await factory.init(module);
 
+    await factory.seedUser();
     await factory.seedShop();
 
     app = factory.app.getHttpServer();

@@ -12,11 +12,16 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
 import { UpdateUserDto } from './user.dto';
 import { UserService } from './user.service';
+import { ShopService } from '../shop/shop.service';
 
 @Controller('user')
 @UseGuards(AuthGuard)
 export class UserController {
-  constructor(private service: UserService, private cardService: CardService) {}
+  constructor(
+    private service: UserService,
+    private cardService: CardService,
+    private shopService: ShopService,
+  ) {}
 
   @Get(':uuid')
   async one(@Param('uuid') uuid: string) {
@@ -41,6 +46,7 @@ export class UserController {
       throw new NotFoundException();
     }
 
+    await this.shopService.removeUsersShop(+id);
     await this.cardService.removeUsersCards(+id);
     await this.service.remove(+id);
     return { message: 'User deleted' };
