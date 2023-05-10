@@ -89,14 +89,16 @@ POST /auth/register
 | :----------- | :----- | :--- | :------------- |
 | **email**    | string | body | **[required]** |
 | **password** | string | body | **[required]** |
+| **role**     | string | body | **[required]** |
 
 ##### Request
 
 ```HTTP
 POST /auth/register
   {
-    "email":"test@fidecly.com"
-    "password":"12345678"
+    "email":"test@fidecly.com",
+    "password":"12345678",
+    "role":"User"
   }
 ```
 
