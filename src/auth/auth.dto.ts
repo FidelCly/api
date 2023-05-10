@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { LoginRequest, RegisterRequest } from './auth.pb';
+import { Role } from 'src/user/user.enum';
 
 export class RegisterRequestDto implements RegisterRequest {
   @IsNotEmpty()
@@ -8,6 +9,10 @@ export class RegisterRequestDto implements RegisterRequest {
 
   @IsNotEmpty()
   readonly password: string;
+
+  @IsNotEmpty()
+  @IsEnum(Role)
+  readonly role: Role;
 }
 
 export class LoginRequestDto implements LoginRequest {

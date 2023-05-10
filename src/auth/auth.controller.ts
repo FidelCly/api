@@ -6,11 +6,12 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-import { RegisterRequest, LoginRequest, LoginResponse } from './auth.pb';
+import { LoginResponse } from './auth.pb';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/user.dto';
 import { ExceptionInterceptor } from './exception.interceptor';
+import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 
 @Controller('auth')
 @UseInterceptors(ExceptionInterceptor)
@@ -22,7 +23,7 @@ export class AuthController {
   private readonly userService: UserService;
 
   @Post('register')
-  private async register(@Body() body: RegisterRequest) {
+  private async register(@Body() body: RegisterRequestDto) {
     const { status, errors, userUuid } = await this.service.register(body);
 
     if (status != 201) return { status, errors };
@@ -37,7 +38,7 @@ export class AuthController {
   }
 
   @Put('login')
-  private async login(@Body() body: LoginRequest): Promise<LoginResponse> {
+  private async login(@Body() body: LoginRequestDto): Promise<LoginResponse> {
     return this.service.login(body);
   }
 }
