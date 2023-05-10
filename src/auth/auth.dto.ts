@@ -1,6 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { LoginRequest, RegisterRequest } from './auth.pb';
-import { Role } from 'src/user/user.enum';
+import { Role } from '../user/user.enum';
 
 export class RegisterRequestDto implements RegisterRequest {
   @IsNotEmpty()
