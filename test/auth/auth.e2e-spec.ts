@@ -35,18 +35,13 @@ describe('Testing auth controller', () => {
   describe('Register()', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        jest.spyOn(service, 'register').mockResolvedValue({
-          status: HttpStatus.BAD_REQUEST,
-          errors: ['bad request'],
-        });
-
         const response = await request(app)
           .post('/auth/register')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.BAD_REQUEST);
-        expect(response.body.message).toBe('bad request');
+        expect(response.body.message.length).toBeGreaterThan(0);
       });
     });
 

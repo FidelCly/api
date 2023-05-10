@@ -16,7 +16,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       - fidecloud
-      
+
   web:
     depends_on:
       - api-db
@@ -24,7 +24,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - .env.local
+      - .env.dev
     working_dir: /api
     volumes:
       - .:/api
