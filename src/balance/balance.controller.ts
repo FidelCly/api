@@ -11,6 +11,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
 import { Promotion } from '../promotion/promotion.entity';

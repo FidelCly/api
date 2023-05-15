@@ -11,6 +11,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 import { ShopService } from '../shop/shop.service';
 import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';

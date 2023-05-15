@@ -13,6 +13,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { PromotionService } from '../promotion/promotion.service';
 import { CardService } from '../card/card.service';
 import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
