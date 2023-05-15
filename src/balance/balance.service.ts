@@ -12,7 +12,10 @@ export class BalanceService {
   ) {}
 
   findOne(id: number): Promise<Balance | null> {
-    return this.repository.findOneBy({ id });
+    return this.repository.findOne({
+      where: { id },
+      relations: { card: { shop: true, user: true } },
+    });
   }
 
   create(createBalanceDto: CreateBalanceDto): Promise<Balance> {

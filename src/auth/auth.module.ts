@@ -5,6 +5,7 @@ import { AUTH_SERVICE_NAME, AUTH_PACKAGE_NAME } from './auth.pb';
 import { AuthService } from './auth.service';
 import { join } from 'path';
 import { UserModule } from '../user/user.module';
+import { AbilityFactory } from './ability.factory';
 
 @Global()
 @Module({
@@ -23,7 +24,7 @@ import { UserModule } from '../user/user.module';
     forwardRef(() => UserModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService],
+  providers: [AuthService, AbilityFactory],
+  exports: [AuthService, AbilityFactory],
 })
 export class AuthModule {}

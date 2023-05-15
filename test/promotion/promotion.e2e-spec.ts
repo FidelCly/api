@@ -1,38 +1,49 @@
 /* eslint-disable no-undef */
-import { HttpServer } from '@nestjs/common';
-import * as request from 'supertest';
+import { HttpStatus } from '@nestjs/common';
 import { TestFactory } from '../factory';
 import {
   promotionFixture,
   modifiedPromotionFixture,
   modifiedEmptyPromotionFixture,
 } from './promotion.seed';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AbilityFactoryMock } from '../ability.mock';
+import { AuthService } from '../../src/auth/auth.service';
+import { Role } from '../../src/user/user.enum';
+import { userFixture } from '../user/user.seed';
 
 describe('Testing promotion controller', () => {
   // Create instances
   const factory = new TestFactory();
-  let app: HttpServer;
+  let service: AuthService;
 
   beforeAll(async () => {
-    const module = await factory.configure();
-    await factory.init(module);
+    const moduleRef = await factory.configure();
+    moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
+    const module = await factory.init(moduleRef);
+    service = module.get<AuthService>(AuthService);
 
     await factory.seedUser();
     await factory.seedShop();
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
     await factory.close();
   });
 
+  beforeEach(() => {
+    jest.spyOn(service, 'validate').mockResolvedValue({
+      status: HttpStatus.OK,
+      userUuid: userFixture.uuid,
+      role: Role.Fider,
+      errors: null,
+    });
+  });
+
   describe('Create promotion', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
-          .post('/promotion')
-          .set('Accept', 'application/json');
+        const response = await factory.post('/promotion');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(400);
@@ -41,9 +52,8 @@ describe('Testing promotion controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
-        const response = await request(app)
+        const response = await factory
           .post('/promotion')
-          .set('Accept', 'application/json')
           .send(promotionFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -60,9 +70,8 @@ describe('Testing promotion controller', () => {
   describe('Update promotion', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/promotion/10')
-          .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -73,9 +82,8 @@ describe('Testing promotion controller', () => {
 
     describe('with incorrect payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/promotion/1')
-          .set('Accept', 'application/json')
           .send(modifiedEmptyPromotionFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -85,9 +93,8 @@ describe('Testing promotion controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/promotion/1')
-          .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -100,9 +107,7 @@ describe('Testing promotion controller', () => {
   describe('Delete promotion', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .delete('/promotion/10')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/promotion/10');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -112,9 +117,7 @@ describe('Testing promotion controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .delete('/promotion/1')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/promotion/1');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);

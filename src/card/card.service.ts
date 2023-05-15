@@ -15,8 +15,8 @@ export class CardService {
     return this.repository.findOneBy({ id });
   }
 
-  create(createCardDto: CreateCardDto): Promise<Card> {
-    const card = { ...new Card(), ...createCardDto };
+  create(createCardDto: CreateCardDto, userId: number): Promise<Card> {
+    const card = { ...new Card(), ...createCardDto, userId: userId };
     return this.repository.save(card);
   }
 

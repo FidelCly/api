@@ -9,10 +9,6 @@ import {
 
 export class CreatePromotionDto {
   @IsNotEmpty()
-  @IsNumber()
-  readonly shopId: number;
-
-  @IsNotEmpty()
   @IsString()
   readonly name: string;
 
