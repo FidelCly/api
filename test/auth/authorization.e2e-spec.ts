@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-import * as request from 'supertest';
-import { HttpServer, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { AuthService } from '../../src/auth/auth.service';
 import { TestFactory } from '../factory';
 import { userFixture, userFixture2 } from '../user/user.seed';
@@ -14,7 +13,6 @@ import { Role } from '../../src/user/user.enum';
 describe('Testing authorization', () => {
   // Create instances
   const factory = new TestFactory();
-  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
@@ -22,12 +20,10 @@ describe('Testing authorization', () => {
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
     await factory.seed();
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
-    await app.close();
+    await factory.close();
   });
 
   function mockUser(fixture: CreateUserDto, role: Role) {
@@ -43,10 +39,7 @@ describe('Testing authorization', () => {
     describe('of current user', () => {
       it('responds with status 200', async () => {
         mockUser(userFixture, Role.Fider);
-        const response = await request(app)
-          .get(`/user/${userFixture.uuid}`)
-          .set('Accept', 'application/json')
-          .set('Authorization', 'bearer some-token');
+        const response = await factory.get(`/user/${userFixture.uuid}`);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.OK);
@@ -57,10 +50,7 @@ describe('Testing authorization', () => {
     describe('of another user', () => {
       it('responds with status 403', async () => {
         mockUser(userFixture, Role.User);
-        const response = await request(app)
-          .get(`/user/${userFixture2.uuid}`)
-          .set('Accept', 'application/json')
-          .set('Authorization', 'bearer some-token');
+        const response = await factory.get(`/user/${userFixture2.uuid}`);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -73,10 +63,7 @@ describe('Testing authorization', () => {
       describe('of current user as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
-            .get(`/shop/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/shop/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -87,10 +74,7 @@ describe('Testing authorization', () => {
       describe('of another user as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
-            .get(`/shop/2`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/shop/2`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -100,10 +84,7 @@ describe('Testing authorization', () => {
       describe('as User', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture2, Role.User);
-          const response = await request(app)
-            .get(`/shop/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/shop/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -116,10 +97,8 @@ describe('Testing authorization', () => {
       describe('of current user as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/shop/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedShopFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -130,10 +109,8 @@ describe('Testing authorization', () => {
       describe('of another user as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/shop/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedShopFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -144,10 +121,8 @@ describe('Testing authorization', () => {
       describe('as User', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.User);
-          const response = await request(app)
+          const response = await factory
             .put(`/shop/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedShopFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -162,10 +137,7 @@ describe('Testing authorization', () => {
       describe('of current shop as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
-            .get(`/promotion/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/promotion/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -176,10 +148,7 @@ describe('Testing authorization', () => {
       describe('of another shop as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
-            .get(`/promotion/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/promotion/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -189,10 +158,7 @@ describe('Testing authorization', () => {
       describe('as User', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture2, Role.User);
-          const response = await request(app)
-            .get(`/promotion/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/promotion/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -204,10 +170,8 @@ describe('Testing authorization', () => {
         describe('of current shop as Fider', () => {
           it('responds with status 200', async () => {
             mockUser(userFixture, Role.Fider);
-            const response = await request(app)
+            const response = await factory
               .put(`/promotion/1`)
-              .set('Accept', 'application/json')
-              .set('Authorization', 'bearer some-token')
               .send(modifiedPromotionFixture);
 
             expect(response.headers['content-type']).toMatch(/json/);
@@ -218,10 +182,8 @@ describe('Testing authorization', () => {
         describe('of another shop as Fider', () => {
           it('responds with status 403', async () => {
             mockUser(userFixture2, Role.Fider);
-            const response = await request(app)
+            const response = await factory
               .put(`/promotion/1`)
-              .set('Accept', 'application/json')
-              .set('Authorization', 'bearer some-token')
               .send(modifiedPromotionFixture);
 
             expect(response.headers['content-type']).toMatch(/json/);
@@ -232,10 +194,8 @@ describe('Testing authorization', () => {
         describe('as User', () => {
           it('responds with status 403', async () => {
             mockUser(userFixture2, Role.User);
-            const response = await request(app)
+            const response = await factory
               .put(`/promotion/1`)
-              .set('Accept', 'application/json')
-              .set('Authorization', 'bearer some-token')
               .send(modifiedPromotionFixture);
 
             expect(response.headers['content-type']).toMatch(/json/);
@@ -251,10 +211,7 @@ describe('Testing authorization', () => {
       describe('of current shop as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
-            .get(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/card/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -265,10 +222,7 @@ describe('Testing authorization', () => {
       describe('of another shop as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
-            .get(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/card/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -278,10 +232,7 @@ describe('Testing authorization', () => {
       describe('of current user as User', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.User);
-          const response = await request(app)
-            .get(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/card/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -292,10 +243,7 @@ describe('Testing authorization', () => {
       describe('of another user as User', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.User);
-          const response = await request(app)
-            .get(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/card/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -307,10 +255,8 @@ describe('Testing authorization', () => {
       describe('of current shop as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedCardFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -321,10 +267,8 @@ describe('Testing authorization', () => {
       describe('of another shop as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedCardFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -335,10 +279,8 @@ describe('Testing authorization', () => {
       describe('as User', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture, Role.User);
-          const response = await request(app)
+          const response = await factory
             .put(`/card/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedCardFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -353,10 +295,7 @@ describe('Testing authorization', () => {
       describe('of current shop as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
-            .get(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/balance/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -367,10 +306,7 @@ describe('Testing authorization', () => {
       describe('of another shop as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
-            .get(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/balance/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -380,10 +316,7 @@ describe('Testing authorization', () => {
       describe('of current user as User', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.User);
-          const response = await request(app)
-            .get(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/balance/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.OK);
@@ -394,10 +327,7 @@ describe('Testing authorization', () => {
       describe('of another user as User', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.User);
-          const response = await request(app)
-            .get(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token');
+          const response = await factory.get(`/balance/1`);
 
           expect(response.headers['content-type']).toMatch(/json/);
           expect(response.statusCode).toBe(HttpStatus.FORBIDDEN);
@@ -409,10 +339,8 @@ describe('Testing authorization', () => {
       describe('of current shop as Fider', () => {
         it('responds with status 200', async () => {
           mockUser(userFixture, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedBalanceFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -423,10 +351,8 @@ describe('Testing authorization', () => {
       describe('of another shop as Fider', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture2, Role.Fider);
-          const response = await request(app)
+          const response = await factory
             .put(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedBalanceFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);
@@ -437,10 +363,8 @@ describe('Testing authorization', () => {
       describe('as User', () => {
         it('responds with status 403', async () => {
           mockUser(userFixture, Role.User);
-          const response = await request(app)
+          const response = await factory
             .put(`/balance/1`)
-            .set('Accept', 'application/json')
-            .set('Authorization', 'bearer some-token')
             .send(modifiedBalanceFixture);
 
           expect(response.headers['content-type']).toMatch(/json/);

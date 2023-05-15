@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-import { HttpServer, HttpStatus } from '@nestjs/common';
-import * as request from 'supertest';
+import { HttpStatus } from '@nestjs/common';
 import { TestFactory } from '../factory';
 import { cardFixture, modifiedCardFixture } from './card.seed';
 import { AbilityFactory } from '../../src/auth/ability.factory';
@@ -12,7 +11,6 @@ import { userFixture } from '../user/user.seed';
 describe('Testing card controller', () => {
   // Create instances
   const factory = new TestFactory();
-  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
@@ -23,8 +21,6 @@ describe('Testing card controller', () => {
 
     await factory.seedUser();
     await factory.seedShop();
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
@@ -43,10 +39,7 @@ describe('Testing card controller', () => {
   describe('Create card', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
-          .post('/card')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.post('/card');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(400);
@@ -55,11 +48,7 @@ describe('Testing card controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
-        const response = await request(app)
-          .post('/card')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
-          .send(cardFixture);
+        const response = await factory.post('/card').send(cardFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(201);
@@ -72,10 +61,8 @@ describe('Testing card controller', () => {
   describe('Update card', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/card/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
           .send(modifiedCardFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -86,11 +73,7 @@ describe('Testing card controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .put('/card/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
-          .send(modifiedCardFixture);
+        const response = await factory.put('/card/1').send(modifiedCardFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
@@ -102,10 +85,7 @@ describe('Testing card controller', () => {
   describe('Get one card', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .get('/card/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.get('/card/10');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -115,10 +95,7 @@ describe('Testing card controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .get('/card/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.get('/card/1');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
@@ -129,10 +106,7 @@ describe('Testing card controller', () => {
   describe('Delete card', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .delete('/card/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/card/10');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -142,10 +116,7 @@ describe('Testing card controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .delete('/card/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/card/1');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);

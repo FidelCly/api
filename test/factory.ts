@@ -19,6 +19,7 @@ import { Shop } from '../src/shop/shop.entity';
 import { User } from '../src/user/user.entity';
 import { AppModule } from '../src/app.module';
 import { AuthService } from '../src/auth/auth.service';
+import * as request from 'supertest';
 
 export class TestFactory {
   private _app: INestApplication;
@@ -80,6 +81,34 @@ export class TestFactory {
   public async close() {
     await this.dataSource.destroy();
     await this._app.close();
+  }
+
+  public async get(path: string): Promise<request.Test> {
+    return request(this.app.getHttpServer())
+      .get(path)
+      .set('Authorization', 'bearer some-token')
+      .set('Accept', 'application/json');
+  }
+
+  public post(path: string): request.Test {
+    return request(this.app.getHttpServer())
+      .post(path)
+      .set('Authorization', 'bearer some-token')
+      .set('Accept', 'application/json');
+  }
+
+  public put(path: string): request.Test {
+    return request(this.app.getHttpServer())
+      .put(path)
+      .set('Authorization', 'bearer some-token')
+      .set('Accept', 'application/json');
+  }
+
+  public async delete(path: string): Promise<request.Test> {
+    return request(this.app.getHttpServer())
+      .delete(path)
+      .set('Authorization', 'bearer some-token')
+      .set('Accept', 'application/json');
   }
 
   public async seed() {

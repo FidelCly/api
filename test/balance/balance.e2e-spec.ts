@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-import * as request from 'supertest';
-import { HttpServer, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { TestFactory } from '../factory';
 import { balanceFixture, modifiedBalanceFixture } from './balance.seed';
 import { AbilityFactory } from '../../src/auth/ability.factory';
@@ -12,7 +11,6 @@ import { userFixture } from '../user/user.seed';
 describe('Testing balance controller', () => {
   // Create instances
   const factory = new TestFactory();
-  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
@@ -25,8 +23,6 @@ describe('Testing balance controller', () => {
     await factory.seedShop();
     await factory.seedCard();
     await factory.seedPromotion();
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
@@ -45,10 +41,7 @@ describe('Testing balance controller', () => {
   describe('Create balance', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
-          .post('/balance')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.post('/balance');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(400);
@@ -57,11 +50,7 @@ describe('Testing balance controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 201', async () => {
-        const response = await request(app)
-          .post('/balance')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
-          .send(balanceFixture);
+        const response = await factory.post('/balance').send(balanceFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(201);
@@ -74,10 +63,8 @@ describe('Testing balance controller', () => {
   describe('Update balance', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/balance/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
           .send(modifiedBalanceFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -88,10 +75,8 @@ describe('Testing balance controller', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/balance/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
           .send(modifiedBalanceFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -104,10 +89,7 @@ describe('Testing balance controller', () => {
   describe('Checkout balance', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .put('/balance/10/checkout')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.put('/balance/10/checkout');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -117,10 +99,7 @@ describe('Testing balance controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .put('/balance/1/checkout')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.put('/balance/1/checkout');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
@@ -132,10 +111,7 @@ describe('Testing balance controller', () => {
   describe('Delete balance', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .delete('/balance/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/balance/10');
 
         expect(response.statusCode).toBe(404);
         expect(response.headers['content-type']).toMatch(/json/);
@@ -145,10 +121,7 @@ describe('Testing balance controller', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .delete('/balance/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/balance/1');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);

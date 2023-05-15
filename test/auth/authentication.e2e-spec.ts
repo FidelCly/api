@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-import * as request from 'supertest';
-import { HttpServer, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { AuthService } from '../../src/auth/auth.service';
 import {
   invalidLoginRequestFixture,
@@ -11,27 +10,22 @@ import { TestFactory } from '../factory';
 describe('Testing auth controller', () => {
   // Create instances
   const factory = new TestFactory();
-  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
-    await app.close();
+    await factory.close();
   });
 
   describe('Register()', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
-          .post('/auth/register')
-          .set('Accept', 'application/json');
+        const response = await factory.post('/auth/register');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.BAD_REQUEST);
@@ -47,9 +41,8 @@ describe('Testing auth controller', () => {
           errors: null,
         });
 
-        const response = await request(app)
+        const response = await factory
           .post('/auth/register')
-          .set('Accept', 'application/json')
           .send(registerRequestFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -70,9 +63,8 @@ describe('Testing auth controller', () => {
           errors: [],
         });
 
-        const response = await request(app)
+        const response = await factory
           .put('/auth/login')
-          .set('Accept', 'application/json')
           .send(registerRequestFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -89,9 +81,8 @@ describe('Testing auth controller', () => {
           errors: ['Invalid password'],
         });
 
-        const response = await request(app)
+        const response = await factory
           .put('/auth/login')
-          .set('Accept', 'application/json')
           .send(invalidLoginRequestFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);

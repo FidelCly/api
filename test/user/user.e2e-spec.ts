@@ -1,5 +1,4 @@
-import { HttpServer, HttpStatus } from '@nestjs/common';
-import * as request from 'supertest';
+import { HttpStatus } from '@nestjs/common';
 import { TestFactory } from '../factory';
 import {
   emptyModifiedUserFixture,
@@ -14,7 +13,6 @@ import { Role } from '../../src/user/user.enum';
 describe('UsersController', () => {
   // Create instances
   const factory: TestFactory = new TestFactory();
-  let app: HttpServer;
   let service: AuthService;
 
   beforeAll(async () => {
@@ -24,8 +22,6 @@ describe('UsersController', () => {
     service = module.get<AuthService>(AuthService);
 
     await factory.seedUser();
-
-    app = factory.app.getHttpServer();
   });
 
   afterAll(async () => {
@@ -44,10 +40,8 @@ describe('UsersController', () => {
   describe('Update user', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/user/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
           .send(modifiedUserFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -58,10 +52,8 @@ describe('UsersController', () => {
 
     describe('with incorrect payload', () => {
       it('responds with status 400', async () => {
-        const response = await request(app)
+        const response = await factory
           .put('/user/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
           .send(emptyModifiedUserFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -71,11 +63,7 @@ describe('UsersController', () => {
 
     describe('with a correct payload', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .put('/user/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json')
-          .send(modifiedUserFixture);
+        const response = await factory.put('/user/1').send(modifiedUserFixture);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
@@ -87,10 +75,7 @@ describe('UsersController', () => {
   describe('Get one user', () => {
     describe('of unknown uuid', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .get('/user/some-unknown-uuid')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.get('/user/some-unknown-uuid');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -100,10 +85,7 @@ describe('UsersController', () => {
 
     describe('of known uuid', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .get('/user/some-uuid')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.get('/user/some-uuid');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
@@ -114,10 +96,7 @@ describe('UsersController', () => {
   describe('Delete user', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
-        const response = await request(app)
-          .delete('/user/10')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/user/10');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(404);
@@ -127,10 +106,7 @@ describe('UsersController', () => {
 
     describe('of known id', () => {
       it('responds with status 200', async () => {
-        const response = await request(app)
-          .delete('/user/1')
-          .set('Authorization', 'bearer some-token')
-          .set('Accept', 'application/json');
+        const response = await factory.delete('/user/1');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
