@@ -29,6 +29,7 @@ export class Promotion {
   @Column({
     type: 'timestamp',
     precision: 3,
+    default: new Date(),
   })
   startAt: Date;
 

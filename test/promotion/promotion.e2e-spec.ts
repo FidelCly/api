@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { HttpServer } from '@nestjs/common';
+import { HttpServer, HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { TestFactory } from '../factory';
 import {
@@ -7,15 +7,23 @@ import {
   modifiedPromotionFixture,
   modifiedEmptyPromotionFixture,
 } from './promotion.seed';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AbilityFactoryMock } from '../ability.mock';
+import { AuthService } from '../../src/auth/auth.service';
+import { Role } from '../../src/user/user.enum';
+import { userFixture } from '../user/user.seed';
 
 describe('Testing promotion controller', () => {
   // Create instances
   const factory = new TestFactory();
   let app: HttpServer;
+  let service: AuthService;
 
   beforeAll(async () => {
-    const module = await factory.configure();
-    await factory.init(module);
+    const moduleRef = await factory.configure();
+    moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
+    const module = await factory.init(moduleRef);
+    service = module.get<AuthService>(AuthService);
 
     await factory.seedUser();
     await factory.seedShop();
@@ -27,11 +35,21 @@ describe('Testing promotion controller', () => {
     await factory.close();
   });
 
+  beforeEach(() => {
+    jest.spyOn(service, 'validate').mockResolvedValue({
+      status: HttpStatus.OK,
+      userUuid: userFixture.uuid,
+      role: Role.Fider,
+      errors: null,
+    });
+  });
+
   describe('Create promotion', () => {
     describe('with an empty payload', () => {
       it('responds with status 400', async () => {
         const response = await request(app)
           .post('/promotion')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -43,6 +61,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 201', async () => {
         const response = await request(app)
           .post('/promotion')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(promotionFixture);
 
@@ -62,6 +81,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
           .put('/promotion/10')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
 
@@ -75,6 +95,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 400', async () => {
         const response = await request(app)
           .put('/promotion/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(modifiedEmptyPromotionFixture);
 
@@ -87,6 +108,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
           .put('/promotion/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(modifiedPromotionFixture);
 
@@ -102,6 +124,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
           .delete('/promotion/10')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -114,6 +137,7 @@ describe('Testing promotion controller', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
           .delete('/promotion/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);

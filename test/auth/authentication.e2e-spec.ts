@@ -16,12 +16,6 @@ describe('Testing auth controller', () => {
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
-    moduleRef.overrideProvider(AuthService).useValue({
-      register: jest.fn(),
-      login: jest.fn(),
-      validate: jest.fn(),
-    });
-
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
 

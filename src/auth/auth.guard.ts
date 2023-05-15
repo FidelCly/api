@@ -9,11 +9,15 @@ import {
 import { Request } from 'express';
 import { ValidateResponse } from './auth.pb';
 import { AuthService } from './auth.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   @Inject(AuthService)
   public readonly service: AuthService;
+
+  @Inject(UserService)
+  public readonly userService: UserService;
 
   public async canActivate(ctx: ExecutionContext): Promise<boolean> | never {
     const req: Request = ctx.switchToHttp().getRequest();
@@ -38,7 +42,8 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    req.body.currentUser = { uuid: userUuid, role: role };
+    const user = await this.userService.findByUuid(userUuid);
+    req['currentUser'] = { ...user, role: role };
     return true;
   }
 }

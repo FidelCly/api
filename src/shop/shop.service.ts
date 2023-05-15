@@ -31,6 +31,17 @@ export class ShopService {
   };
 
   /**
+   * Find shop by userId
+   * @param userId - Id of the shop
+   * @returns A shop if found
+   */
+  findOnebyUserId = (userId: number): Promise<Shop | null> => {
+    return this.repository.findOneBy({
+      userId,
+    });
+  };
+
+  /**
    * Find shop by email
    * @param email - Email of the shop
    * @returns A shop if found
@@ -49,7 +60,7 @@ export class ShopService {
   findOnePromotions = (id: number): Promise<Shop | null> => {
     return this.repository.findOne({
       where: { id },
-      relations: { promotions: true },
+      relations: { promotions: true, user: true },
     });
   };
 
@@ -61,7 +72,7 @@ export class ShopService {
   findOneClients = (id: number): Promise<Shop | null> => {
     return this.repository.findOne({
       where: { id },
-      relations: { cards: { user: true, balances: true } },
+      relations: { cards: { user: true, balances: true }, user: true },
     });
   };
 
@@ -69,8 +80,8 @@ export class ShopService {
    * Create a shop on the db
    * @param createShopDto - The shop to create
    */
-  create(createShopDto: CreateShopDto): Promise<Shop> {
-    const shop = { ...new Shop(), ...createShopDto };
+  create(createShopDto: CreateShopDto, userId: number): Promise<Shop> {
+    const shop = { ...new Shop(), ...createShopDto, userId: userId };
     return this.repository.save(shop);
   }
 

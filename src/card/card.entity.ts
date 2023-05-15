@@ -22,6 +22,7 @@ export class Card extends BaseEntity {
   @Column({
     type: 'timestamp',
     precision: 3,
+    default: new Date(),
   })
   startAt: Date;
 

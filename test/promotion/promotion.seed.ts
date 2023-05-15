@@ -7,7 +7,6 @@ const nextYear = new Date();
 nextYear.setDate(nextYear.getFullYear() + 1);
 
 export const promotionFixture: CreatePromotionDto = {
-  shopId: 1,
   name: 'Promotion',
   description: 'Promotion description',
   startAt: new Date(),

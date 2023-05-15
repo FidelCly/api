@@ -159,17 +159,17 @@ Status: 200 OK
 #### Get a user
 
 ```HTTP
-GET /user/:id
+GET /user/:uuid
 ```
 
 | Parameters | Type   | In    | Description    |
 | :--------- | :----- | :---- | :------------- |
-| **id**     | number | query | **[required]** |
+| **uuid**   | string | query | **[required]** |
 
 ##### Request
 
 ```HTTP
-GET /user/1
+GET /user/some-uuid
 ```
 
 ##### Response
@@ -669,7 +669,6 @@ Status: 200 OK
 ```json
 {
   "id": 1,
-  "url": "https://example.com",
   "shopId": 1,
   "userId": 1,
   "startAt": "",
@@ -683,23 +682,20 @@ Status: 200 OK
 POST /card
 ```
 
-| Parameters   | Type    | In   | Description    |
-| :----------- | :------ | :--- | :------------- |
-| **url**      | string  | body | **[required]** |
-| **shopId**   | number  | body | **[required]** |
-| **userId**   | number  | body | **[required]** |
-| **startAt**  | string  | body | **[optional]** |
-| **endAt**    | string  | body | **[required]** |
-| **isActive** | boolean | body | **[optional]** |
+| Parameters   | Type    | In   | Description                                                           |
+| :----------- | :------ | :--- | :-------------------------------------------------------------------- |
+| **shopId**   | number  | body | **[required]**                                                        |
+| **userId**   | number  | body | **[optional]** Need to be specified if the card is created by a Fider |
+| **startAt**  | string  | body | **[optional]**                                                        |
+| **endAt**    | string  | body | **[required]**                                                        |
+| **isActive** | boolean | body | **[optional]**                                                        |
 
 ##### Request
 
 ```HTTP
 POST /card
   {
-    "url": "https://example.com",
     "shopId": 1,
-    "userId": 1,
     "startAt": "",
     "endAt": "",
   }
@@ -726,7 +722,6 @@ PUT /card/:id
 | Parameters   | Type    | In    | Description    |
 | :----------- | :------ | :---- | :------------- |
 | **id**       | number  | query | **[required]** |
-| **url**      | string  | body  | **[optional]** |
 | **startAt**  | string  | body  | **[optional]** |
 | **endAt**    | string  | body  | **[optional]** |
 | **isActive** | boolean | body  | **[optional]** |
@@ -736,7 +731,7 @@ PUT /card/:id
 ```HTTP
 PUT /card/1
   {
-    "url": "https://example2.com",
+    "isActive": false,
   }
 ```
 
@@ -824,7 +819,6 @@ POST /promotion
 
 | Parameters        | Type    | In   | Description    |
 | :---------------- | :------ | :--- | :------------- |
-| **shopId**        | number  | body | **[required]** |
 | **name**          | string  | body | **[required]** |
 | **description**   | string  | body | **[optional]** |
 | **checkoutLimit** | number  | body | **[required]** |
@@ -837,7 +831,6 @@ POST /promotion
 ```HTTP
 POST /promotion
   {
-    "shopId": 1,
     "name": "Promotion",
     "description": "Promotion description",
     "startAt": "2019-05-27",

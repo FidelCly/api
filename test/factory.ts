@@ -1,17 +1,16 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
-import { userFixture } from './user/user.seed';
+import { userFixture, userFixture2 } from './user/user.seed';
 import { CreateUserDto } from '../src/user/user.dto';
 import { DataSource } from 'typeorm';
 import { CreateShopDto } from '../src/shop/shop.dto';
-import { shopFixture } from './shop/shop.seed';
+import { farAwayShopFixture, shopFixture } from './shop/shop.seed';
 import { CreateCardDto } from '../src/card/card.dto';
 import { cardFixture } from './card/card.seed';
 import { CreatePromotionDto } from '../src/promotion/promotion.dto';
 import { promotionFixture } from './promotion/promotion.seed';
 import { CreateBalanceDto } from '../src/balance/balance.dto';
 import { balanceFixture } from './balance/balance.seed';
-import { AuthGuard } from '../src/auth/auth.guard';
 import { newDb } from 'pg-mem';
 import { Balance } from '../src/balance/balance.entity';
 import { Card } from '../src/card/card.entity';
@@ -19,6 +18,7 @@ import { Promotion } from '../src/promotion/promotion.entity';
 import { Shop } from '../src/shop/shop.entity';
 import { User } from '../src/user/user.entity';
 import { AppModule } from '../src/app.module';
+import { AuthService } from '../src/auth/auth.service';
 
 export class TestFactory {
   private _app: INestApplication;
@@ -59,13 +59,17 @@ export class TestFactory {
     await this.dataSource.initialize();
     await this.dataSource.synchronize();
 
-    const moduleRef = await Test.createTestingModule({
+    const moduleRef = Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(DataSource)
       .useValue(this.dataSource)
-      .overrideGuard(AuthGuard)
-      .useValue(null);
+      .overrideProvider(AuthService)
+      .useValue({
+        register: jest.fn(),
+        login: jest.fn(),
+        validate: jest.fn(),
+      });
 
     return moduleRef;
   }
@@ -76,6 +80,16 @@ export class TestFactory {
   public async close() {
     await this.dataSource.destroy();
     await this._app.close();
+  }
+
+  public async seed() {
+    await this.seedUser();
+    await this.seedUser(userFixture2);
+    await this.seedShop();
+    await this.seedShop(farAwayShopFixture, 2);
+    await this.seedPromotion();
+    await this.seedCard();
+    await this.seedBalance();
   }
 
   /**
@@ -90,10 +104,10 @@ export class TestFactory {
   /**
    * Seed shop
    */
-  public async seedShop(_shop?: CreateShopDto) {
+  public async seedShop(_shop?: CreateShopDto, _userId?: number) {
     await this.dataSource
       .getRepository(Shop)
-      .save({ ...new Shop(), ...(_shop ?? shopFixture) });
+      .save({ ...new Shop(), userId: _userId ?? 1, ...(_shop ?? shopFixture) });
   }
 
   /**
@@ -108,10 +122,15 @@ export class TestFactory {
   /**
    * Seed promotion
    */
-  public async seedPromotion(_promotion?: CreatePromotionDto) {
-    await this.dataSource
-      .getRepository(Promotion)
-      .save({ ...new Promotion(), ...(_promotion ?? promotionFixture) });
+  public async seedPromotion(
+    _promotion?: CreatePromotionDto,
+    _shopId?: number,
+  ) {
+    await this.dataSource.getRepository(Promotion).save({
+      ...new Promotion(),
+      shopId: _shopId ?? 1,
+      ...(_promotion ?? promotionFixture),
+    });
   }
 
   /**

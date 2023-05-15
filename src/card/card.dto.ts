@@ -11,6 +11,7 @@ export class CreateCardDto {
   @IsNumber()
   readonly shopId: number;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsNumber()
   readonly userId: number;

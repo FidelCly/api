@@ -2,7 +2,6 @@ import { CreateShopDto, UpdateShopDto } from '../../src/shop/shop.dto';
 import { ShopActivity } from '../../src/shop/shop.enum';
 
 export const shopFixture: CreateShopDto = {
-  userId: 1,
   companyName: 'Bistrot123',
   activity: ShopActivity.Restauration,
   siren: '123456789',
@@ -17,7 +16,6 @@ export const shopFixture: CreateShopDto = {
 };
 
 export const farAwayShopFixture: CreateShopDto = {
-  userId: 2,
   companyName: 'Coffeeshop',
   activity: ShopActivity.Restauration,
   siren: '123456789',

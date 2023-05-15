@@ -1,16 +1,27 @@
-import { HttpServer } from '@nestjs/common';
+import { HttpServer, HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { TestFactory } from '../factory';
-import { emptyModifiedUserFixture, modifiedUserFixture } from './user.seed';
+import {
+  emptyModifiedUserFixture,
+  modifiedUserFixture,
+  userFixture,
+} from './user.seed';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AbilityFactoryMock } from '../ability.mock';
+import { AuthService } from '../../src/auth/auth.service';
+import { Role } from '../../src/user/user.enum';
 
 describe('UsersController', () => {
   // Create instances
   const factory: TestFactory = new TestFactory();
   let app: HttpServer;
+  let service: AuthService;
 
   beforeAll(async () => {
-    const module = await factory.configure();
-    await factory.init(module);
+    const moduleRef = await factory.configure();
+    moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
+    const module = await factory.init(moduleRef);
+    service = module.get<AuthService>(AuthService);
 
     await factory.seedUser();
 
@@ -21,11 +32,21 @@ describe('UsersController', () => {
     await factory.close();
   });
 
+  beforeEach(() => {
+    jest.spyOn(service, 'validate').mockResolvedValue({
+      status: HttpStatus.OK,
+      userUuid: userFixture.uuid,
+      role: Role.Fider,
+      errors: null,
+    });
+  });
+
   describe('Update user', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
           .put('/user/10')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(modifiedUserFixture);
 
@@ -39,6 +60,7 @@ describe('UsersController', () => {
       it('responds with status 400', async () => {
         const response = await request(app)
           .put('/user/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(emptyModifiedUserFixture);
 
@@ -51,6 +73,7 @@ describe('UsersController', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
           .put('/user/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json')
           .send(modifiedUserFixture);
 
@@ -66,6 +89,7 @@ describe('UsersController', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
           .get('/user/some-unknown-uuid')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -78,6 +102,7 @@ describe('UsersController', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
           .get('/user/some-uuid')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -91,6 +116,7 @@ describe('UsersController', () => {
       it('responds with status 404', async () => {
         const response = await request(app)
           .delete('/user/10')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);
@@ -103,6 +129,7 @@ describe('UsersController', () => {
       it('responds with status 200', async () => {
         const response = await request(app)
           .delete('/user/1')
+          .set('Authorization', 'bearer some-token')
           .set('Accept', 'application/json');
 
         expect(response.headers['content-type']).toMatch(/json/);

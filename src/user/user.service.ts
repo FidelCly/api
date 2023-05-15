@@ -19,7 +19,10 @@ export class UserService {
   findOne(id: number): Promise<User | null> {
     return this.repository.findOne({
       where: { id },
-      relations: { cards: { shop: true, balances: { promotion: true } } },
+      relations: {
+        cards: { shop: true, balances: { promotion: true } },
+        shop: { promotions: true, cards: { balances: true } },
+      },
     });
   }
 
@@ -31,7 +34,10 @@ export class UserService {
   findByUuid(uuid: string): Promise<User | null> {
     return this.repository.findOne({
       where: { uuid },
-      relations: { cards: { shop: true, balances: { promotion: true } } },
+      relations: {
+        cards: { shop: true, balances: { promotion: true } },
+        shop: true,
+      },
     });
   }
 

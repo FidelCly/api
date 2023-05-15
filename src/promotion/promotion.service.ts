@@ -15,8 +15,15 @@ export class PromotionService {
     return this.repository.findOneBy({ id });
   }
 
-  create(createPromotionDto: CreatePromotionDto): Promise<Promotion> {
-    const promotion = { ...new Promotion(), ...createPromotionDto };
+  create(
+    createPromotionDto: CreatePromotionDto,
+    shopId: number,
+  ): Promise<Promotion> {
+    const promotion = {
+      ...new Promotion(),
+      ...createPromotionDto,
+      shopId: shopId,
+    };
     return this.repository.save(promotion);
   }
 

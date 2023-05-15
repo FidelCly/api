@@ -3,12 +3,14 @@ import {
   ConflictException,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PromotionService } from '../promotion/promotion.service';
@@ -18,6 +20,7 @@ import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { UserService } from '../user/user.service';
+import { AbilityFactory, Action } from '../auth/ability.factory';
 
 @Controller('shop')
 @UseGuards(AuthGuard)
@@ -27,10 +30,11 @@ export class ShopController {
     private userService: UserService,
     private cardService: CardService,
     private promotionService: PromotionService,
+    private abilityFactory: AbilityFactory,
   ) {}
 
   @Get()
-  async all(@Query() query: ShopFilterOptions) {
+  async all(@Query() query: ShopFilterOptions, @Req() req: Request) {
     const lat = +query.lat;
     const long = +query.long;
     const distance = +query.distance;
@@ -53,58 +57,84 @@ export class ShopController {
       });
     }
 
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    shops.forEach((shop) => {
+      if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
+    });
+
     return shops;
   }
 
   @Get(':id')
-  async one(@Param('id') id: string) {
+  async one(@Param('id') id: string, @Req() req: Request) {
     const shop = await this.service.findOne(+id);
     if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
+
     return shop;
   }
 
   @Get(':id/promotions')
-  async promotions(@Param('id') id: string) {
+  async promotions(@Param('id') id: string, @Req() req: Request) {
     const shop = await this.service.findOnePromotions(+id);
     if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
+
     return shop.promotions;
   }
 
   @Get(':id/clients')
-  async clients(@Param('id') id: string) {
+  async clients(@Param('id') id: string, @Req() req: Request) {
     const shop = await this.service.findOneClients(+id);
     if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
+
     return shop.cards;
   }
 
   @Post()
-  async create(@Body() createShopDto: CreateShopDto) {
-    if (!(await this.userService.findOne(createShopDto.userId))) {
-      throw new NotFoundException('User not found');
-    }
+  async create(@Body() createShopDto: CreateShopDto, @Req() req: Request) {
+    if (await this.service.findOnebyUserId(req['currentUser'].id))
+      throw new ConflictException('User already has shop');
 
-    if (await this.service.findOneByEmail(createShopDto.email)) {
+    if (await this.service.findOneByEmail(createShopDto.email))
       throw new ConflictException('Email already in use');
-    }
 
-    return this.service.create(createShopDto);
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Create, Shop)) throw new ForbiddenException();
+
+    return this.service.create(createShopDto, req['currentUser'].id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateShopDto: UpdateShopDto) {
-    if (!(await this.service.findOne(+id))) {
-      throw new NotFoundException();
-    }
+  async update(
+    @Param('id') id: string,
+    @Body() updateShopDto: UpdateShopDto,
+    @Req() req: Request,
+  ) {
+    const shop = await this.service.findOne(+id);
+    if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Update, shop)) throw new ForbiddenException();
 
     await this.service.update(+id, updateShopDto);
     return { message: 'Shop updated' };
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    if (!(await this.service.findOne(+id))) {
-      throw new NotFoundException();
-    }
+  async remove(@Param('id') id: string, @Req() req: Request) {
+    const shop = await this.service.findOne(+id);
+    if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Delete, shop)) throw new ForbiddenException();
 
     await this.cardService.removeShopsCards(+id);
     await this.promotionService.removeShopsPromotions(+id);
