@@ -1,3 +1,4 @@
+import { Campaign } from 'src/campaign/campaign.entity';
 import { Balance } from '../balance/balance.entity';
 import { Shop } from '../shop/shop.entity';
 import {
@@ -51,6 +52,9 @@ export class Promotion {
 
   @OneToMany(() => Balance, (balance: Balance) => balance.promotion)
   balances!: Array<Balance>;
+
+  @OneToMany(() => Campaign, (campaign: Campaign) => campaign.promotion)
+  campaigns!: Array<Campaign>;
 
   @CreateDateColumn()
   createdAt!: Date;

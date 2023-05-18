@@ -14,6 +14,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Campaign } from 'src/campaign/campaign.entity';
 
 @Entity() // table name in database
 export class Shop {
@@ -78,6 +79,9 @@ export class Shop {
 
   @OneToMany(() => Promotion, (promotion: Promotion) => promotion.shop)
   promotions!: Array<Promotion>;
+
+  @OneToMany(() => Campaign, (campaign: Campaign) => campaign.shop)
+  campaigns!: Array<Campaign>;
 
   @CreateDateColumn()
   createdAt!: Date;
