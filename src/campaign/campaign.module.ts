@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShopModule } from '../shop/shop.module';
 import { UserModule } from '../user/user.module';
-import { PromotionModule } from 'src/promotion/promotion.module';
+import { PromotionModule } from '../promotion/promotion.module';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
 import { Campaign } from './campaign.entity';

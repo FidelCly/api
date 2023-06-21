@@ -10,7 +10,7 @@ import { LoginResponse } from './auth.pb';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/user.dto';
-import { ExceptionInterceptor } from './exception.interceptor';
+import { ExceptionInterceptor } from '../exception.interceptor';
 import { LoginRequestDto, RegisterRequestDto } from './auth.dto';
 
 @Controller('auth')

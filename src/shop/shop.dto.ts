@@ -98,6 +98,11 @@ export class UpdateShopDto {
 
   @IsOptional()
   @IsNotEmpty()
+  @IsEmail()
+  readonly marketingEmail?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
   @IsPostalCode('FR')
   @Length(5, 5)
   readonly zipCode?: string;
