@@ -1,4 +1,4 @@
-import { Campaign } from 'src/campaign/campaign.entity';
+import { Campaign } from '../campaign/campaign.entity';
 import { Balance } from '../balance/balance.entity';
 import { Shop } from '../shop/shop.entity';
 import {

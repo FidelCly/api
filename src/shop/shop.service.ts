@@ -77,11 +77,28 @@ export class ShopService {
   };
 
   /**
+   * Find shop campaigns by id
+   * @param id - Id of the shop
+   * @returns A shop if found
+   */
+  findOneCampaigns = (id: number): Promise<Shop | null> => {
+    return this.repository.findOne({
+      where: { id },
+      relations: { campaigns: true, user: true },
+    });
+  };
+
+  /**
    * Create a shop on the db
    * @param createShopDto - The shop to create
    */
   create(createShopDto: CreateShopDto, userId: number): Promise<Shop> {
-    const shop = { ...new Shop(), ...createShopDto, userId: userId };
+    const shop: Shop = {
+      ...new Shop(),
+      ...createShopDto,
+      userId: userId,
+      marketingEmail: createShopDto.email,
+    };
     return this.repository.save(shop);
   }
 

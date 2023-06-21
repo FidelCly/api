@@ -11,8 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Shop } from '../shop/shop.entity';
-import { User } from 'src/user/user.entity';
-import { Promotion } from 'src/promotion/promotion.entity';
+import { Promotion } from '../promotion/promotion.entity';
 
 @Entity({ name: 'campaigns' }) // table name in database
 export class Campaign {
@@ -22,16 +21,22 @@ export class Campaign {
   @Column()
   subject: string;
 
-  @Column()
-  message: string;
+  @Column({ nullable: true })
+  message!: string;
+
+  @Column({ nullable: true })
+  templateUrl!: string;
 
   @Column({
     default: true,
   })
   isActive: boolean;
 
+  @Column({ nullable: true })
+  shopId: number;
+
   @ManyToOne(() => Shop, (shop: Shop) => shop.campaigns)
-  shop?: Shop;
+  shop!: Shop;
 
   @Column({ nullable: true })
   promotionId!: number;
@@ -39,9 +44,6 @@ export class Campaign {
   @ManyToOne(() => Promotion, (promotion: Promotion) => promotion.campaigns)
   @JoinColumn()
   promotion!: Promotion;
-
-  @Column()
-  targets?: Array<User>;
 
   @CreateDateColumn()
   createdAt?: Date;

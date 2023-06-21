@@ -6,6 +6,7 @@ import { ShopController } from './shop.controller';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { UserModule } from '../user/user.module';
+import { CampaignModule } from '../campaign/campaign.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from '../user/user.module';
     forwardRef(() => CardModule),
     forwardRef(() => UserModule),
     forwardRef(() => PromotionModule),
+    forwardRef(() => CampaignModule),
   ],
   controllers: [ShopController],
   providers: [ShopService],

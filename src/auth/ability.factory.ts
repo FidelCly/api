@@ -12,6 +12,7 @@ import { Promotion } from '../promotion/promotion.entity';
 import { Shop } from '../shop/shop.entity';
 import { User } from '../user/user.entity';
 import { Role } from '../user/user.enum';
+import { Campaign } from '../campaign/campaign.entity';
 
 export enum Action {
   Manage = 'manage',
@@ -28,6 +29,7 @@ export type Subjects =
       | typeof Card
       | typeof Promotion
       | typeof Balance
+      | typeof Campaign
     >
   | 'all';
 
@@ -43,13 +45,17 @@ export class AbilityFactory {
     can(Action.Manage, User, { uuid: user.uuid });
 
     if (user.role === Role.Fider) {
-      can(Action.Create, [Shop, Promotion, Balance]);
+      can(Action.Create, [Shop, Promotion, Balance, Campaign]);
       can([Action.Read, Action.Update, Action.Delete], Shop, {
         id: user.shop.id,
       });
-      can([Action.Read, Action.Update, Action.Delete], [Card, Promotion], {
-        shopId: user.shop.id,
-      });
+      can(
+        [Action.Read, Action.Update, Action.Delete],
+        [Card, Promotion, Campaign],
+        {
+          shopId: user.shop.id,
+        },
+      );
       can([Action.Read, Action.Update, Action.Delete], Balance, {
         'card.shop.id': user.shop.id,
       });

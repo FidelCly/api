@@ -2,6 +2,7 @@
 import { User } from '../user/user.entity';
 import { Card } from '../card/card.entity';
 import { Promotion } from '../promotion/promotion.entity';
+import { Campaign } from '../campaign/campaign.entity';
 import { ShopActivity } from './shop.enum';
 import {
   Column,
@@ -14,7 +15,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Campaign } from 'src/campaign/campaign.entity';
 
 @Entity() // table name in database
 export class Shop {
@@ -39,6 +39,9 @@ export class Shop {
 
   @Column()
   email: string;
+
+  @Column()
+  marketingEmail: string;
 
   @Column({
     length: 5,

@@ -5,12 +5,14 @@ import { PromotionController } from './promotion.controller';
 import { Promotion } from './promotion.entity';
 import { PromotionService } from './promotion.service';
 import { UserModule } from '../user/user.module';
+import { CampaignModule } from '../campaign/campaign.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Promotion]),
     forwardRef(() => ShopModule),
     forwardRef(() => UserModule),
+    forwardRef(() => CampaignModule),
   ],
   controllers: [PromotionController],
   providers: [PromotionService],
