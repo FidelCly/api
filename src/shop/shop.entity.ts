@@ -15,7 +15,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Campaign } from 'src/campaign/campaign.entity';
 
 @Entity() // table name in database
 export class Shop {
