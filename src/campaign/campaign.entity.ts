@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { Shop } from '../shop/shop.entity';
 import { Promotion } from '../promotion/promotion.entity';
-import { User } from '../user/user.entity';
 
 @Entity({ name: 'campaigns' }) // table name in database
 export class Campaign {
@@ -47,9 +46,6 @@ export class Campaign {
   @ManyToOne(() => Promotion, (promotion: Promotion) => promotion.campaigns)
   @JoinColumn()
   promotion!: Promotion;
-
-  @Column()
-  targets?: Array<User>;
 
   @CreateDateColumn()
   createdAt?: Date;
