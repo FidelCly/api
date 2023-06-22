@@ -22,7 +22,10 @@ export class Campaign {
   subject: string;
 
   @Column({ nullable: true })
-  message!: string;
+  textData!: string;
+
+  @Column({ nullable: true })
+  htmlData!: string;
 
   @Column({ nullable: true })
   templateUrl!: string;

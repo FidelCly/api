@@ -43,7 +43,6 @@ export class CampaignService {
     const campaign = {
       ...new Campaign(),
       ...createCampaignDto,
-      message: createCampaignDto.htmlData ?? createCampaignDto.textData,
       shopId: shopId,
     };
     return this.repository.save(campaign);
@@ -53,7 +52,9 @@ export class CampaignService {
     id: number,
     updateCampaignDto: UpdateCampaignDto,
   ): Promise<UpdateResult> {
-    return this.repository.update(id, updateCampaignDto);
+    return this.repository.update(id, {
+      ...updateCampaignDto,
+    });
   }
 
   remove(id: number): Promise<UpdateResult> {
