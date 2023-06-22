@@ -91,6 +91,7 @@ describe('Testing campaign controller', () => {
           .post('/campaign/send')
           .send(campaignFixtureWithoutId);
 
+        console.debug(response.body);
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(HttpStatus.OK);
         expect(response.body.errors).toBeUndefined;
