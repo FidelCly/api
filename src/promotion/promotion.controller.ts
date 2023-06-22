@@ -51,7 +51,13 @@ export class PromotionController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Create, Promotion)) throw new ForbiddenException();
 
-    return this.service.create(createPromotionDto, req['currentUser'].shop.id);
+    const promotion = await this.service.create(
+      createPromotionDto,
+      req['currentUser'].shop.id,
+    );
+
+    this.service.sendToAnalytics(promotion);
+    return promotion;
   }
 
   @Put(':id')
@@ -69,6 +75,7 @@ export class PromotionController {
     if (!ability.can(Action.Update, promotion)) throw new ForbiddenException();
 
     await this.service.update(+id, updatePromotionDto);
+    this.service.sendToAnalytics({ ...promotion, ...updatePromotionDto });
     return { message: 'Promotion updated' };
   }
 

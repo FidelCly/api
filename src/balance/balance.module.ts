@@ -6,9 +6,28 @@ import { BalanceController } from './balance.controller';
 import { Balance } from './balance.entity';
 import { BalanceService } from './balance.service';
 import { UserModule } from '../user/user.module';
+import {
+  ANALYTICS_PACKAGE_NAME,
+  BALANCES_SERVICE_NAME,
+} from '../analytics/balance.pb';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: BALANCES_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          url: process.env.ANALYTICS_SERVICE_URL,
+          package: ANALYTICS_PACKAGE_NAME,
+          protoPath: join(
+            'node_modules/@fidecly/grpc-proto/proto/analytics/balance.proto',
+          ),
+        },
+      },
+    ]),
     TypeOrmModule.forFeature([Balance]),
     forwardRef(() => PromotionModule),
     forwardRef(() => CardModule),

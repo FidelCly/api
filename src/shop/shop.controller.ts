@@ -20,7 +20,6 @@ import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { UserService } from '../user/user.service';
 import { AbilityFactory, Action } from '../auth/ability.factory';
 
 @Controller('shop')
@@ -28,7 +27,6 @@ import { AbilityFactory, Action } from '../auth/ability.factory';
 export class ShopController {
   constructor(
     private service: ShopService,
-    private userService: UserService,
     private cardService: CardService,
     private promotionService: PromotionService,
     private abilityFactory: AbilityFactory,
@@ -110,7 +108,13 @@ export class ShopController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Create, Shop)) throw new ForbiddenException();
 
-    return this.service.create(createShopDto, req['currentUser'].id);
+    const shop = await this.service.create(
+      createShopDto,
+      req['currentUser'].id,
+    );
+
+    this.service.sendToAnalytics(shop);
+    return shop;
   }
 
   @Put(':id')
@@ -126,6 +130,7 @@ export class ShopController {
     if (!ability.can(Action.Update, shop)) throw new ForbiddenException();
 
     await this.service.update(+id, updateShopDto);
+    this.service.sendToAnalytics({ ...shop, ...updateShopDto });
     return { message: 'Shop updated' };
   }
 
