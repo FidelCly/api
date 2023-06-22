@@ -159,7 +159,21 @@ describe('Testing shop controller', () => {
       it('responds with status 200', async () => {
         await factory.seedCard();
 
-        const response = await factory.get('/shop/1/clients');
+        const response = await factory.get('/shop/1/cards');
+
+        expect(response.headers['content-type']).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveLength(1);
+      });
+    });
+  });
+
+  describe("Get one shop's campaigns", () => {
+    describe('of known id', () => {
+      it('responds with status 200', async () => {
+        await factory.seedCampaign();
+
+        const response = await factory.get('/shop/1/campaigns');
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);

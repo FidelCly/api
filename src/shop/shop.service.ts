@@ -84,7 +84,7 @@ export class ShopService {
   findOneCampaigns = (id: number): Promise<Shop | null> => {
     return this.repository.findOne({
       where: { id },
-      relations: { campaigns: true, user: true },
+      relations: { campaigns: { promotion: true }, user: true },
     });
   };
 
