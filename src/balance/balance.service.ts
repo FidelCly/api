@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import {
@@ -8,6 +7,7 @@ import {
 } from '../analytics/analytics.pb';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class BalanceService {
