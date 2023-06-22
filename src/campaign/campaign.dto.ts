@@ -1,5 +1,4 @@
 import {
-  IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -34,10 +33,35 @@ export class CreateCampaignDto implements Partial<SendRequest> {
   readonly templateUrl?: string;
 }
 
-export class SendCampaignDto extends CreateCampaignDto {
+export class SendCampaignDto {
   @IsOptional()
   @IsNumber()
-  readonly campaignId?: number;
+  readonly id?: number;
+
+  @ValidateIf((o) => !o.id)
+  @IsOptional()
+  @IsNumber()
+  readonly promotionId?: number;
+
+  @ValidateIf((o) => !o.id)
+  @IsNotEmpty()
+  @IsString()
+  readonly subject?: string;
+
+  @ValidateIf((o) => !o.id && !o.htmlData && !o.templateUrl)
+  @IsNotEmpty()
+  @IsString()
+  readonly textData?: string;
+
+  @ValidateIf((o) => !o.id && !o.textData && !o.templateUrl)
+  @IsNotEmpty()
+  @IsString()
+  readonly htmlData?: string;
+
+  @ValidateIf((o) => !o.id && !o.htmlData && !o.textData)
+  @IsNotEmpty()
+  @IsUrl()
+  readonly templateUrl?: string;
 }
 
 export class UpdateCampaignDto {

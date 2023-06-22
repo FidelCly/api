@@ -59,8 +59,8 @@ export class CampaignController {
   @HttpCode(200)
   private async send(@Body() body: SendCampaignDto, @Req() req: Request) {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    let campaign: Campaign;
     const recipientList: string[] = [];
-    let data: SendRequest;
 
     if (
       !req['currentUser'].shop.cards ||
@@ -73,28 +73,25 @@ export class CampaignController {
     });
 
     // If campaign already exists
-    if (body.campaignId) {
-      const campaign = await this.service.findOne(+body.campaignId);
+    if (body.id) {
+      campaign = await this.service.findOne(+body.id);
       if (!campaign) throw new NotFoundException();
-
       if (!ability.can(Action.Read, campaign)) throw new ForbiddenException();
-
-      data = {
-        ...campaign,
-        recipients: recipientList,
-        senderEmail: req['currentUser'].shop.marketingEmail,
-      };
     } else {
       // Create campaign if it does not exist yet
       if (!ability.can(Action.Create, Campaign)) throw new ForbiddenException();
-
-      data = {
-        ...body,
-        recipients: recipientList,
-        senderEmail: req['currentUser'].shop.marketingEmail,
-      };
-      await this.service.create(body, req['currentUser'].shop.id);
+      campaign = await this.service.create(
+        { ...body, subject: body.subject },
+        req['currentUser'].shop.id,
+      );
     }
+
+    const data: SendRequest = {
+      ...campaign,
+      recipients: recipientList,
+      senderEmail: req['currentUser'].shop.marketingEmail,
+    };
+
     return this.service.send(data);
   }
 
