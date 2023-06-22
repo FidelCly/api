@@ -22,8 +22,9 @@
     "migration:run": "rm -rf build && tsc -p . && typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
     "proto:install": "npm i git+https://github.com/FideCly/grpc-proto.git",
     "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/@fidecly/grpc-proto/proto --ts_proto_out=src/auth/ node_modules/@fidecly/grpc-proto/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb --experimental_allow_proto3_optional",
+    "proto:campaign": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/@fidecly/grpc-proto/proto --ts_proto_out=src/campaign/ node_modules/@fidecly/grpc-proto/proto/campaign.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb --experimental_allow_proto3_optional",
     "proto:analytics": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/@fidecly/grpc-proto/proto/analytics --ts_proto_out=src/analytics/ node_modules/@fidecly/grpc-proto/proto/analytics/*.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb --experimental_allow_proto3_optional",
-    "proto:all": "npm run proto:auth && npm run proto:analytics",
+    "proto:all": "npm run proto:auth && npm run proto:analytics && npm run proto:campaign",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },

@@ -6,6 +6,7 @@ import { ShopController } from './shop.controller';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { UserModule } from '../user/user.module';
+import { CampaignModule } from '../campaign/campaign.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
   ANALYTICS_PACKAGE_NAME,
