@@ -26,6 +26,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { Campaign } from './campaign.entity';
 import { AbilityFactory, Action } from '../auth/ability.factory';
 import { Card } from '../card/card.entity';
+import { Request } from 'express';
 
 @Controller('campaign')
 @UseGuards(AuthGuard)
