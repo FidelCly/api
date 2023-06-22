@@ -11,6 +11,12 @@ import { UserModule } from '../user/user.module';
 import { CardController } from './card.controller';
 import { Card } from './card.entity';
 import { CardService } from './card.service';
+import {
+  ANALYTICS_PACKAGE_NAME,
+  CARD_SERVICE_NAME,
+} from '../analytics/card.pb';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
