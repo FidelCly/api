@@ -8,6 +8,8 @@ import {
 } from '../analytics/analytics.pb';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
+import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class ShopService {

@@ -24,7 +24,7 @@ import { ShopService } from './shop.service';
           url: process.env.ANALYTICS_SERVICE_URL,
           package: ANALYTICS_PACKAGE_NAME,
           protoPath: join(
-            'node_modules/@fidecly/grpc-proto/proto/analytics/shop.proto',
+            'node_modules/@fidecly/grpc-proto/proto/analytics/analytics.proto',
           ),
         },
       },

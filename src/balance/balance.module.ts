@@ -23,7 +23,7 @@ import { BalanceService } from './balance.service';
           url: process.env.ANALYTICS_SERVICE_URL,
           package: ANALYTICS_PACKAGE_NAME,
           protoPath: join(
-            'node_modules/@fidecly/grpc-proto/proto/analytics/balance.proto',
+            'node_modules/@fidecly/grpc-proto/proto/analytics/analytics.proto',
           ),
         },
       },
