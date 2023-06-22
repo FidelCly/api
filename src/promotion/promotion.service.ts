@@ -8,6 +8,12 @@ import {
 } from '../analytics/analytics.pb';
 import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';
 import { Promotion } from './promotion.entity';
+import { ClientGrpc } from '@nestjs/microservices';
+import {
+  PromotionServiceClient,
+  PROMOTION_SERVICE_NAME,
+} from '../analytics/promotion.pb';
+import { send } from 'process';
 
 @Injectable()
 export class PromotionService {
