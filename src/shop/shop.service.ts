@@ -1,15 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
+import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class ShopService {
-  constructor(
-    @InjectRepository(Shop)
-    private repository: Repository<Shop>,
-  ) {}
+  @InjectRepository(Shop)
+  private repository: Repository<Shop>;
+
+  private analyticsService: ShopServiceClient;
+
+  @Inject(SHOP_SERVICE_NAME)
+  private readonly client: ClientGrpc;
+
+  public onModuleInit(): void {
+    this.analyticsService =
+      this.client.getService<ShopServiceClient>(SHOP_SERVICE_NAME);
+  }
+
+  // DATABASE MANIPULATION
 
   /**
    * Get all shops
@@ -119,6 +131,8 @@ export class ShopService {
     return this.repository.softDelete(id);
   }
 
+  // CASCADE DELETION
+
   /**
    * Delete a user's shop when fider
    * @param userId - The id of the shop's user to delete
@@ -126,6 +140,8 @@ export class ShopService {
   removeUsersShop(userId: number): Promise<UpdateResult> {
     return this.repository.softDelete({ userId: userId });
   }
+
+  // HELPER METHODS
 
   /**
    * Get distance between two geolocation points.
@@ -156,5 +172,11 @@ export class ShopService {
 
     const d = R * c;
     return d;
+  }
+
+  // ANALYTICS
+
+  sendToAnalytics(shop: Shop) {
+    this.analyticsService.send(shop);
   }
 }

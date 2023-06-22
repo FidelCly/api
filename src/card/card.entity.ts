@@ -15,7 +15,7 @@ import {
 } from 'typeorm';
 
 @Entity() // table name in database
-export class Card extends BaseEntity {
+export class Card {
   @PrimaryGeneratedColumn()
   id: number;
 
