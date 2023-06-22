@@ -121,7 +121,13 @@ export class ShopController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Create, Shop)) throw new ForbiddenException();
 
-    return this.service.create(createShopDto, req['currentUser'].id);
+    const shop = await this.service.create(
+      createShopDto,
+      req['currentUser'].id,
+    );
+
+    this.service.sendToAnalytics(shop);
+    return shop;
   }
 
   @Put(':id')
@@ -137,6 +143,7 @@ export class ShopController {
     if (!ability.can(Action.Update, shop)) throw new ForbiddenException();
 
     await this.service.update(+id, updateShopDto);
+    this.service.sendToAnalytics({ ...shop, ...updateShopDto });
     return { message: 'Shop updated' };
   }
 

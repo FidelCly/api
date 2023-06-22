@@ -56,7 +56,10 @@ export class BalanceController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Create, Balance)) throw new ForbiddenException();
 
-    return this.service.create(createBalanceDto);
+    const balance = await this.service.create(createBalanceDto);
+
+    this.service.sendToAnalytics(balance);
+    return balance;
   }
 
   @Put(':id')
@@ -72,6 +75,7 @@ export class BalanceController {
     if (!ability.can(Action.Update, balance)) throw new ForbiddenException();
 
     await this.service.update(+id, updateBalanceDto);
+    this.service.sendToAnalytics({ ...balance, ...updateBalanceDto });
     return { message: 'Balance updated' };
   }
 
