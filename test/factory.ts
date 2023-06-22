@@ -144,7 +144,7 @@ export class TestFactory {
       ...new Shop(),
       userId: _userId ?? 1,
       ...(_shop ?? shopFixture),
-      marketingEmail: _shop.email ?? shopFixture.email,
+      marketingEmail: _shop ? _shop.email : shopFixture.email,
     });
   }
 
@@ -183,9 +183,11 @@ export class TestFactory {
   /**
    * Seed campaign
    */
-  public async seedCampaign(_campaign?: CreateCampaignDto) {
-    await this.dataSource
-      .getRepository(Campaign)
-      .save({ ...new Campaign(), ...(_campaign ?? campaignFixture) });
+  public async seedCampaign(_campaign?: CreateCampaignDto, _shopId?: number) {
+    await this.dataSource.getRepository(Campaign).save({
+      ...new Campaign(),
+      shopId: _shopId ?? 1,
+      ...(_campaign ?? campaignFixture),
+    });
   }
 }

@@ -88,8 +88,8 @@ export class ShopController {
     return shop.promotions;
   }
 
-  @Get(':id/clients')
-  async clients(@Param('id') id: string, @Req() req: Request) {
+  @Get(':id/cards')
+  async cards(@Param('id') id: string, @Req() req: Request) {
     const shop = await this.service.findOneClients(+id);
     if (!shop) throw new NotFoundException();
 
