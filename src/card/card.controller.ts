@@ -48,10 +48,13 @@ export class CardController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Create, Card)) throw new ForbiddenException();
 
-    return this.service.create(
+    const card = await this.service.create(
       createCardDto,
       createCardDto.userId ?? req['currentUser'].id,
     );
+
+    this.service.sendToAnalytics(card);
+    return card;
   }
 
   @Put(':id')
@@ -67,6 +70,7 @@ export class CardController {
     if (!ability.can(Action.Update, card)) throw new ForbiddenException();
 
     await this.service.update(+id, updateCardDto);
+    this.service.sendToAnalytics({ ...card, ...updateCardDto });
     return { message: 'Card updated' };
   }
 

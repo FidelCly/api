@@ -1,15 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
+import {
+  BALANCES_SERVICE_NAME,
+  BalancesServiceClient,
+} from '../analytics/balance.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class BalanceService {
-  constructor(
-    @InjectRepository(Balance)
-    private repository: Repository<Balance>,
-  ) {}
+  @InjectRepository(Balance)
+  private repository: Repository<Balance>;
+
+  private analyticsService: BalancesServiceClient;
+
+  @Inject(BALANCES_SERVICE_NAME)
+  private readonly client: ClientGrpc;
+
+  public onModuleInit(): void {
+    this.analyticsService = this.client.getService<BalancesServiceClient>(
+      BALANCES_SERVICE_NAME,
+    );
+  }
+
+  // DATABASE MANIPULATION
 
   findOne(id: number): Promise<Balance | null> {
     return this.repository.findOne({
@@ -34,11 +50,19 @@ export class BalanceService {
     return this.repository.softDelete(id);
   }
 
+  // CASCADE DELETION
+
   removeCardsBalances(cardId: number): Promise<UpdateResult> {
     return this.repository.softDelete({ cardId: cardId });
   }
 
   removePromotionsBalances(promotionId: number): Promise<UpdateResult> {
     return this.repository.softDelete({ promotionId: promotionId });
+  }
+
+  // ANALYTICS
+
+  sendToAnalytics(balance: Balance) {
+    this.analyticsService.send(balance);
   }
 }
