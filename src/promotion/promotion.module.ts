@@ -5,6 +5,7 @@ import { PromotionController } from './promotion.controller';
 import { Promotion } from './promotion.entity';
 import { PromotionService } from './promotion.service';
 import { UserModule } from '../user/user.module';
+import { CampaignModule } from '../campaign/campaign.module';
 import {
   ANALYTICS_PACKAGE_NAME,
   PROMOTION_SERVICE_NAME,
