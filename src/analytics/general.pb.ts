@@ -30,7 +30,7 @@ export interface GetPromotionCheckoutsCountResponse {
 }
 
 export interface GetClientsCountRequest {
-  shopId: string;
+  shopId: number;
   startDate: string;
   endDate: string;
 }
@@ -42,7 +42,7 @@ export interface GetClientsCountResponse {
 }
 
 export interface GetPromotionsRankingRequest {
-  shopId: string;
+  shopId: number;
   startDate: string;
   endDate: string;
 }
