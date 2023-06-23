@@ -4,8 +4,8 @@ import { Repository, UpdateResult } from 'typeorm';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
 import {
-  BALANCES_SERVICE_NAME,
-  BalancesServiceClient,
+  BALANCE_SERVICE_NAME,
+  BalanceServiceClient,
 } from '../analytics/balance.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 
@@ -14,15 +14,14 @@ export class BalanceService {
   @InjectRepository(Balance)
   private repository: Repository<Balance>;
 
-  private analyticsService: BalancesServiceClient;
+  private analyticsService: BalanceServiceClient;
 
-  @Inject(BALANCES_SERVICE_NAME)
+  @Inject(BALANCE_SERVICE_NAME)
   private readonly client: ClientGrpc;
 
   public onModuleInit(): void {
-    this.analyticsService = this.client.getService<BalancesServiceClient>(
-      BALANCES_SERVICE_NAME,
-    );
+    this.analyticsService =
+      this.client.getService<BalanceServiceClient>(BALANCE_SERVICE_NAME);
   }
 
   // DATABASE MANIPULATION
