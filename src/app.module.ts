@@ -7,6 +7,7 @@ import { BalanceModule } from './balance/balance.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { CampaignModule } from './campaign/campaign.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     PromotionModule,
     BalanceModule,
     AuthModule,
+    CampaignModule,
   ],
 })
 export class AppModule {}
