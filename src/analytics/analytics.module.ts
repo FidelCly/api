@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { ANALYTICS_PACKAGE_NAME } from '../analytics/balance.pb';
 import { AnalyticsController } from './analytics.controller';
 import { AnalyticsService } from './analytics.service';
 import { ANALYTICS_SERVICE_NAME } from './general.pb';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ANALYTICS_SERVICE_NAME } from './general.pb';
         },
       },
     ]),
+    forwardRef(() => UserModule),
   ],
   controllers: [AnalyticsController],
   providers: [AnalyticsService],

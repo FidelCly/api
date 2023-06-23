@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Inject,
+  NotFoundException,
   Param,
   Query,
   Req,
@@ -12,13 +13,13 @@ import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 import { AnalyticsOptions } from './analytics.dto';
 import { AnalyticsService } from './analytics.service';
-import { ExceptionInterceptor } from 'src/auth/exception.interceptor';
 import {
   GetAffluenceResponse,
   GetClientsCountResponse,
   GetPromotionCheckoutsCountResponse,
   GetPromotionsRankingResponse,
 } from './general.pb';
+import { ExceptionInterceptor } from '../exception.interceptor';
 
 @Controller('analytics')
 @UseGuards(AuthGuard)
@@ -32,6 +33,9 @@ export class AnalyticsController {
     @Query() query: AnalyticsOptions,
     @Req() req: Request,
   ): Promise<GetAffluenceResponse> {
+    if (!req['currentUser'].shop)
+      throw new NotFoundException('User must create a shop to proceed.');
+
     return this.service.affluence({
       shopId: req['currentUser'].shop.id,
       startDate: query.start_date,
@@ -44,6 +48,9 @@ export class AnalyticsController {
     @Query() query: AnalyticsOptions,
     @Req() req: Request,
   ): Promise<GetClientsCountResponse> {
+    if (!req['currentUser'].shop)
+      throw new NotFoundException('User must create a shop to proceed.');
+
     return this.service.clientsCount({
       shopId: req['currentUser'].shop.id,
       startDate: query.start_date,
@@ -56,6 +63,9 @@ export class AnalyticsController {
     @Query() query: AnalyticsOptions,
     @Req() req: Request,
   ): Promise<GetPromotionsRankingResponse> {
+    if (!req['currentUser'].shop)
+      throw new NotFoundException('User must create a shop to proceed.');
+
     return this.service.promotionsRanking({
       shopId: req['currentUser'].shop.id,
       startDate: query.start_date,
@@ -69,6 +79,9 @@ export class AnalyticsController {
     @Query() query: AnalyticsOptions,
     @Req() req: Request,
   ): Promise<GetPromotionCheckoutsCountResponse> {
+    if (!req['currentUser'].shop)
+      throw new NotFoundException('User must create a shop to proceed.');
+
     return this.service.promotionCheckoutsCount({
       shopId: req['currentUser'].shop.id,
       promotionId: +id,
