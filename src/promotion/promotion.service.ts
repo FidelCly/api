@@ -8,7 +8,6 @@ import {
   PromotionServiceClient,
   PROMOTION_SERVICE_NAME,
 } from '../analytics/promotion.pb';
-import { send } from 'process';
 
 @Injectable()
 export class PromotionService {

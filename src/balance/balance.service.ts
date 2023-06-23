@@ -10,8 +10,8 @@ import { Balance } from './balance.entity';
 <<<<<<< HEAD
 =======
 import {
-  BALANCES_SERVICE_NAME,
-  BalancesServiceClient,
+  BALANCE_SERVICE_NAME,
+  BalanceServiceClient,
 } from '../analytics/balance.pb';
 >>>>>>> c373dc3 (feat: analytics data aggregation)
 import { ClientGrpc } from '@nestjs/microservices';
