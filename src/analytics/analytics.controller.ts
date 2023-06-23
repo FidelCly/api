@@ -34,7 +34,7 @@ export class AnalyticsController {
     @Req() req: Request,
   ): Promise<GetAffluenceResponse> {
     if (!req['currentUser'].shop)
-      throw new NotFoundException('User must create a shop to proceed.');
+      throw new NotFoundException('Shop not found for this user.');
 
     return this.service.affluence({
       shopId: req['currentUser'].shop.id,
@@ -49,7 +49,7 @@ export class AnalyticsController {
     @Req() req: Request,
   ): Promise<GetClientsCountResponse> {
     if (!req['currentUser'].shop)
-      throw new NotFoundException('User must create a shop to proceed.');
+      throw new NotFoundException('Shop not found for this user.');
 
     return this.service.clientsCount({
       shopId: req['currentUser'].shop.id,
@@ -64,7 +64,7 @@ export class AnalyticsController {
     @Req() req: Request,
   ): Promise<GetPromotionsRankingResponse> {
     if (!req['currentUser'].shop)
-      throw new NotFoundException('User must create a shop to proceed.');
+      throw new NotFoundException('Shop not found for this user.');
 
     return this.service.promotionsRanking({
       shopId: req['currentUser'].shop.id,
@@ -80,7 +80,7 @@ export class AnalyticsController {
     @Req() req: Request,
   ): Promise<GetPromotionCheckoutsCountResponse> {
     if (!req['currentUser'].shop)
-      throw new NotFoundException('User must create a shop to proceed.');
+      throw new NotFoundException('Shop not found for this user.');
 
     return this.service.promotionCheckoutsCount({
       shopId: req['currentUser'].shop.id,
