@@ -18,7 +18,7 @@ import {
   GetClientsCountResponse,
   GetPromotionCheckoutsCountResponse,
   GetPromotionsRankingResponse,
-} from './general.pb';
+} from './analytics.pb';
 import { ExceptionInterceptor } from '../exception.interceptor';
 
 @Controller('analytics')

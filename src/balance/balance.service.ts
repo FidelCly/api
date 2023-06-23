@@ -9,8 +9,8 @@ import {
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
 import {
-  BALANCES_SERVICE_NAME,
-  BalancesServiceClient,
+  BALANCE_SERVICE_NAME,
+  BalanceServiceClient,
 } from '../analytics/balance.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 
