@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "analytics";
+export const protobufPackage = 'analytics';
 
 export interface GetAffluenceRequest {
   shopId: number;
@@ -54,7 +54,7 @@ export interface GetPromotionsRankingResponse {
   errors: string[];
 }
 
-export const ANALYTICS_PACKAGE_NAME = "analytics";
+export const ANALYTICS_PACKAGE_NAME = 'analytics';
 
 export interface AnalyticsServiceClient {
   getAffluence(request: GetAffluenceRequest): Observable<GetAffluenceResponse>;
@@ -63,15 +63,22 @@ export interface AnalyticsServiceClient {
     request: GetPromotionCheckoutsCountRequest,
   ): Observable<GetPromotionCheckoutsCountResponse>;
 
-  getClientsCount(request: GetClientsCountRequest): Observable<GetClientsCountResponse>;
+  getClientsCount(
+    request: GetClientsCountRequest,
+  ): Observable<GetClientsCountResponse>;
 
-  getPromotionsRanking(request: GetPromotionsRankingRequest): Observable<GetPromotionsRankingResponse>;
+  getPromotionsRanking(
+    request: GetPromotionsRankingRequest,
+  ): Observable<GetPromotionsRankingResponse>;
 }
 
 export interface AnalyticsServiceController {
   getAffluence(
     request: GetAffluenceRequest,
-  ): Promise<GetAffluenceResponse> | Observable<GetAffluenceResponse> | GetAffluenceResponse;
+  ):
+    | Promise<GetAffluenceResponse>
+    | Observable<GetAffluenceResponse>
+    | GetAffluenceResponse;
 
   getPromotionCheckoutsCount(
     request: GetPromotionCheckoutsCountRequest,
@@ -82,31 +89,51 @@ export interface AnalyticsServiceController {
 
   getClientsCount(
     request: GetClientsCountRequest,
-  ): Promise<GetClientsCountResponse> | Observable<GetClientsCountResponse> | GetClientsCountResponse;
+  ):
+    | Promise<GetClientsCountResponse>
+    | Observable<GetClientsCountResponse>
+    | GetClientsCountResponse;
 
   getPromotionsRanking(
     request: GetPromotionsRankingRequest,
-  ): Promise<GetPromotionsRankingResponse> | Observable<GetPromotionsRankingResponse> | GetPromotionsRankingResponse;
+  ):
+    | Promise<GetPromotionsRankingResponse>
+    | Observable<GetPromotionsRankingResponse>
+    | GetPromotionsRankingResponse;
 }
 
 export function AnalyticsServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      "getAffluence",
-      "getPromotionCheckoutsCount",
-      "getClientsCount",
-      "getPromotionsRanking",
+      'getAffluence',
+      'getPromotionCheckoutsCount',
+      'getClientsCount',
+      'getPromotionsRanking',
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("AnalyticsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('AnalyticsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("AnalyticsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('AnalyticsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const ANALYTICS_SERVICE_NAME = "AnalyticsService";
+export const ANALYTICS_SERVICE_NAME = 'AnalyticsService';
