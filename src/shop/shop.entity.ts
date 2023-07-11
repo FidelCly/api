@@ -40,7 +40,7 @@ export class Shop {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   marketingEmail: string;
 
   @Column({
