@@ -3,11 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';
 import { Promotion } from './promotion.entity';
-import { ClientGrpc } from '@nestjs/microservices';
-import {
-  PromotionServiceClient,
-  PROMOTION_SERVICE_NAME,
-} from '../analytics/promotion.pb';
 
 @Injectable()
 export class PromotionService {

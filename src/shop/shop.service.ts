@@ -4,7 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
+<<<<<<< HEAD
 import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
+=======
+>>>>>>> 1547991 (fix conflicts erros)
 
 @Injectable()
 export class ShopService {
