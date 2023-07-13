@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "analytics";
+export const protobufPackage = 'analytics';
 
 export interface SendBalanceRequest {
   id: number;
@@ -106,7 +106,7 @@ export interface SendShopResponse {
   errors: string[];
 }
 
-export const ANALYTICS_PACKAGE_NAME = "analytics";
+export const ANALYTICS_PACKAGE_NAME = 'analytics';
 
 /** Balance Service */
 
@@ -119,25 +119,42 @@ export interface BalanceServiceClient {
 export interface BalanceServiceController {
   send(
     request: SendBalanceRequest,
-  ): Promise<SendBalanceResponse> | Observable<SendBalanceResponse> | SendBalanceResponse;
+  ):
+    | Promise<SendBalanceResponse>
+    | Observable<SendBalanceResponse>
+    | SendBalanceResponse;
 }
 
 export function BalanceServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["send"];
+    const grpcMethods: string[] = ['send'];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("BalanceService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('BalanceService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("BalanceService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('BalanceService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const BALANCE_SERVICE_NAME = "BalanceService";
+export const BALANCE_SERVICE_NAME = 'BalanceService';
 
 /** Card Service */
 
@@ -148,25 +165,44 @@ export interface CardServiceClient {
 /** Card Service */
 
 export interface CardServiceController {
-  send(request: SendCardRequest): Promise<SendCardResponse> | Observable<SendCardResponse> | SendCardResponse;
+  send(
+    request: SendCardRequest,
+  ):
+    | Promise<SendCardResponse>
+    | Observable<SendCardResponse>
+    | SendCardResponse;
 }
 
 export function CardServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["send"];
+    const grpcMethods: string[] = ['send'];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("CardService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('CardService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("CardService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('CardService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const CARD_SERVICE_NAME = "CardService";
+export const CARD_SERVICE_NAME = 'CardService';
 
 /** General Service */
 
@@ -177,9 +213,13 @@ export interface AnalyticsServiceClient {
     request: GetPromotionCheckoutsCountRequest,
   ): Observable<GetPromotionCheckoutsCountResponse>;
 
-  getClientsCount(request: GetClientsCountRequest): Observable<GetClientsCountResponse>;
+  getClientsCount(
+    request: GetClientsCountRequest,
+  ): Observable<GetClientsCountResponse>;
 
-  getPromotionsRanking(request: GetPromotionsRankingRequest): Observable<GetPromotionsRankingResponse>;
+  getPromotionsRanking(
+    request: GetPromotionsRankingRequest,
+  ): Observable<GetPromotionsRankingResponse>;
 }
 
 /** General Service */
@@ -187,7 +227,10 @@ export interface AnalyticsServiceClient {
 export interface AnalyticsServiceController {
   getAffluence(
     request: GetAffluenceRequest,
-  ): Promise<GetAffluenceResponse> | Observable<GetAffluenceResponse> | GetAffluenceResponse;
+  ):
+    | Promise<GetAffluenceResponse>
+    | Observable<GetAffluenceResponse>
+    | GetAffluenceResponse;
 
   getPromotionCheckoutsCount(
     request: GetPromotionCheckoutsCountRequest,
@@ -198,34 +241,54 @@ export interface AnalyticsServiceController {
 
   getClientsCount(
     request: GetClientsCountRequest,
-  ): Promise<GetClientsCountResponse> | Observable<GetClientsCountResponse> | GetClientsCountResponse;
+  ):
+    | Promise<GetClientsCountResponse>
+    | Observable<GetClientsCountResponse>
+    | GetClientsCountResponse;
 
   getPromotionsRanking(
     request: GetPromotionsRankingRequest,
-  ): Promise<GetPromotionsRankingResponse> | Observable<GetPromotionsRankingResponse> | GetPromotionsRankingResponse;
+  ):
+    | Promise<GetPromotionsRankingResponse>
+    | Observable<GetPromotionsRankingResponse>
+    | GetPromotionsRankingResponse;
 }
 
 export function AnalyticsServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      "getAffluence",
-      "getPromotionCheckoutsCount",
-      "getClientsCount",
-      "getPromotionsRanking",
+      'getAffluence',
+      'getPromotionCheckoutsCount',
+      'getClientsCount',
+      'getPromotionsRanking',
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("AnalyticsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('AnalyticsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("AnalyticsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('AnalyticsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const ANALYTICS_SERVICE_NAME = "AnalyticsService";
+export const ANALYTICS_SERVICE_NAME = 'AnalyticsService';
 
 /** Promotion Service */
 
@@ -238,25 +301,42 @@ export interface PromotionServiceClient {
 export interface PromotionServiceController {
   send(
     request: SendPromotionRequest,
-  ): Promise<SendPromotionResponse> | Observable<SendPromotionResponse> | SendPromotionResponse;
+  ):
+    | Promise<SendPromotionResponse>
+    | Observable<SendPromotionResponse>
+    | SendPromotionResponse;
 }
 
 export function PromotionServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["send"];
+    const grpcMethods: string[] = ['send'];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("PromotionService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('PromotionService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("PromotionService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('PromotionService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const PROMOTION_SERVICE_NAME = "PromotionService";
+export const PROMOTION_SERVICE_NAME = 'PromotionService';
 
 /** Shop Service */
 
@@ -267,22 +347,41 @@ export interface ShopServiceClient {
 /** Shop Service */
 
 export interface ShopServiceController {
-  send(request: SendShopRequest): Promise<SendShopResponse> | Observable<SendShopResponse> | SendShopResponse;
+  send(
+    request: SendShopRequest,
+  ):
+    | Promise<SendShopResponse>
+    | Observable<SendShopResponse>
+    | SendShopResponse;
 }
 
 export function ShopServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["send"];
+    const grpcMethods: string[] = ['send'];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("ShopService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('ShopService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("ShopService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('ShopService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const SHOP_SERVICE_NAME = "ShopService";
+export const SHOP_SERVICE_NAME = 'ShopService';
