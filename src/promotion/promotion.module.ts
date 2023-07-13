@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { CampaignModule } from 'src/campaign/campaign.module';
 import {
   ANALYTICS_PACKAGE_NAME,
   PROMOTION_SERVICE_NAME,
