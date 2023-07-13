@@ -1,16 +1,16 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShopModule } from '../shop/shop.module';
-import { PromotionController } from './promotion.controller';
-import { Promotion } from './promotion.entity';
-import { PromotionService } from './promotion.service';
-import { UserModule } from '../user/user.module';
+import { join } from 'path';
 import {
   ANALYTICS_PACKAGE_NAME,
   PROMOTION_SERVICE_NAME,
-} from '../analytics/promotion.pb';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+} from '../analytics/analytics.pb';
+import { ShopModule } from '../shop/shop.module';
+import { UserModule } from '../user/user.module';
+import { PromotionController } from './promotion.controller';
+import { Promotion } from './promotion.entity';
+import { PromotionService } from './promotion.service';
 
 @Module({
   imports: [

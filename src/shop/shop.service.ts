@@ -1,10 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
+import {
+  SHOP_SERVICE_NAME,
+  ShopServiceClient,
+} from '../analytics/analytics.pb';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
-import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
-import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class ShopService {
