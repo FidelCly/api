@@ -4,15 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
-=======
->>>>>>> 1547991 (fix conflicts erros)
-=======
-import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
-import { ClientGrpc } from '@nestjs/microservices';
->>>>>>> c373dc3 (feat: analytics data aggregation)
 
 @Injectable()
 export class ShopService {
