@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
-import { Balance } from './balance.entity';
 import {
   BALANCE_SERVICE_NAME,
   BalanceServiceClient,
-} from '../analytics/balance.pb';
-import { ClientGrpc } from '@nestjs/microservices';
+} from '../analytics/analytics.pb';
+import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
+import { Balance } from './balance.entity';
 
 @Injectable()
 export class BalanceService {
