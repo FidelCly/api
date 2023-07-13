@@ -8,6 +8,8 @@ import {
 } from '../analytics/analytics.pb';
 import { CreateShopDto, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
+import { SHOP_SERVICE_NAME, ShopServiceClient } from '../analytics/shop.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class ShopService {
@@ -92,11 +94,28 @@ export class ShopService {
   };
 
   /**
+   * Find shop campaigns by id
+   * @param id - Id of the shop
+   * @returns A shop if found
+   */
+  findOneCampaigns = (id: number): Promise<Shop | null> => {
+    return this.repository.findOne({
+      where: { id },
+      relations: { campaigns: { promotion: true }, user: true },
+    });
+  };
+
+  /**
    * Create a shop on the db
    * @param createShopDto - The shop to create
    */
   create(createShopDto: CreateShopDto, userId: number): Promise<Shop> {
-    const shop = { ...new Shop(), ...createShopDto, userId: userId };
+    const shop: Shop = {
+      ...new Shop(),
+      ...createShopDto,
+      userId: userId,
+      marketingEmail: createShopDto.email,
+    };
     return this.repository.save(shop);
   }
 

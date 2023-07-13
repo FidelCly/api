@@ -18,6 +18,7 @@
       - [Get a shop](#get-a-shop)
       - [Get a shop's promotions](#get-a-shops-promotions)
       - [Get a shop's clients](#get-a-shops-clients)
+      - [Get a shop's campaigns](#get-a-shops-campaigns)
       - [Create a shop](#create-a-shop)
       - [Update a shop](#update-a-shop)
       - [Delete a shop](#delete-a-shop)
@@ -37,6 +38,17 @@
       - [Update a balance](#update-a-balance)
       - [Delete a balance](#delete-a-balance)
       - [Checkout a balance](#checkout-a-balance)
+    - [Campaigns endpoints](#campaigns-endpoints)
+      - [Get a campaign](#get-a-campaign)
+      - [Create a campaign](#create-a-campaign)
+      - [Send a campaign](#send-a-campaign)
+      - [Update a campaign](#update-a-campaign)
+      - [Delete a campaign](#delete-a-campaign)
+    - [Analytics endpoints](#analytics-endpoints)
+      - [Get a shop's affluence](#get-a-shops-affluence)
+      - [Get a shop's clients count](#get-a-shops-clients-count)
+      - [Get a shop's promotion ranking](#get-a-shops-promotion-ranking)
+      - [Get a shop's promotion checkout count](#get-a-shops-promotion-checkout-count)
 
 ## Run locally
 
@@ -464,7 +476,7 @@ Status: 200 OK
 #### Get a shop's clients
 
 ```HTTP
-GET /shop/:id/clients
+GET /shop/:id/cards
 ```
 
 | Parameters | Type   | In    | Description    |
@@ -474,7 +486,7 @@ GET /shop/:id/clients
 ##### Request
 
 ```HTTP
-GET /shop/1/clients
+GET /shop/1/cards
 ```
 
 ##### Response
@@ -512,6 +524,41 @@ Status: 200 OK
       "isActive": true
     },
     "balances": []
+  }
+]
+```
+
+#### Get a shop's campaigns
+
+```HTTP
+GET /shop/:id/campaigns
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+
+```HTTP
+GET /shop/1/campaigns
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+[
+  {
+    "id": 1,
+    "promotionId": 1,
+    "shopId": 1,
+    "subject": "Hello",
+    "textData": "New promotion available at your store!",
+    "isActive": true
   }
 ]
 ```
@@ -1086,5 +1133,317 @@ Status: 200 OK
 ```json
 {
   "message": "Promotion limit reached" // Limit is reached, customer gets prize
+}
+```
+
+### Campaigns endpoints
+
+#### Get a campaign
+
+```HTTP
+GET /campaign/:id
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+
+```HTTP
+GET /campaign/1
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "id": 1,
+  "promotionId": 1,
+  "shopId": 1,
+  "subject": "Hello",
+  "textData": "New promotion available at your store!",
+  "isActive": true
+}
+```
+
+#### Create a campaign
+
+```HTTP
+POST /balance
+```
+
+| Parameters      | Type   | In   | Description                                                                |
+| :-------------- | :----- | :--- | :------------------------------------------------------------------------- |
+| **promotionId** | number | body | **[optional]**                                                             |
+| **subject**     | string | body | **[required]**                                                             |
+| **textData**    | string | body | **[optional]** One of `textData`, `htmlData` and `templateUrl` is required |
+| **htmlData**    | string | body | **[optional]** One of `textData`, `htmlData` and `templateUrl` is required |
+| **templateUrl** | string | body | **[optional]** One of `textData`, `htmlData` and `templateUrl` is required |
+
+##### Request
+
+```HTTP
+POST /campaign
+  {
+    "promotionId": 1,
+    "subject": "Hello",
+    "textData": "New promotion available at your store!",
+    "isActive": true
+  }
+```
+
+##### Response
+
+```HTTP
+Status: 201 CREATED
+```
+
+```json
+{
+  "message": "Campaign created"
+}
+```
+
+#### Send a campaign
+
+This feature sends the campaign immediatly to the customers.
+You can choose to send a new campaign by filling the parameters or send an existing one by only providing an `id`.
+
+```HTTP
+POST /campaign/send
+```
+
+| Parameters      | Type   | In   | Description                                                                                               |
+| :-------------- | :----- | :--- | :-------------------------------------------------------------------------------------------------------- |
+| **id**          | number | body | **[optional]** If `id` is specified, the other parameters should be absent                                |
+| **promotionId** | number | body | **[optional]** Only if `id` is not specified                                                              |
+| **subject**     | string | body | **[required]** Only if `id` is not specified                                                              |
+| **textData**    | string | body | **[optional]** Only if `id` is not specified. One of `textData`, `htmlData` and `templateUrl` is required |
+| **htmlData**    | string | body | **[optional]** Only if `id` is not specified. One of `textData`, `htmlData` and `templateUrl` is required |
+| **templateUrl** | string | body | **[optional]** Only if `id` is not specified. One of `textData`, `htmlData` and `templateUrl` is required |
+
+##### Request
+
+```HTTP
+POST /campaign/send
+  {
+    "id": 1,
+  }
+```
+
+OR
+
+```HTTP
+POST /campaign/send
+  {
+    "subject": "Hello",
+    "textData": "New promotion available at your store!",
+    "isActive": true
+  }
+```
+
+##### Response
+
+```HTTP
+Status: 200 Ok
+```
+
+```json
+{
+  "status": 200
+}
+```
+
+#### Update a campaign
+
+```HTTP
+PUT /campaign/:id
+```
+
+| Parameters      | Type   | In    | Description    |
+| :-------------- | :----- | :---- | :------------- |
+| **id**          | number | query | **[required]** |
+| **promotionId** | number | body  | **[optional]** |
+| **subject**     | string | body  | **[optional]** |
+| **textData**    | string | body  | **[optional]** |
+| **htmlData**    | string | body  | **[optional]** |
+| **templateUrl** | string | body  | **[optional]** |
+
+##### Request
+
+```HTTP
+PUT /campaign/1
+  {
+    "counter": 10,
+    "isActive": false
+  }
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "message": "Campaign updated"
+}
+```
+
+#### Delete a campaign
+
+```HTTP
+DELETE /campaign/:id
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+| **id**     | number | query | **[required]** |
+
+##### Request
+
+```HTTP
+DELETE /campaign/1
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "message": "Campaign deleted"
+}
+```
+
+### Analytics endpoints
+
+#### Get a shop's affluence
+
+```HTTP
+GET /analytics/affluence?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/affluence?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "value": 20
+}
+```
+
+#### Get a shop's clients count
+
+```HTTP
+GET /analytics/clients-count?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/clients-count?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "value": 20
+}
+```
+
+#### Get a shop's promotion ranking
+
+```HTTP
+GET /analytics/promotions-ranking?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/promotions-ranking?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "promotionNames": ["best promotion", "second best promotion"],
+  "values": [55, 24]
+}
+```
+
+#### Get a shop's promotion checkout count
+
+```HTTP
+GET /analytics/promotion-checkout-count/:id?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **id**         | string | query | **[required]** Promotion id     |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/promotion-checkout-count/1?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "values": 55
 }
 ```

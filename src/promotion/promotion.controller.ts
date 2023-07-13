@@ -18,6 +18,7 @@ import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';
 import { PromotionService } from './promotion.service';
 import { AbilityFactory, Action } from '../auth/ability.factory';
 import { Promotion } from './promotion.entity';
+import { CampaignService } from '../campaign/campaign.service';
 
 @Controller('promotion')
 @UseGuards(AuthGuard)
@@ -25,6 +26,7 @@ export class PromotionController {
   constructor(
     private service: PromotionService,
     private shopService: ShopService,
+    private campaignService: CampaignService,
     private abilityFactory: AbilityFactory,
   ) {}
 
@@ -89,6 +91,7 @@ export class PromotionController {
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
     if (!ability.can(Action.Delete, promotion)) throw new ForbiddenException();
 
+    await this.campaignService.removeShopsCampaigns(+id);
     await this.service.remove(+id);
     return { message: 'Promotion deleted' };
   }

@@ -30,6 +30,7 @@ import { PromotionService } from './promotion.service';
     TypeOrmModule.forFeature([Promotion]),
     forwardRef(() => ShopModule),
     forwardRef(() => UserModule),
+    forwardRef(() => CampaignModule),
   ],
   controllers: [PromotionController],
   providers: [PromotionService],

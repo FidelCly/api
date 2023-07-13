@@ -8,6 +8,11 @@ import {
 } from '../analytics/analytics.pb';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
+import {
+  BALANCE_SERVICE_NAME,
+  BalanceServiceClient,
+} from '../analytics/balance.pb';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class BalanceService {

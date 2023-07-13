@@ -21,7 +21,7 @@ export class UserService {
       where: { id },
       relations: {
         cards: { shop: true, balances: { promotion: true } },
-        shop: { promotions: true, cards: { balances: true } },
+        shop: { promotions: true, cards: { user: true, balances: true } },
       },
     });
   }
@@ -36,7 +36,7 @@ export class UserService {
       where: { uuid },
       relations: {
         cards: { shop: true, balances: { promotion: true } },
-        shop: true,
+        shop: { promotions: true, cards: { user: true, balances: true } },
       },
     });
   }

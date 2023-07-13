@@ -21,6 +21,7 @@ import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { AbilityFactory, Action } from '../auth/ability.factory';
+import { CampaignService } from '../campaign/campaign.service';
 
 @Controller('shop')
 @UseGuards(AuthGuard)
@@ -29,6 +30,7 @@ export class ShopController {
     private service: ShopService,
     private cardService: CardService,
     private promotionService: PromotionService,
+    private campaignService: CampaignService,
     private abilityFactory: AbilityFactory,
   ) {}
 
@@ -86,8 +88,8 @@ export class ShopController {
     return shop.promotions;
   }
 
-  @Get(':id/clients')
-  async clients(@Param('id') id: string, @Req() req: Request) {
+  @Get(':id/cards')
+  async cards(@Param('id') id: string, @Req() req: Request) {
     const shop = await this.service.findOneClients(+id);
     if (!shop) throw new NotFoundException();
 
@@ -95,6 +97,17 @@ export class ShopController {
     if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
 
     return shop.cards;
+  }
+
+  @Get(':id/campaigns')
+  async campaigns(@Param('id') id: string, @Req() req: Request) {
+    const shop = await this.service.findOneCampaigns(+id);
+    if (!shop) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Read, shop)) throw new ForbiddenException();
+
+    return shop.campaigns;
   }
 
   @Post()
@@ -144,6 +157,7 @@ export class ShopController {
 
     await this.cardService.removeShopsCards(+id);
     await this.promotionService.removeShopsPromotions(+id);
+    await this.campaignService.removeShopsCampaigns(+id);
 
     await this.service.remove(+id);
     return { message: 'Shop deleted' };

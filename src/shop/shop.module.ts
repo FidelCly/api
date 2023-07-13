@@ -32,6 +32,7 @@ import { ShopService } from './shop.service';
     forwardRef(() => CardModule),
     forwardRef(() => UserModule),
     forwardRef(() => PromotionModule),
+    forwardRef(() => CampaignModule),
   ],
   controllers: [ShopController],
   providers: [ShopService],

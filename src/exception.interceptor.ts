@@ -8,6 +8,7 @@ import {
   ConflictException,
   UnauthorizedException,
   ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 
@@ -31,6 +32,10 @@ export class ExceptionInterceptor implements NestInterceptor {
             );
           case HttpStatus.FORBIDDEN:
             throw new ForbiddenException(
+              res.errors.length > 1 ? res.errors : res.errors[0],
+            );
+          case HttpStatus.NOT_FOUND:
+            throw new NotFoundException(
               res.errors.length > 1 ? res.errors : res.errors[0],
             );
 

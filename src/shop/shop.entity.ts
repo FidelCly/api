@@ -2,6 +2,7 @@
 import { User } from '../user/user.entity';
 import { Card } from '../card/card.entity';
 import { Promotion } from '../promotion/promotion.entity';
+import { Campaign } from '../campaign/campaign.entity';
 import { ShopActivity } from './shop.enum';
 import {
   Column,
@@ -38,6 +39,9 @@ export class Shop {
 
   @Column()
   email: string;
+
+  @Column()
+  marketingEmail: string;
 
   @Column({
     length: 5,
@@ -78,6 +82,9 @@ export class Shop {
 
   @OneToMany(() => Promotion, (promotion: Promotion) => promotion.shop)
   promotions!: Array<Promotion>;
+
+  @OneToMany(() => Campaign, (campaign: Campaign) => campaign.shop)
+  campaigns!: Array<Campaign>;
 
   @CreateDateColumn()
   createdAt!: Date;

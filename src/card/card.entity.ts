@@ -2,7 +2,6 @@ import { Balance } from '../balance/balance.entity';
 import { Shop } from '../shop/shop.entity';
 import { User } from '../user/user.entity';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
