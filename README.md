@@ -44,6 +44,11 @@
       - [Send a campaign](#send-a-campaign)
       - [Update a campaign](#update-a-campaign)
       - [Delete a campaign](#delete-a-campaign)
+    - [Analytics endpoints](#analytics-endpoints)
+      - [Get a shop's affluence](#get-a-shops-affluence)
+      - [Get a shop's clients count](#get-a-shops-clients-count)
+      - [Get a shop's promotion ranking](#get-a-shops-promotion-ranking)
+      - [Get a shop's promotion checkout count](#get-a-shops-promotion-checkout-count)
 
 ## Run locally
 
@@ -549,12 +554,12 @@ Status: 200 OK
 [
   {
     "id": 1,
-  "promotionId": 1,
-  "shopId": 1,
-  "subject": "Hello",
-  "textData": "New promotion available at your store!",
-  "isActive": true
-  },
+    "promotionId": 1,
+    "shopId": 1,
+    "subject": "Hello",
+    "textData": "New promotion available at your store!",
+    "isActive": true
+  }
 ]
 ```
 
@@ -1316,5 +1321,129 @@ Status: 200 OK
 ```json
 {
   "message": "Campaign deleted"
+}
+```
+
+### Analytics endpoints
+
+#### Get a shop's affluence
+
+```HTTP
+GET /analytics/affluence?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/affluence?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "value": 20
+}
+```
+
+#### Get a shop's clients count
+
+```HTTP
+GET /analytics/clients-count?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/clients-count?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "value": 20
+}
+```
+
+#### Get a shop's promotion ranking
+
+```HTTP
+GET /analytics/promotions-ranking?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/promotions-ranking?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "promotionNames": ["best promotion", "second best promotion"],
+  "values": [55, 24]
+}
+```
+
+#### Get a shop's promotion checkout count
+
+```HTTP
+GET /analytics/promotion-checkout-count/:id?start_date=xxx&end_date=yyy
+```
+
+| Parameters     | Type   | In    | Description                     |
+| :------------- | :----- | :---- | :------------------------------ |
+| **id**         | string | query | **[required]** Promotion id     |
+| **start_date** | string | query | **[required]** DateString (ISO) |
+| **end_date**   | string | query | **[required]** DateString (ISO) |
+
+##### Request
+
+```HTTP
+GET /analytics/promotion-checkout-count/1?start_date=2022-06-23&end_date=2023-06-23
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+{
+  "status": 200,
+  "values": 55
 }
 ```

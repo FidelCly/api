@@ -2,7 +2,6 @@ import { Balance } from '../balance/balance.entity';
 import { Shop } from '../shop/shop.entity';
 import { User } from '../user/user.entity';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -15,7 +14,7 @@ import {
 } from 'typeorm';
 
 @Entity() // table name in database
-export class Card extends BaseEntity {
+export class Card {
   @PrimaryGeneratedColumn()
   id: number;
 
