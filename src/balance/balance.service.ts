@@ -7,20 +7,7 @@ import {
 } from '../analytics/analytics.pb';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
-<<<<<<< HEAD
-=======
-import {
-  BALANCE_SERVICE_NAME,
-  BalanceServiceClient,
-<<<<<<< HEAD
-} from '../analytics/balance.pb';
->>>>>>> c373dc3 (feat: analytics data aggregation)
 import { ClientGrpc } from '@nestjs/microservices';
-=======
-} from '../analytics/analytics.pb';
-import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
-import { Balance } from './balance.entity';
->>>>>>> 9b52ad5 (fix: proto files)
 
 @Injectable()
 export class BalanceService {
