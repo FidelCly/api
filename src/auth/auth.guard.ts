@@ -44,6 +44,7 @@ export class AuthGuard implements CanActivate {
 
     const user = await this.userService.findByUuid(userUuid);
     req['currentUser'] = { ...user, role: role };
+
     return true;
   }
 }

@@ -46,19 +46,21 @@ export class AbilityFactory {
 
     if (user.role === Role.Fider) {
       can(Action.Create, [Shop, Promotion, Balance, Campaign]);
-      can([Action.Read, Action.Update, Action.Delete], Shop, {
-        id: user.shop.id,
-      });
-      can(
-        [Action.Read, Action.Update, Action.Delete],
-        [Card, Promotion, Campaign],
-        {
-          shopId: user.shop.id,
-        },
-      );
-      can([Action.Read, Action.Update, Action.Delete], Balance, {
-        'card.shop.id': user.shop.id,
-      });
+      if (user.shop) {
+        can([Action.Read, Action.Update, Action.Delete], Shop, {
+          id: user.shop.id,
+        });
+        can(
+          [Action.Read, Action.Update, Action.Delete],
+          [Card, Promotion, Campaign],
+          {
+            shopId: user.shop.id,
+          },
+        );
+        can([Action.Read, Action.Update, Action.Delete], Balance, {
+          'card.shop.id': user.shop.id,
+        });
+      }
     } else {
       can(Action.Create, Card);
       can(Action.Read, [Shop, Promotion], { isActive: true });
