@@ -7,6 +7,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AbilityFactory, Action } from './auth/ability.factory';
 import { AuthGuard } from './auth/auth.guard';
 import { CardService } from './card/card.service';
