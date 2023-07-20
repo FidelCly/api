@@ -14,7 +14,6 @@ import {
 import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
-import { Promotion } from '../promotion/promotion.entity';
 import { PromotionService } from '../promotion/promotion.service';
 import { CreateBalanceDto, UpdateBalanceDto } from './balance.dto';
 import { Balance } from './balance.entity';
@@ -89,45 +88,5 @@ export class BalanceController {
 
     await this.service.remove(+id);
     return { message: 'Balance deleted' };
-  }
-
-  @Put(':id/checkout')
-  async checkout(@Param('id') id: string, @Req() req: Request) {
-    let balance: Balance, promotion: Promotion;
-
-    if (!(balance = await this.service.findOne(+id)))
-      throw new NotFoundException();
-
-    if (!(promotion = await this.promotionService.findOne(balance.promotionId)))
-      throw new NotFoundException();
-
-    const ability = this.abilityFactory.defineAbility(req['currentUser']);
-    if (!ability.can(Action.Update, balance)) throw new ForbiddenException();
-
-    if (!promotion.isActive) {
-      await this.service.update(+id, { isActive: false });
-      throw new ForbiddenException('Promotion is not active');
-    }
-
-    if (new Date(promotion.endAt).getTime() < new Date().getTime()) {
-      await this.service.update(+id, { isActive: false });
-      throw new ForbiddenException('Promotion has expired');
-    }
-
-    if (balance.counter === promotion.checkoutLimit) {
-      await this.service.update(+id, { counter: 1, isActive: true });
-      return { message: 'Balance updated' };
-    }
-
-    if (balance.counter++ === promotion.checkoutLimit) {
-      await this.service.update(+id, {
-        counter: promotion.checkoutLimit,
-        isActive: false,
-      });
-      return { message: 'Promotion limit reached' };
-    }
-
-    await this.service.update(+id, { counter: balance.counter++ });
-    return { message: 'Balance updated' };
   }
 }

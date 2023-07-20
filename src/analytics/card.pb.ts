@@ -8,8 +8,6 @@ export interface SendCardRequest {
   id: number;
   shopId: number;
   userId: number;
-  startAt: string;
-  endAt: string;
   isActive: boolean;
 }
 

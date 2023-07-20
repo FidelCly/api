@@ -17,7 +17,7 @@
       - [Get all shops](#get-all-shops)
       - [Get a shop](#get-a-shop)
       - [Get a shop's promotions](#get-a-shops-promotions)
-      - [Get a shop's clients](#get-a-shops-clients)
+      - [Get a shop's cards](#get-a-shops-cards)
       - [Get a shop's campaigns](#get-a-shops-campaigns)
       - [Create a shop](#create-a-shop)
       - [Update a shop](#update-a-shop)
@@ -37,7 +37,7 @@
       - [Create a balance](#create-a-balance)
       - [Update a balance](#update-a-balance)
       - [Delete a balance](#delete-a-balance)
-      - [Checkout a balance](#checkout-a-balance)
+    - [Checkout endpoint](#checkout-endpoint)
     - [Campaigns endpoints](#campaigns-endpoints)
       - [Get a campaign](#get-a-campaign)
       - [Create a campaign](#create-a-campaign)
@@ -88,6 +88,14 @@ npm run test:e2e
 ```
 
 ## API reference
+
+> ---
+>
+> ⚠️ **Warning**
+>
+> **All endpoints except authentication endpoints are protected and require authentication.**
+>
+> ---
 
 ### Authentication endpoints
 
@@ -473,7 +481,7 @@ Status: 200 OK
 ]
 ```
 
-#### Get a shop's clients
+#### Get a shop's cards
 
 ```HTTP
 GET /shop/:id/cards
@@ -718,8 +726,6 @@ Status: 200 OK
   "id": 1,
   "shopId": 1,
   "userId": 1,
-  "startAt": "",
-  "endAt": ""
 }
 ```
 
@@ -733,8 +739,6 @@ POST /card
 | :----------- | :------ | :--- | :-------------------------------------------------------------------- |
 | **shopId**   | number  | body | **[required]**                                                        |
 | **userId**   | number  | body | **[optional]** Need to be specified if the card is created by a Fider |
-| **startAt**  | string  | body | **[optional]**                                                        |
-| **endAt**    | string  | body | **[required]**                                                        |
 | **isActive** | boolean | body | **[optional]**                                                        |
 
 ##### Request
@@ -743,8 +747,6 @@ POST /card
 POST /card
   {
     "shopId": 1,
-    "startAt": "",
-    "endAt": "",
   }
 ```
 
@@ -769,8 +771,6 @@ PUT /card/:id
 | Parameters   | Type    | In    | Description    |
 | :----------- | :------ | :---- | :------------- |
 | **id**       | number  | query | **[required]** |
-| **startAt**  | string  | body  | **[optional]** |
-| **endAt**    | string  | body  | **[optional]** |
 | **isActive** | boolean | body  | **[optional]** |
 
 ##### Request
@@ -1096,20 +1096,25 @@ Status: 200 OK
 }
 ```
 
-#### Checkout a balance
-
+### Checkout endpoint
 ```HTTP
-PUT /balance/:id/checkout
+PUT /checkout
 ```
 
 | Parameters | Type   | In    | Description    |
 | :--------- | :----- | :---- | :------------- |
-| **id**     | number | query | **[required]** |
+| **uuid**     | string | body | **[required]** uuid of user (scanned from QR code) |
+| **promotionId**     | number | body | **[required]** promotion id to apply |
 
 ##### Request
 
 ```HTTP
-PUT /balance/1/checkout
+PUT /checkout
+  {
+    "promotionId": 1,
+    "uuid": some-uuid
+  }
+
 ```
 
 ##### Response

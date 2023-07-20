@@ -27,6 +27,10 @@ export class CardService {
     return this.repository.findOneBy({ id });
   }
 
+  findOneBy(args: any): Promise<Card | null> {
+    return this.repository.findOneBy(args);
+  }
+
   create(createCardDto: CreateCardDto, userId: number): Promise<Card> {
     const card = { ...new Card(), ...createCardDto, userId: userId };
     return this.repository.save(card);
@@ -53,10 +57,6 @@ export class CardService {
   // ANALYTICS
 
   sendToAnalytics(card: Card) {
-    this.analyticsService.send({
-      ...card,
-      startAt: new Date(card.startAt).toISOString(),
-      endAt: new Date(card.endAt).toISOString(),
-    });
+    this.analyticsService.send(card);
   }
 }
