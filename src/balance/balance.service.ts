@@ -33,6 +33,13 @@ export class BalanceService {
     });
   }
 
+  findOneBy(args: any): Promise<Balance | null> {
+    return this.repository.findOne({
+      where: args,
+      relations: { card: { shop: true, user: true } },
+    });
+  }
+
   create(createBalanceDto: CreateBalanceDto): Promise<Balance> {
     const balance = { ...new Balance(), ...createBalanceDto };
     return this.repository.save(balance);

@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { CampaignModule } from './campaign/campaign.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -37,5 +38,6 @@ import { AnalyticsModule } from './analytics/analytics.module';
     CampaignModule,
     AnalyticsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

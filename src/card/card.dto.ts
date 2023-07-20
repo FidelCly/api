@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateCardDto {
   @IsNotEmpty()
@@ -14,16 +8,7 @@ export class CreateCardDto {
   @IsOptional()
   @IsNotEmpty()
   @IsNumber()
-  readonly userId: number;
-
-  @IsOptional()
-  @IsNotEmpty()
-  @IsDateString()
-  readonly startAt?: Date;
-
-  @IsNotEmpty()
-  @IsDateString()
-  readonly endAt: Date;
+  readonly userId?: number;
 
   @IsOptional()
   @IsBoolean()
@@ -31,16 +16,6 @@ export class CreateCardDto {
 }
 
 export class UpdateCardDto {
-  @IsOptional()
-  @IsNotEmpty()
-  @IsDateString()
-  readonly startAt?: Date;
-
-  @IsOptional()
-  @IsNotEmpty()
-  @IsDateString()
-  readonly endAt?: Date;
-
   @IsOptional()
   @IsNotEmpty()
   @IsBoolean()

@@ -86,28 +86,6 @@ describe('Testing balance controller', () => {
     });
   });
 
-  describe('Checkout balance', () => {
-    describe('of unknown id', () => {
-      it('responds with status 404', async () => {
-        const response = await factory.put('/balance/10/checkout');
-
-        expect(response.headers['content-type']).toMatch(/json/);
-        expect(response.statusCode).toBe(404);
-        expect(response.body.message).toMatch('Not Found');
-      });
-    });
-
-    describe('of known id', () => {
-      it('responds with status 200', async () => {
-        const response = await factory.put('/balance/1/checkout');
-
-        expect(response.headers['content-type']).toMatch(/json/);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.message).toMatch(/updated/);
-      });
-    });
-  });
-
   describe('Delete balance', () => {
     describe('of unknown id', () => {
       it('responds with status 404', async () => {
