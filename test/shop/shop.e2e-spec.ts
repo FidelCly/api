@@ -148,6 +148,16 @@ describe('Testing shop controller', () => {
         expect(response.body.length).toBe(1);
       });
     });
+
+    describe('with activity fitler', () => {
+      it('responds with status 200', async () => {
+        const response = await factory.get('/shop/?activity=restauration');
+
+        expect(response.headers['content-type']).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBe(2);
+      });
+    });
   });
 
   describe("Get one shop's promotions", () => {

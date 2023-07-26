@@ -143,5 +143,6 @@ export interface ShopFilterOptions {
   lat?: string;
   long?: string;
   distance?: string;
+  activity?: string;
   isActive?: boolean;
 }
