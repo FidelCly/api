@@ -1,10 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { firstValueFrom } from 'rxjs';
 import { Repository, UpdateResult } from 'typeorm';
+import {
+  CARD_SERVICE_NAME,
+  CardServiceClient,
+} from '../analytics/analytics.pb';
 import { CreateCardDto, UpdateCardDto } from './card.dto';
 import { Card } from './card.entity';
-import { CARD_SERVICE_NAME, CardServiceClient } from '../analytics/card.pb';
-import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class CardService {
@@ -57,6 +61,6 @@ export class CardService {
   // ANALYTICS
 
   sendToAnalytics(card: Card) {
-    this.analyticsService.send(card);
+    return firstValueFrom(this.analyticsService.send(card));
   }
 }

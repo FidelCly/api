@@ -1,19 +1,19 @@
 /* eslint-disable no-undef */
 import { HttpStatus } from '@nestjs/common';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AuthService } from '../../src/auth/auth.service';
+import { CampaignService } from '../../src/campaign/campaign.service';
+import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
+import { TestFactory } from '../factory';
+import { shopFixture } from '../shop/shop.seed';
+import { userFixture2 } from '../user/user.seed';
 import {
   campaignFixture,
   campaignFixtureWithId,
   campaignFixtureWithoutId,
   modifiedCampaignFixture,
 } from './campaign.seed';
-import { TestFactory } from '../factory';
-import { CampaignService } from '../../src/campaign/campaign.service';
-import { AuthService } from '../../src/auth/auth.service';
-import { Role } from '../../src/user/user.enum';
-import { userFixture2 } from '../user/user.seed';
-import { shopFixture } from '../shop/shop.seed';
-import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
 
 describe('Testing campaign controller', () => {
   // Create instances

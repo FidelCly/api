@@ -11,15 +11,15 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
+import { ExceptionInterceptor } from '../exception.interceptor';
 import { AnalyticsOptions } from './analytics.dto';
-import { AnalyticsService } from './analytics.service';
 import {
   GetAffluenceResponse,
   GetClientsCountResponse,
   GetPromotionCheckoutsCountResponse,
   GetPromotionsRankingResponse,
-} from './general.pb';
-import { ExceptionInterceptor } from '../exception.interceptor';
+} from './analytics.pb';
+import { AnalyticsService } from './analytics.service';
 
 @Controller('analytics')
 @UseGuards(AuthGuard)

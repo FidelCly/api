@@ -1,29 +1,57 @@
 /* eslint-disable no-undef */
 import { HttpStatus } from '@nestjs/common';
 import { AuthService } from '../../src/auth/auth.service';
-import { TestFactory } from '../factory';
-import { userFixture, userFixture2 } from '../user/user.seed';
-import { modifiedPromotionFixture } from '../promotion/promotion.seed';
-import { modifiedShopFixture } from '../shop/shop.seed';
-import { modifiedCardFixture } from '../card/card.seed';
-import { modifiedBalanceFixture } from '../balance/balance.seed';
+import { BalanceService } from '../../src/balance/balance.service';
+import { CardService } from '../../src/card/card.service';
+import { PromotionService } from '../../src/promotion/promotion.service';
+import { ShopService } from '../../src/shop/shop.service';
 import { CreateUserDto } from '../../src/user/user.dto';
 import { Role } from '../../src/user/user.enum';
+import { modifiedBalanceFixture } from '../balance/balance.seed';
+import { modifiedCardFixture } from '../card/card.seed';
+import { TestFactory } from '../factory';
+import { modifiedPromotionFixture } from '../promotion/promotion.seed';
+import { modifiedShopFixture } from '../shop/shop.seed';
+import { userFixture, userFixture2 } from '../user/user.seed';
 
 describe('Testing authorization', () => {
   // Create instances
   const factory = new TestFactory();
   let service: AuthService;
+  let cardService: CardService;
+  let shopService: ShopService;
+  let promotionService: PromotionService;
+  let balanceService: BalanceService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
+    shopService = module.get<ShopService>(ShopService);
+    cardService = module.get<CardService>(CardService);
+    promotionService = module.get<PromotionService>(PromotionService);
+    balanceService = module.get<BalanceService>(BalanceService);
+
     await factory.seed();
   });
 
   afterAll(async () => {
     await factory.close();
+  });
+
+  beforeEach(() => {
+    jest
+      .spyOn(shopService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
+    jest
+      .spyOn(cardService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
+    jest
+      .spyOn(promotionService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
+    jest
+      .spyOn(balanceService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   function mockUser(fixture: CreateUserDto, role: Role) {

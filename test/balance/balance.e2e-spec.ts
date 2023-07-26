@@ -1,23 +1,26 @@
 /* eslint-disable no-undef */
 import { HttpStatus } from '@nestjs/common';
-import { TestFactory } from '../factory';
-import { balanceFixture, modifiedBalanceFixture } from './balance.seed';
 import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
 import { AuthService } from '../../src/auth/auth.service';
+import { BalanceService } from '../../src/balance/balance.service';
 import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
+import { TestFactory } from '../factory';
 import { userFixture } from '../user/user.seed';
+import { balanceFixture, modifiedBalanceFixture } from './balance.seed';
 
 describe('Testing balance controller', () => {
   // Create instances
   const factory = new TestFactory();
   let service: AuthService;
+  let balanceService: BalanceService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
+    balanceService = module.get<BalanceService>(BalanceService);
 
     await factory.seedUser();
     await factory.seedShop();
@@ -36,6 +39,10 @@ describe('Testing balance controller', () => {
       role: Role.Fider,
       errors: null,
     });
+
+    jest
+      .spyOn(balanceService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   describe('Create balance', () => {

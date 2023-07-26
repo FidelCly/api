@@ -12,13 +12,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { AbilityFactory, Action } from '../auth/ability.factory';
 import { AuthGuard } from '../auth/auth.guard';
+import { CampaignService } from '../campaign/campaign.service';
 import { ShopService } from '../shop/shop.service';
 import { CreatePromotionDto, UpdatePromotionDto } from './promotion.dto';
-import { PromotionService } from './promotion.service';
-import { AbilityFactory, Action } from '../auth/ability.factory';
 import { Promotion } from './promotion.entity';
-import { CampaignService } from '../campaign/campaign.service';
+import { PromotionService } from './promotion.service';
 
 @Controller('promotion')
 @UseGuards(AuthGuard)
@@ -58,7 +58,8 @@ export class PromotionController {
       req['currentUser'].shop.id,
     );
 
-    this.service.sendToAnalytics(promotion);
+    await this.service.sendToAnalytics(promotion);
+
     return promotion;
   }
 

@@ -12,12 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { AbilityFactory, Action } from '../auth/ability.factory';
 import { AuthGuard } from '../auth/auth.guard';
 import { ShopService } from '../shop/shop.service';
 import { CreateCardDto, UpdateCardDto } from './card.dto';
-import { CardService } from './card.service';
-import { AbilityFactory, Action } from '../auth/ability.factory';
 import { Card } from './card.entity';
+import { CardService } from './card.service';
 
 @Controller('card')
 @UseGuards(AuthGuard)
@@ -53,7 +53,8 @@ export class CardController {
       createCardDto.userId ?? req['currentUser'].id,
     );
 
-    this.service.sendToAnalytics(card);
+    await this.service.sendToAnalytics(card);
+
     return card;
   }
 

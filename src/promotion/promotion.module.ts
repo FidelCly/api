@@ -1,17 +1,17 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShopModule } from '../shop/shop.module';
-import { PromotionController } from './promotion.controller';
-import { Promotion } from './promotion.entity';
-import { PromotionService } from './promotion.service';
-import { UserModule } from '../user/user.module';
-import { CampaignModule } from '../campaign/campaign.module';
+import { join } from 'path';
 import {
   ANALYTICS_PACKAGE_NAME,
   PROMOTION_SERVICE_NAME,
-} from '../analytics/promotion.pb';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+} from '../analytics/analytics.pb';
+import { CampaignModule } from '../campaign/campaign.module';
+import { ShopModule } from '../shop/shop.module';
+import { UserModule } from '../user/user.module';
+import { PromotionController } from './promotion.controller';
+import { Promotion } from './promotion.entity';
+import { PromotionService } from './promotion.service';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { join } from 'path';
           url: process.env.ANALYTICS_SERVICE_URL,
           package: ANALYTICS_PACKAGE_NAME,
           protoPath: join(
-            'node_modules/@fidecly/grpc-proto/proto/analytics/promotion.proto',
+            'node_modules/@fidecly/grpc-proto/proto/analytics/analytics.proto',
           ),
         },
       },

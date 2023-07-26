@@ -1,27 +1,30 @@
 /* eslint-disable no-undef */
 import { HttpStatus } from '@nestjs/common';
-import { TestFactory } from '../factory';
-import {
-  promotionFixture,
-  modifiedPromotionFixture,
-  modifiedEmptyPromotionFixture,
-} from './promotion.seed';
 import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
 import { AuthService } from '../../src/auth/auth.service';
+import { PromotionService } from '../../src/promotion/promotion.service';
 import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
+import { TestFactory } from '../factory';
 import { userFixture } from '../user/user.seed';
+import {
+  modifiedEmptyPromotionFixture,
+  modifiedPromotionFixture,
+  promotionFixture,
+} from './promotion.seed';
 
 describe('Testing promotion controller', () => {
   // Create instances
   const factory = new TestFactory();
   let service: AuthService;
+  let promotionService: PromotionService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
+    promotionService = module.get<PromotionService>(PromotionService);
 
     await factory.seedUser();
     await factory.seedShop();
@@ -38,6 +41,10 @@ describe('Testing promotion controller', () => {
       role: Role.Fider,
       errors: null,
     });
+
+    jest
+      .spyOn(promotionService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   describe('Create promotion', () => {

@@ -2,17 +2,17 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import {
-  AnalyticsServiceClient,
   ANALYTICS_SERVICE_NAME,
+  AnalyticsServiceClient,
   GetAffluenceRequest,
   GetAffluenceResponse,
   GetClientsCountRequest,
-  GetPromotionCheckoutsCountRequest,
-  GetPromotionsRankingRequest,
   GetClientsCountResponse,
+  GetPromotionCheckoutsCountRequest,
   GetPromotionCheckoutsCountResponse,
+  GetPromotionsRankingRequest,
   GetPromotionsRankingResponse,
-} from './general.pb';
+} from './analytics.pb';
 
 @Injectable()
 export class AnalyticsService {
