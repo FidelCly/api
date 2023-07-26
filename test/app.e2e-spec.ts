@@ -59,8 +59,6 @@ describe('Testing app controller', () => {
       it('responds with status 200', async () => {
         const response = await factory.put('/checkout').send(checkoutFixture);
 
-        console.log(response.body);
-
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
         expect(response.body.message).toMatch(/updated/);

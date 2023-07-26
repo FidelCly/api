@@ -59,10 +59,6 @@ export class AppController {
         isActive: false,
       });
     }
-    console.log(
-      "🚀 ~ AppController ~ checkout ~ req['currentUser']:",
-      req['currentUser'],
-    );
 
     // Check if a card exists for this user
     if (
