@@ -1,27 +1,30 @@
 import { HttpStatus } from '@nestjs/common';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AuthService } from '../../src/auth/auth.service';
+import { ShopService } from '../../src/shop/shop.service';
+import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
 import { TestFactory } from '../factory';
+import { userFixture, userFixture2 } from '../user/user.seed';
 import {
-  shopFixture,
-  modifiedShopFixture,
   emptyModifiedShopFixture,
   farAwayShopFixture,
+  modifiedShopFixture,
+  shopFixture,
 } from './shop.seed';
-import { userFixture, userFixture2 } from '../user/user.seed';
-import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
-import { AuthService } from '../../src/auth/auth.service';
-import { Role } from '../../src/user/user.enum';
 
 describe('Testing shop controller', () => {
   // Create instances
   const factory = new TestFactory();
-  let service: AuthService;
+  let authService: AuthService;
+  let shopService: ShopService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
     const module = await factory.init(moduleRef);
-    service = module.get<AuthService>(AuthService);
+    authService = module.get<AuthService>(AuthService);
+    shopService = module.get<ShopService>(ShopService);
 
     await factory.seedUser();
     await factory.seedUser(userFixture2);
@@ -32,12 +35,16 @@ describe('Testing shop controller', () => {
   });
 
   beforeEach(() => {
-    jest.spyOn(service, 'validate').mockResolvedValue({
+    jest.spyOn(authService, 'validate').mockResolvedValue({
       status: HttpStatus.OK,
       userUuid: userFixture.uuid,
       role: Role.Fider,
       errors: null,
     });
+
+    jest
+      .spyOn(shopService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   describe('Create shop', () => {

@@ -1,23 +1,26 @@
 /* eslint-disable no-undef */
 import { HttpStatus } from '@nestjs/common';
-import { TestFactory } from '../factory';
-import { cardFixture, modifiedCardFixture } from './card.seed';
 import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
 import { AuthService } from '../../src/auth/auth.service';
+import { CardService } from '../../src/card/card.service';
 import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
+import { TestFactory } from '../factory';
 import { userFixture } from '../user/user.seed';
+import { cardFixture, modifiedCardFixture } from './card.seed';
 
 describe('Testing card controller', () => {
   // Create instances
   const factory = new TestFactory();
   let service: AuthService;
+  let cardService: CardService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
+    cardService = module.get<CardService>(CardService);
 
     await factory.seedUser();
     await factory.seedShop();
@@ -34,6 +37,10 @@ describe('Testing card controller', () => {
       role: Role.Fider,
       errors: null,
     });
+
+    jest
+      .spyOn(cardService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   describe('Create card', () => {

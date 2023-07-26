@@ -14,14 +14,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { PromotionService } from '../promotion/promotion.service';
+import { AbilityFactory, Action } from '../auth/ability.factory';
+import { AuthGuard } from '../auth/auth.guard';
+import { CampaignService } from '../campaign/campaign.service';
 import { CardService } from '../card/card.service';
+import { PromotionService } from '../promotion/promotion.service';
 import { CreateShopDto, ShopFilterOptions, UpdateShopDto } from './shop.dto';
 import { Shop } from './shop.entity';
 import { ShopService } from './shop.service';
-import { AuthGuard } from '../auth/auth.guard';
-import { AbilityFactory, Action } from '../auth/ability.factory';
-import { CampaignService } from '../campaign/campaign.service';
 
 @Controller('shop')
 @UseGuards(AuthGuard)
@@ -126,7 +126,7 @@ export class ShopController {
       req['currentUser'].id,
     );
 
-    this.service.sendToAnalytics(shop);
+    await this.service.sendToAnalytics(shop);
     return shop;
   }
 
@@ -143,7 +143,11 @@ export class ShopController {
     if (!ability.can(Action.Update, shop)) throw new ForbiddenException();
 
     await this.service.update(+id, updateShopDto);
-    this.service.sendToAnalytics({ ...shop, ...updateShopDto });
+    await this.service.sendToAnalytics({
+      ...shop,
+      ...updateShopDto,
+    });
+
     return { message: 'Shop updated' };
   }
 

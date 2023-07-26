@@ -1,31 +1,31 @@
-import * as request from 'supertest';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
-import { DataSource } from 'typeorm';
 import { newDb } from 'pg-mem';
+import * as request from 'supertest';
+import { DataSource } from 'typeorm';
 import { AppModule } from '../src/app.module';
 import { AuthService } from '../src/auth/auth.service';
 
-import { Shop } from '../src/shop/shop.entity';
-import { User } from '../src/user/user.entity';
 import { Balance } from '../src/balance/balance.entity';
+import { Campaign } from '../src/campaign/campaign.entity';
 import { Card } from '../src/card/card.entity';
 import { Promotion } from '../src/promotion/promotion.entity';
-import { Campaign } from '../src/campaign/campaign.entity';
+import { Shop } from '../src/shop/shop.entity';
+import { User } from '../src/user/user.entity';
 
-import { CreateUserDto } from '../src/user/user.dto';
-import { CreateShopDto } from '../src/shop/shop.dto';
-import { CreateCardDto } from '../src/card/card.dto';
-import { CreatePromotionDto } from '../src/promotion/promotion.dto';
 import { CreateBalanceDto } from '../src/balance/balance.dto';
 import { CreateCampaignDto } from '../src/campaign/campaign.dto';
+import { CreateCardDto } from '../src/card/card.dto';
+import { CreatePromotionDto } from '../src/promotion/promotion.dto';
+import { CreateShopDto } from '../src/shop/shop.dto';
+import { CreateUserDto } from '../src/user/user.dto';
 
-import { userFixture, userFixture2 } from './user/user.seed';
-import { farAwayShopFixture, shopFixture } from './shop/shop.seed';
-import { cardFixture } from './card/card.seed';
-import { promotionFixture } from './promotion/promotion.seed';
 import { balanceFixture } from './balance/balance.seed';
 import { campaignFixture } from './campaign/campaign.seed';
+import { cardFixture } from './card/card.seed';
+import { promotionFixture } from './promotion/promotion.seed';
+import { farAwayShopFixture, shopFixture } from './shop/shop.seed';
+import { userFixture, userFixture2 } from './user/user.seed';
 
 export class TestFactory {
   private _app: INestApplication;

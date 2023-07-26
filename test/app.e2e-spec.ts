@@ -1,22 +1,25 @@
 import { HttpStatus } from '@nestjs/common';
 import { AbilityFactory } from '../src/auth/ability.factory';
 import { AuthService } from '../src/auth/auth.service';
+import { BalanceService } from '../src/balance/balance.service';
 import { Role } from '../src/user/user.enum';
 import { AbilityFactoryMock } from './ability.mock';
+import { checkoutFixture } from './app.seed';
 import { TestFactory } from './factory';
 import { userFixture2 } from './user/user.seed';
-import { checkoutFixture } from './app.seed';
 
 describe('Testing app controller', () => {
   // Create instances
   const factory = new TestFactory();
   let service: AuthService;
+  let balanceService: BalanceService;
 
   beforeAll(async () => {
     const moduleRef = await factory.configure();
     moduleRef.overrideProvider(AbilityFactory).useClass(AbilityFactoryMock);
     const module = await factory.init(moduleRef);
     service = module.get<AuthService>(AuthService);
+    balanceService = module.get<BalanceService>(BalanceService);
 
     await factory.seedUser();
     await factory.seedUser(userFixture2);
@@ -36,6 +39,10 @@ describe('Testing app controller', () => {
       role: Role.Fider,
       errors: null,
     });
+
+    jest
+      .spyOn(balanceService, 'sendToAnalytics')
+      .mockResolvedValue({ status: 200, errors: null });
   });
 
   describe('Checkout balance', () => {
@@ -51,8 +58,6 @@ describe('Testing app controller', () => {
     describe('with correct payload', () => {
       it('responds with status 200', async () => {
         const response = await factory.put('/checkout').send(checkoutFixture);
-
-        console.log(response.body);
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);

@@ -8,17 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { CheckoutDto } from './app.dto';
 import { AbilityFactory, Action } from './auth/ability.factory';
 import { AuthGuard } from './auth/auth.guard';
-import { CardService } from './card/card.service';
-import { PromotionService } from './promotion/promotion.service';
 import { Balance } from './balance/balance.entity';
-import { Card } from './card/card.entity';
-import { Promotion } from './promotion/promotion.entity';
-import { CheckoutDto } from './app.dto';
 import { BalanceService } from './balance/balance.service';
-import { UserService } from './user/user.service';
+import { Card } from './card/card.entity';
+import { CardService } from './card/card.service';
+import { Promotion } from './promotion/promotion.entity';
+import { PromotionService } from './promotion/promotion.service';
 import { User } from './user/user.entity';
+import { UserService } from './user/user.service';
 
 @Controller()
 @UseGuards(AuthGuard)
@@ -86,7 +86,9 @@ export class AppController {
         counter: 1,
       });
       // Send to analytics
-      this.balanceService.sendToAnalytics(balance);
+
+      await this.balanceService.sendToAnalytics(balance);
+
       return { message: 'Balance updated' };
     }
 
@@ -125,10 +127,12 @@ export class AppController {
     });
 
     // Send to analytics
-    this.balanceService.sendToAnalytics({
+
+    await this.balanceService.sendToAnalytics({
       ...balance,
       counter: balance.counter + 1,
     });
+
     return { message: 'Balance updated' };
   }
 }
