@@ -39,6 +39,7 @@ export class ShopController {
     const lat = +query.lat;
     const long = +query.long;
     const distance = +query.distance;
+    const activity = query.activity;
     const active = Boolean(query.isActive);
 
     let shops = await this.service.all();
@@ -46,6 +47,13 @@ export class ShopController {
     if (active) {
       shops = shops.filter((shop: Shop) => {
         return shop.isActive;
+      });
+    }
+
+    // Filter by activity
+    if (activity) {
+      shops = shops.filter((shop: Shop) => {
+        return shop.activity.toLowerCase() === activity.toLowerCase();
       });
     }
 
