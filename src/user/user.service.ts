@@ -34,7 +34,7 @@ export class UserService {
   findOneCards(id: number): Promise<User | null> {
     return this.repository.findOne({
       where: { id },
-      relations: { cards: { user: true, balances: true } },
+      relations: { cards: { user: true, balances: true, shop: true } },
     });
   }
 
