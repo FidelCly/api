@@ -1,4 +1,3 @@
-import { ShopActivity } from './shop.enum';
 import {
   IsBoolean,
   IsEmail,
@@ -12,6 +11,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
+import { ShopActivity } from './shop.enum';
 
 export class CreateShopDto {
   @IsNotEmpty()
@@ -35,6 +35,10 @@ export class CreateShopDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
+
+  @IsOptional()
+  @IsString()
+  pictureUrl?: string;
 
   @IsNotEmpty()
   @IsPostalCode('FR')
@@ -95,6 +99,10 @@ export class UpdateShopDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email?: string;
+
+  @IsOptional()
+  @IsString()
+  pictureUrl?: string;
 
   @IsOptional()
   @IsNotEmpty()

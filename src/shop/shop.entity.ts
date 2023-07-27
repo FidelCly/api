@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { User } from '../user/user.entity';
-import { Card } from '../card/card.entity';
-import { Promotion } from '../promotion/promotion.entity';
-import { Campaign } from '../campaign/campaign.entity';
-import { ShopActivity } from './shop.enum';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
-  JoinColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Campaign } from '../campaign/campaign.entity';
+import { Card } from '../card/card.entity';
+import { Promotion } from '../promotion/promotion.entity';
+import { User } from '../user/user.entity';
+import { ShopActivity } from './shop.enum';
 
 @Entity() // table name in database
 export class Shop {
@@ -72,6 +72,9 @@ export class Shop {
 
   @Column({ nullable: true })
   userId!: number;
+
+  @Column({ nullable: true })
+  pictureUrl!: string;
 
   @OneToOne(() => User, (user: User) => user.shop)
   @JoinColumn()

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Card } from '../card/card.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,8 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Sexe } from './user.enum';
+import { Card } from '../card/card.entity';
 import { Shop } from '../shop/shop.entity';
+import { Sexe } from './user.enum';
 
 @Entity({ name: 'users' }) // table name in database
 export class User {
@@ -32,6 +32,9 @@ export class User {
 
   @Column({ nullable: true })
   sexe!: Sexe;
+
+  @Column({ nullable: true })
+  pictureUrl!: string;
 
   @Column({
     default: true,

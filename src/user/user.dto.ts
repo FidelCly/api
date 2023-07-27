@@ -22,6 +22,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsUUID()
   readonly uuid: string;
+
+  @IsOptional()
+  @IsString()
+  pictureUrl?: string;
 }
 
 export class UpdateUserDto {
@@ -33,6 +37,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
   readonly email?: string;
+
+  @IsOptional()
+  @IsString()
+  pictureUrl?: string;
 
   @IsOptional()
   @IsEnum(Sexe)
