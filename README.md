@@ -11,6 +11,7 @@
       - [Login](#login)
     - [Users endpoints](#users-endpoints)
       - [Get a user](#get-a-user)
+      - [Get user's cards](#get-users-cards)
       - [Update a user](#update-a-user)
       - [Delete a user](#delete-a-user)
     - [Shops endpoints](#shops-endpoints)
@@ -286,6 +287,44 @@ Status: 200 OK
     }
   ]
 }
+```
+
+#### Get user's cards
+
+```HTTP
+GET /cards
+```
+
+##### Request
+
+```HTTP
+GET /cards
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+[
+  {
+    "id": 1,
+    "shopId": 1,
+    "userId": 1
+  },
+  {
+    "id": 2,
+    "shopId": 2,
+    "userId": 1
+  },
+  {
+    "id": 3,
+    "shopId": 3,
+    "userId": 1
+  }
+]
 ```
 
 #### Update a user
@@ -725,7 +764,7 @@ Status: 200 OK
 {
   "id": 1,
   "shopId": 1,
-  "userId": 1,
+  "userId": 1
 }
 ```
 
@@ -1097,14 +1136,15 @@ Status: 200 OK
 ```
 
 ### Checkout endpoint
+
 ```HTTP
 PUT /checkout
 ```
 
-| Parameters | Type   | In    | Description    |
-| :--------- | :----- | :---- | :------------- |
-| **uuid**     | string | body | **[required]** uuid of user (scanned from QR code) |
-| **promotionId**     | number | body | **[required]** promotion id to apply |
+| Parameters      | Type   | In   | Description                                        |
+| :-------------- | :----- | :--- | :------------------------------------------------- |
+| **uuid**        | string | body | **[required]** uuid of user (scanned from QR code) |
+| **promotionId** | number | body | **[required]** promotion id to apply               |
 
 ##### Request
 

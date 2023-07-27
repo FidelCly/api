@@ -5,6 +5,10 @@ export const cardFixture: CreateCardDto = {
   userId: 1,
 };
 
+export const cardFixture2: CreateCardDto = {
+  shopId: 2,
+  userId: 1,
+};
 export const modifiedCardFixture: UpdateCardDto = {
   isActive: false,
 };
