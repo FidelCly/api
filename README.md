@@ -8,47 +8,120 @@
   - [API reference](#api-reference)
     - [Authentication endpoints](#authentication-endpoints)
       - [Register](#register)
+        - [Request](#request)
+        - [Response](#response)
       - [Login](#login)
+        - [Request](#request-1)
+        - [Response](#response-1)
     - [Users endpoints](#users-endpoints)
       - [Get a user](#get-a-user)
+        - [Request](#request-2)
+        - [Response](#response-2)
       - [Update a user](#update-a-user)
+        - [Request](#request-3)
+        - [Response](#response-3)
       - [Delete a user](#delete-a-user)
+        - [Request](#request-4)
+        - [Response](#response-4)
     - [Shops endpoints](#shops-endpoints)
       - [Get all shops](#get-all-shops)
+        - [Request](#request-5)
+        - [Response](#response-5)
       - [Get a shop](#get-a-shop)
+        - [Request](#request-6)
+        - [Response](#response-6)
       - [Get a shop's promotions](#get-a-shops-promotions)
+        - [Request](#request-7)
+        - [Response](#response-7)
       - [Get a shop's cards](#get-a-shops-cards)
+        - [Request](#request-8)
+        - [Response](#response-8)
       - [Get a shop's campaigns](#get-a-shops-campaigns)
+        - [Request](#request-9)
+        - [Response](#response-9)
       - [Create a shop](#create-a-shop)
+        - [Request](#request-10)
+        - [Response](#response-10)
       - [Update a shop](#update-a-shop)
+        - [Request](#request-11)
+        - [Response](#response-11)
       - [Delete a shop](#delete-a-shop)
+        - [Request](#request-12)
+        - [Response](#response-12)
     - [Cards endpoints](#cards-endpoints)
       - [Get a card](#get-a-card)
+        - [Request](#request-13)
+        - [Response](#response-13)
+      - [Get user's cards](#get-users-cards)
+        - [Request](#request-14)
+        - [Response](#response-14)
       - [Create a card](#create-a-card)
+        - [Request](#request-15)
+        - [Response](#response-15)
       - [Update a card](#update-a-card)
+        - [Request](#request-16)
+        - [Response](#response-16)
       - [Delete a card](#delete-a-card)
+        - [Request](#request-17)
+        - [Response](#response-17)
     - [Promotions endpoints](#promotions-endpoints)
       - [Get a promotion](#get-a-promotion)
+        - [Request](#request-18)
+        - [Response](#response-18)
       - [Create a promotion](#create-a-promotion)
+        - [Request](#request-19)
+        - [Response](#response-19)
       - [Update a promotion](#update-a-promotion)
+        - [Request](#request-20)
+        - [Response](#response-20)
       - [Delete a promotion](#delete-a-promotion)
+        - [Request](#request-21)
+        - [Response](#response-21)
     - [Balances endpoints](#balances-endpoints)
       - [Get a balance](#get-a-balance)
+        - [Request](#request-22)
+        - [Response](#response-22)
       - [Create a balance](#create-a-balance)
+        - [Request](#request-23)
+        - [Response](#response-23)
       - [Update a balance](#update-a-balance)
+        - [Request](#request-24)
+        - [Response](#response-24)
       - [Delete a balance](#delete-a-balance)
+        - [Request](#request-25)
+        - [Response](#response-25)
     - [Checkout endpoint](#checkout-endpoint)
+        - [Request](#request-26)
+        - [Response](#response-26)
     - [Campaigns endpoints](#campaigns-endpoints)
       - [Get a campaign](#get-a-campaign)
+        - [Request](#request-27)
+        - [Response](#response-27)
       - [Create a campaign](#create-a-campaign)
+        - [Request](#request-28)
+        - [Response](#response-28)
       - [Send a campaign](#send-a-campaign)
+        - [Request](#request-29)
+        - [Response](#response-29)
       - [Update a campaign](#update-a-campaign)
+        - [Request](#request-30)
+        - [Response](#response-30)
       - [Delete a campaign](#delete-a-campaign)
+        - [Request](#request-31)
+        - [Response](#response-31)
     - [Analytics endpoints](#analytics-endpoints)
       - [Get a shop's affluence](#get-a-shops-affluence)
+        - [Request](#request-32)
+        - [Response](#response-32)
       - [Get a shop's clients count](#get-a-shops-clients-count)
+        - [Request](#request-33)
+        - [Response](#response-33)
       - [Get a shop's promotion ranking](#get-a-shops-promotion-ranking)
+        - [Request](#request-34)
+        - [Response](#response-34)
       - [Get a shop's promotion checkout count](#get-a-shops-promotion-checkout-count)
+        - [Request](#request-35)
+        - [Response](#response-35)
 
 ## Run locally
 
@@ -287,6 +360,7 @@ Status: 200 OK
   ]
 }
 ```
+
 
 #### Update a user
 
@@ -725,8 +799,51 @@ Status: 200 OK
 {
   "id": 1,
   "shopId": 1,
-  "userId": 1,
+  "userId": 1
 }
+```
+
+
+#### Get user's cards
+
+```HTTP
+GET /card
+```
+
+| Parameters | Type   | In    | Description    |
+| :--------- | :----- | :---- | :------------- |
+|            |        |       |                |
+
+##### Request
+
+```HTTP
+GET /card
+```
+
+##### Response
+
+```HTTP
+Status: 200 OK
+```
+
+```json
+[
+  {
+    "id": 1,
+    "shopId": 1,
+    "userId": 1
+  },
+  {
+    "id": 2,
+    "shopId": 2,
+    "userId": 1
+  },
+  {
+    "id": 3,
+    "shopId": 3,
+    "userId": 1
+  }
+]
 ```
 
 #### Create a card
@@ -1097,14 +1214,15 @@ Status: 200 OK
 ```
 
 ### Checkout endpoint
+
 ```HTTP
 PUT /checkout
 ```
 
-| Parameters | Type   | In    | Description    |
-| :--------- | :----- | :---- | :------------- |
-| **uuid**     | string | body | **[required]** uuid of user (scanned from QR code) |
-| **promotionId**     | number | body | **[required]** promotion id to apply |
+| Parameters      | Type   | In   | Description                                        |
+| :-------------- | :----- | :--- | :------------------------------------------------- |
+| **uuid**        | string | body | **[required]** uuid of user (scanned from QR code) |
+| **promotionId** | number | body | **[required]** promotion id to apply               |
 
 ##### Request
 

@@ -27,6 +27,18 @@ export class UserService {
   }
 
   /**
+   * findOneCards
+   * @param id
+   * @returns
+   */
+  findOneCards(id: number): Promise<User | null> {
+    return this.repository.findOne({
+      where: { id },
+      relations: { cards: { user: true, balances: true } },
+    });
+  }
+
+  /**
    * Find user by Uuid
    * @param uuid - uuid of the user
    * @returns A user if found

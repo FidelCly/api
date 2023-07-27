@@ -11,12 +11,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { AbilityFactory, Action } from '../auth/ability.factory';
 import { AuthGuard } from '../auth/auth.guard';
 import { CardService } from '../card/card.service';
+import { ShopService } from '../shop/shop.service';
 import { UpdateUserDto } from './user.dto';
 import { UserService } from './user.service';
-import { ShopService } from '../shop/shop.service';
-import { AbilityFactory, Action } from '../auth/ability.factory';
 
 @Controller('user')
 @UseGuards(AuthGuard)
@@ -27,6 +27,18 @@ export class UserController {
     private shopService: ShopService,
     private abilityFactory: AbilityFactory,
   ) {}
+
+  @Get('cards')
+  async cards(@Req() req: Request) {
+    const user = await this.service.findOneCards(+req['currentUser'].id);
+    if (!user) throw new NotFoundException();
+
+    const ability = this.abilityFactory.defineAbility(req['currentUser']);
+    if (!ability.can(Action.Read, user))
+      throw new ForbiddenException('You are not allowed to read this user');
+
+    return user.cards;
+  }
 
   @Get(':uuid')
   async one(@Param('uuid') uuid: string, @Req() req: Request) {

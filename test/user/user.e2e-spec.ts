@@ -1,14 +1,16 @@
 import { HttpStatus } from '@nestjs/common';
+import { AbilityFactory } from '../../src/auth/ability.factory';
+import { AuthService } from '../../src/auth/auth.service';
+import { Role } from '../../src/user/user.enum';
+import { AbilityFactoryMock } from '../ability.mock';
+import { cardFixture } from '../card/card.seed';
 import { TestFactory } from '../factory';
 import {
   emptyModifiedUserFixture,
   modifiedUserFixture,
   userFixture,
+  userFixture2,
 } from './user.seed';
-import { AbilityFactory } from '../../src/auth/ability.factory';
-import { AbilityFactoryMock } from '../ability.mock';
-import { AuthService } from '../../src/auth/auth.service';
-import { Role } from '../../src/user/user.enum';
 
 describe('UsersController', () => {
   // Create instances
@@ -32,7 +34,7 @@ describe('UsersController', () => {
     jest.spyOn(service, 'validate').mockResolvedValue({
       status: HttpStatus.OK,
       userUuid: userFixture.uuid,
-      role: Role.Fider,
+      role: Role.User,
       errors: null,
     });
   });
@@ -89,6 +91,22 @@ describe('UsersController', () => {
 
         expect(response.headers['content-type']).toMatch(/json/);
         expect(response.statusCode).toBe(200);
+      });
+    });
+  });
+
+  describe("Get user's cards", () => {
+    describe('of known uuid', () => {
+      it('responds with status 200', async () => {
+        await factory.seedUser(userFixture2);
+        await factory.seedShop(null, 2);
+        await factory.seedCard(cardFixture);
+
+        const response = await factory.get('/user/cards');
+
+        expect(response.headers['content-type']).toMatch(/json/);
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveLength(1);
       });
     });
   });
