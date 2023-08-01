@@ -40,6 +40,10 @@ export class CreateShopDto {
   @IsString()
   pictureUrl?: string;
 
+  @IsOptional()
+  @IsString()
+  description?: string;
+
   @IsNotEmpty()
   @IsPostalCode('FR')
   @Length(5, 5)
@@ -103,6 +107,10 @@ export class UpdateShopDto {
   @IsOptional()
   @IsString()
   pictureUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @IsOptional()
   @IsNotEmpty()

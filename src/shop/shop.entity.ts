@@ -76,6 +76,9 @@ export class Shop {
   @Column({ nullable: true })
   pictureUrl!: string;
 
+  @Column({ nullable: true })
+  description!: string;
+
   @OneToOne(() => User, (user: User) => user.shop)
   @JoinColumn()
   user!: User;
