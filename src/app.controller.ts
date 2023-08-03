@@ -49,7 +49,11 @@ export class AppController {
       throw new NotFoundException();
 
     // Check if promotion has expired
-    if (new Date(promotion.endAt).getTime() < new Date().getTime()) {
+    if (
+      promotion.isActive &&
+      (new Date(promotion.startAt).getTime() > new Date().getTime() ||
+        new Date(promotion.endAt).getTime() < new Date().getTime())
+    ) {
       if (!ability.can(Action.Update, promotion))
         throw new ForbiddenException();
 
@@ -57,6 +61,22 @@ export class AppController {
       // If expired, set to inactive
       await this.promotionService.update(+checkoutDto.promotionId, {
         isActive: false,
+      });
+    }
+
+    // Check if promotion should be activated
+    if (
+      !promotion.isActive &&
+      new Date(promotion.startAt).getTime() < new Date().getTime() &&
+      new Date(promotion.endAt).getTime() > new Date().getTime()
+    ) {
+      if (!ability.can(Action.Update, promotion))
+        throw new ForbiddenException();
+
+      promotion.isActive = true;
+      // If expired, set to inactive
+      await this.promotionService.update(+checkoutDto.promotionId, {
+        isActive: true,
       });
     }
 
