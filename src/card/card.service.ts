@@ -27,6 +27,17 @@ export class CardService {
 
   // DATABASE MANIPULATION
 
+  /**
+   * findOneCards
+   * @param id
+   * @returns
+   */
+  find(args: any): Promise<Card[]> {
+    return this.repository.find({
+      where: args,
+    });
+  }
+
   findOne(id: number): Promise<Card | null> {
     return this.repository.findOneBy({ id });
   }
