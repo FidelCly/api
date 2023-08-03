@@ -63,6 +63,15 @@ describe('Testing card controller', () => {
         expect(response.body.userId).toBe(cardFixture.userId);
       });
     });
+
+    describe('with same payload as existing card', () => {
+      it('responds with status 409', async () => {
+        const response = await factory.post('/card').send(cardFixture);
+
+        expect(response.headers['content-type']).toMatch(/json/);
+        expect(response.statusCode).toBe(409);
+      });
+    });
   });
 
   describe('Update card', () => {

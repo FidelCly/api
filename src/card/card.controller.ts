@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   ForbiddenException,
@@ -43,6 +44,15 @@ export class CardController {
   async create(@Body() createCardDto: CreateCardDto, @Req() req: Request) {
     if (!(await this.shopService.findOne(createCardDto.shopId))) {
       throw new NotFoundException('Shop not found');
+    }
+
+    if (
+      await this.service.findOneBy({
+        shopId: createCardDto.shopId,
+        userId: req['currentUser'].id,
+      })
+    ) {
+      throw new ConflictException('Card already exists');
     }
 
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
