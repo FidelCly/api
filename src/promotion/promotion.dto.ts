@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Min,
 } from 'class-validator';
 
 export class CreatePromotionDto {
@@ -19,6 +20,7 @@ export class CreatePromotionDto {
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(1)
   readonly checkoutLimit: number;
 
   @IsOptional()
@@ -50,6 +52,7 @@ export class UpdatePromotionDto {
   @IsOptional()
   @IsNotEmpty()
   @IsNumber()
+  @Min(1)
   readonly checkoutLimit?: number;
 
   @IsOptional()
