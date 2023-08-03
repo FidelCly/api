@@ -30,14 +30,17 @@ export class UserController {
 
   @Get('cards')
   async cards(@Req() req: Request) {
-    const user = await this.service.findOneCards(+req['currentUser'].id);
-    if (!user) throw new NotFoundException();
+    const cards = await this.cardService.find({
+      userId: +req['currentUser'].id,
+    });
 
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
-    if (!ability.can(Action.Read, user))
-      throw new ForbiddenException('You are not allowed to read this user');
+    cards.forEach((card) => {
+      if (!ability.can(Action.Read, card))
+        throw new ForbiddenException('You are not allowed to read this card');
+    });
 
-    return user.cards;
+    return cards;
   }
 
   @Get(':uuid')

@@ -292,13 +292,13 @@ Status: 200 OK
 #### Get user's cards
 
 ```HTTP
-GET /cards
+GET /user/cards
 ```
 
 ##### Request
 
 ```HTTP
-GET /cards
+GET /user/cards
 ```
 
 ##### Response
