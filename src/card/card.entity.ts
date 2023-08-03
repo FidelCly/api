@@ -11,9 +11,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 
-@Entity() // table name in database
+@Entity()
+@Index(['shopId', 'userId'], { unique: true })
 export class Card {
   @PrimaryGeneratedColumn()
   id: number;
