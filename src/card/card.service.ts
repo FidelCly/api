@@ -35,6 +35,11 @@ export class CardService {
   find(args: any): Promise<Card[]> {
     return this.repository.find({
       where: args,
+      relations: {
+        user: true,
+        balances: { promotion: true },
+        shop: true,
+      },
     });
   }
 
