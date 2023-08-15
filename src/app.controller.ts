@@ -120,8 +120,7 @@ export class AppController {
       throw new ForbiddenException('Promotion is not active');
     }
 
-    if (!ability.can(Action.Update, balance))
-      throw new ForbiddenException('here');
+    if (!ability.can(Action.Update, balance)) throw new ForbiddenException();
 
     // Check if balance is at checkout limit
     if (balance.counter + 1 === promotion.checkoutLimit) {

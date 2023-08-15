@@ -109,7 +109,7 @@ export class CampaignController {
     if (!ability.can(Action.Update, campaign)) throw new ForbiddenException();
 
     await this.service.update(+id, updateCampaignDto);
-    return { message: 'Card updated' };
+    return { message: 'Campaign updated' };
   }
 
   @Delete(':id')
