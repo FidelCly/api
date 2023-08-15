@@ -32,7 +32,9 @@ export class ShopService {
    * @returns A list of shops
    */
   all(): Promise<Shop[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: { promotions: true, cards: true },
+    });
   }
 
   /**
