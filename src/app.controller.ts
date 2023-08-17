@@ -132,7 +132,7 @@ export class AppController {
       });
 
       // Send data to analytics
-      this.balanceService.sendToAnalytics({
+      await this.balanceService.sendToAnalytics({
         ...balance,
         counter: promotion.checkoutLimit,
         isActive: false,
