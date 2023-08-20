@@ -33,20 +33,17 @@ export class AppController {
 
   @Put('checkout')
   async checkout(@Body() checkoutDto: CheckoutDto, @Req() req: Request) {
-    let balance: Balance, promotion: Promotion, card: Card, user: User;
     const ability = this.abilityFactory.defineAbility(req['currentUser']);
 
     // Check if user exists
-    if (!(user = await this.userService.findByUuid(checkoutDto.uuid)))
-      throw new NotFoundException();
+    const user: User = await this.userService.findByUuid(checkoutDto.uuid);
+    if (!user) throw new NotFoundException();
 
     // Check if promotion exists
-    if (
-      !(promotion = await this.promotionService.findOne(
-        +checkoutDto.promotionId,
-      ))
-    )
-      throw new NotFoundException();
+    const promotion: Promotion = await this.promotionService.findOne(
+      +checkoutDto.promotionId,
+    );
+    if (!promotion) throw new NotFoundException();
 
     // Check if promotion has expired
     if (
@@ -81,23 +78,20 @@ export class AppController {
     }
 
     // Check if a card exists for this user
-    if (
-      !(card = await this.cardService.findOneBy({
-        userId: +user.id,
-        shopId: +req['currentUser'].shop.id,
-      }))
-    )
-      throw new NotFoundException();
+    const card: Card = await this.cardService.findOneBy({
+      userId: +user.id,
+      shopId: +req['currentUser'].shop.id,
+    });
+    if (!card) throw new NotFoundException();
 
     // Check if an active balance already exists for this promotion
-    if (
-      !(balance = await this.balanceService.findOneBy({
-        promotionId: +checkoutDto.promotionId,
-        cardId: +card.id,
-        isActive: true,
-      })) &&
-      promotion.isActive
-    ) {
+    let balance: Balance = await this.balanceService.findOneBy({
+      promotionId: +checkoutDto.promotionId,
+      cardId: +card.id,
+      isActive: true,
+    });
+
+    if (!balance && promotion.isActive) {
       // Create balance if it doesn't exist yet
       if (!ability.can(Action.Create, Balance)) throw new ForbiddenException();
       balance = await this.balanceService.create({
@@ -105,8 +99,8 @@ export class AppController {
         cardId: card.id,
         counter: 1,
       });
-      // Send to analytics
 
+      // Send to analytics
       await this.balanceService.sendToAnalytics(balance);
 
       return { message: 'Balance updated' };
