@@ -93,8 +93,6 @@ export class CampaignController {
       senderEmail: req['currentUser'].shop.marketingEmail,
     };
 
-    console.log(data);
-
     return this.service.send(data);
   }
 
