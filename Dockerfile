@@ -1,6 +1,7 @@
 FROM node:latest
 WORKDIR /api
-COPY package.json .
+COPY package.json ./
 RUN npm install
-COPY . .
-CMD npm start
+COPY . ./
+CMD npm run start:dev
+EXPOSE 3000

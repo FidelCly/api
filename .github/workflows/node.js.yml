@@ -10,49 +10,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - uses: nashmaniac/create-issue-action@v1.1
-      if: ${{ failure() }} # only run when this job is failed.
-      name: Create Issue Action
-      with:
-          title: Linter Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: refactoring-needed, help needed
-          body: Workflow failed for commit ${{github.sha}}
-    - run: npm run build --if-present
-    - uses: nashmaniac/create-issue-action@v1.1
-      if: ${{ failure() }} # only run when this job is failed.
-      name: Create Issue Action
-      with:
-          title: Linter Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: refactoring-needed, help needed
-          body: Workflow failed for commit ${{github.sha}}
-    - run: docker-compose run --rm web npm test
-    - uses: nashmaniac/create-issue-action@v1.1
-      if: ${{ failure() }} # only run when this job is failed.
-      name: Create Issue Action
-      with:
-          title: Linter Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: refactoring-needed, help needed
-          body: Workflow failed for commit ${{github.sha}}
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm run test:e2e
+
