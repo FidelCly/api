@@ -35,7 +35,7 @@
     "@grpc/proto-loader": "^0.7.15",
     "@nestjs/common": "^11.0.20",
     "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.0.20",
+    "@nestjs/core": "^11.1.0",
     "@nestjs/microservices": "^11.0.20",
     "@nestjs/platform-express": "^11.0.20",
     "@nestjs/typeorm": "^10.0.2",
